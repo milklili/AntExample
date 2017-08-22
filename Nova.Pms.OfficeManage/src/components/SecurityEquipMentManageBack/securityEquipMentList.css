@@ -1,0 +1,55 @@
+﻿.normal {
+}
+
+.operation a {
+    margin: 0 .5em;
+}
+
+.ListButton {
+    margin-bottom: 15px;
+}
+button {
+    margin-right:15px;
+}
+.editRow {
+    line-height: 30px;
+    float: right;
+    margin-right: 20px;
+}
+.subContent {
+    width:90%;
+}
+
+.rowPadding {
+    padding-bottom:20px;
+}
+
+.btnPadding {
+    margin-right:20px;
+}
+
+.btnRow {
+    margin:0 auto;
+    width:166px;
+}
+.fromItem {
+    padding-bottom:20px;
+}
+.searchForm{
+    border: solid 1px;
+    border-color: #d9d9d9;
+    padding:24px;
+    margin: 0px;
+    minHeight:280px;
+}
+.title{
+    font-family: "Arial Normal", Arial;
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(153, 153, 153);
+    margin-bottom: 30px;
+}
+.workingPlanList{
+
+    margin-top: 40px;
+}

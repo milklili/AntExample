@@ -1,0 +1,34 @@
+﻿.normal {
+}
+
+.operation a {
+  margin: 0 .5em;
+}
+
+.create {
+	margin-bottom: 15px;
+}
+.editRow {
+  line-height: 30px;
+  float: right;
+  margin-right: 20px;
+}
+.subContent {
+width:90%;
+}
+
+.rowPadding {
+padding-bottom:20px;
+}
+
+.btnPadding {
+margin-right:20px;
+}
+
+.btnRow {
+margin:0 auto;
+width:166px;
+}
+.fromItem {
+padding-bottom:20px;
+}

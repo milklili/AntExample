@@ -1,0 +1,12 @@
+.mainLayoutBreadcrumb {
+    margin: 12px 0
+}
+.mainLayoutChildContent {
+    padding: 24px;
+    background-color: #fff;
+    min-height: 800px;
+}
+.normal {
+    font-family: "Microsoft Yahei";
+    margin: auto 0;
+}

@@ -1,0 +1,111 @@
+﻿import * as documentService from "../../services/document";
+import { routerRedux } from "dva/router";
+import { message } from "antd";
+
+export default {
+    namespace: "editDocument",
+    state: {
+        regions: [],
+        documentCategories: [],
+        documentData: {
+            id: null,
+            regionId: null,
+            fileDate: null,
+            number: null,
+            startDate: null,
+            name: null,
+            endDate: null,
+            documentCategoryId: null,
+            remark: null,
+            version: null,
+            attachments: []
+        },
+        fileList:[],
+    },
+    reducers: {
+        load(state, { payload }) {
+            debugger;
+            return { ...state, ...payload };
+        },
+        addAttachment(state, { payload: { files } }) {
+            let maxId = state.documentData.attachments.length + 1;
+            const documentData = state.documentData;
+            for (let file of files) {
+                file.id = maxId;
+                file.key = maxId;
+                documentData.attachments.push(file);
+                maxId++;
+            }
+            return { ...state, documentData };
+        },
+        removeAttachment(state, { payload: model }) {
+            let file = state.documentData.attachments.find(
+                file => file.id == model.uid
+            );
+            var index = state.documentData.attachments.indexOf(file);
+            const documentData = state.documentData;
+            if (index >= 0) {
+                documentData.attachments.splice(index, 1);
+            }
+            return { ...state, documentData };
+        },
+        changeField(state, { payload: { key, value } }) {
+            var documentData = { ...state.documentData, [key]: value };
+            return { ...state, documentData };
+        }
+    },
+    effects: {
+        *getData({ payload: { id } }, { call, put }) {
+            debugger;
+            const { data: documentData } = yield call(
+                documentService.getDocumentById, { id }
+            );
+            const fileList = documentData.attachments.map(attachment => {
+                return {
+                    uid: attachment.id,
+                    name: attachment.fileName,
+                    status: "done",
+                    url: attachment.filePath
+                };
+            })
+            const { data: regions } = yield call(
+                documentService.getRegionList
+            );
+            const { data: documentCategories } = yield call(
+                documentService.getDocumentCategoryList
+            );
+            yield put({
+                type: "load",
+                payload: {
+                    regions,
+                    documentCategories,
+                    documentData
+                }
+            });
+        },
+
+        *addUploadFiles({ payload: { file, model } }, { call, put }) {
+            yield put({ type: "addAttachment", payload: { files: file } });
+        },
+        *removeUploadFiles({ payload: uid }, { call, put }) {
+            yield put({ type: "removeAttachment", payload: { uid: uid } });
+        },
+
+        *editDocument({ payload: values }, { call, put, select }) {
+            let documentData = yield select(state => state.editDocument.documentData);
+            const val = Object.assign(documentData, values);
+            const { data } = yield call(documentService.edit, { val });
+            message.success(data.message, 3);
+            yield put(routerRedux.push("/documentList"));
+        }
+    },
+    subscriptions: {
+        setup({ dispatch, history }) {
+            return history.listen(({ pathname, query }) => {
+                if (pathname === "/editDocument") {
+                    dispatch({ type: "getData", payload: query });
+                }
+            });
+        }
+    }
+};
