@@ -5,7 +5,7 @@ import { PAGE_SIZE } from '../constants';
 //    return request(`/api/officeManage/documentation/${page}/${PAGE_SIZE}`);
 //}
 export function getData(pageInfo) {
-    return request('/api/officeManageApi/DocumentationList', {
+    return request('/api/officeManage/DocumentationList', {
         headers: {
             'Content-Type': 'application/json'
         },	  
@@ -14,7 +14,7 @@ export function getData(pageInfo) {
     });
 }
 export function getRegionList() {
-    return request(`/api/officeManageApi/GetRegionList`);
+    return request(`/api/officeManage/GetRegionList`);
 }
 export function getDocumentCategoryList() {
     return request(`/api/officeManage/getDocumentCategoryList`);

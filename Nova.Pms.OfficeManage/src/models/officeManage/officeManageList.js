@@ -1,4 +1,4 @@
-﻿import * as officeManageService from '../../services/officeManage';
+﻿import * as officeManageService from '../../services/category';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -17,7 +17,7 @@ export default {
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE} }, { call, put }) {
-            const { data, headers } = yield call(officeManageService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
+            const { data, headers } = yield call(officeManageService.getAll, { page: page, filterStr: filterStr, pageSize: pageSize });
             yield put({
                 type: 'updateState',
                 payload: {

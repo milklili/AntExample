@@ -1,4 +1,4 @@
-﻿import * as officeManageService from '../../services/officeManage';
+﻿import * as officeManageService from '../../services/category';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
