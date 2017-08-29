@@ -150,7 +150,7 @@ export default {
         },
      
         *addCleaningInspect({ payload: cleaningInspect }, { call, put, select }) {
-            const { data } = yield call(cleaningInspectService.addCleaningInspect, cleaningInspect);
+            const { data } = yield call(cleaningInspectService.create, cleaningInspect);
             message.success(data.message, 3);  
             yield put({
                 type: 'changeCleaningInspect',

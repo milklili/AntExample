@@ -45,15 +45,12 @@ const AddSecurityEquipMentForm = Form.create()(
             labelCol: { span: 3 },
             wrapperCol: { span: 21 },
         };
-        debugger;
         const regionOptions = regionList.map(value =>
             <Option key={value.id} value={value.id}>{value.name}</Option>
         ); 
-        debugger;
         const departmentOptions =departmentList.map(value =>
             <Option key={value.id} value={value.id}>{value.name}</Option>
         );
-        debugger;
         const responsibilityPersonOptions = staffList.map(value =>
             <Option key={value.staffId} value={value.staffId}>{value.staffName}</Option>
         );
@@ -224,7 +221,6 @@ const AddSecurityEquipMentForm = Form.create()(
 const NormalAddSecurityEquipMentForm = Form.create(
     {
         mapPropsToFields(props) {
-            debugger;
             const fields = {};
             Object.keys(props.securityEquipMent).forEach(key => {
                 fields[key] = {
@@ -278,7 +274,6 @@ function SecurityEquipMentList({
             this.dispatch = props.dispatch;
         }
         showModal = () => {
-            debugger;
             securityEquipMent.regionId = this.props.initialRegion.id;
             var staffList = this.props.staffList.map(function (x) {
                 if (x.staffRegionId == securityEquipMent.regionId) {
@@ -307,7 +302,6 @@ function SecurityEquipMentList({
             const form = this.form;
 
             form.validateFields((err, values) => {
-                debugger;
                 dispatch({
                     type: 'securityEquipMentList/changeSecurityEquipMent',
                     payload: { securityEquipMent: values },
@@ -321,8 +315,6 @@ function SecurityEquipMentList({
             const form = this.form;
             
             form.validateFields((err, values) => {
-                debugger;
-                debugger;
                 if (err) {
                     return;
                 }
@@ -358,7 +350,6 @@ function SecurityEquipMentList({
                 }
             });
             departmentList = departmentList.filter(function (n) { return n != undefined });
-            debugger;
             //this.props.securityEquipMent.regionName,
             
             this.setState({
@@ -393,7 +384,6 @@ function SecurityEquipMentList({
             let data = { [key]: value };
 
             if (key == "regionId") {
-                debugger;
                 data = { responsibilityPersonId: null, departmentId: null, [key]: value };
             }
 
@@ -401,7 +391,6 @@ function SecurityEquipMentList({
             this.setState({
                 securityEquipMent: { ...this.state.securityEquipMent, ...securityEquipMent },
             });
-            debugger;
         }
 
         render() {           
@@ -459,7 +448,6 @@ function SecurityEquipMentList({
                 }
             });
             departmentList = departmentList.filter(function (n) { return n != undefined });
-            debugger;
             this.setState({
                 staffList: staffList,
                 departmentList: departmentList,
@@ -494,7 +482,6 @@ function SecurityEquipMentList({
                 if (err) {
                     return;
                 }
-                debugger;
                 values.id = this.props.securityEquipMent.id;
                 dispatch({
                     type: 'securityEquipMentList/editSecurityEquipMent',
@@ -532,7 +519,6 @@ function SecurityEquipMentList({
                 }
             });
             departmentList = departmentList.filter(function (n) { return n != undefined });
-            debugger;
             //this.props.securityEquipMent.regionName,
 
             this.setState({
@@ -564,7 +550,6 @@ function SecurityEquipMentList({
             let data = { [key]: value };
 
             if (key == "regionId") {
-                debugger;
                 data = { responsibilityPersonId: null, departmentId: null, [key]: value };
             }
 
@@ -572,7 +557,6 @@ function SecurityEquipMentList({
             this.setState({
                 securityEquipMent: { ...this.state.securityEquipMent, ...securityEquipMent },
             });
-            debugger;
         }
         render() {
             return (
@@ -614,7 +598,6 @@ function SecurityEquipMentList({
             this.dispatch = props.dispatch;
         }
         showModal = (e) => {
-            debugger;
             e.preventDefault();
 
 
@@ -631,7 +614,6 @@ function SecurityEquipMentList({
                 }
             });
             departmentList = departmentList.filter(function (n) { return n != undefined });
-            debugger;
             this.setState({
                 staffList: staffList,
                 departmentList: departmentList,
@@ -667,7 +649,6 @@ function SecurityEquipMentList({
             this.form = form;
         }
         handleIdCardNoValidate = (rule, value, callback) => {
-            debugger;
             if (value != null && value != "" && (!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value))) {
                 callback('身份证格式错误');
             }
@@ -752,7 +733,6 @@ function SecurityEquipMentList({
             }));
         }
         deleteSecurityEquipMent = (ids) => {
-            debugger;
             dispatch({
                 type: 'securityEquipMentList/remove',
                 payload: { ids }
@@ -779,7 +759,6 @@ function SecurityEquipMentList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
             dispatch(
                 routerRedux.push({
                     pathname: "/securityEquipMentList",
@@ -1144,7 +1123,6 @@ function mapStateToProps(state) {
         seniorSearch,
         visible,
     } = state.securityEquipMentList;
-    debugger;
     return {
         loading: state.loading.models.securityEquipMentList,
         list,

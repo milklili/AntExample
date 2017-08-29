@@ -68,7 +68,7 @@ export default {
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            const { data } = yield call(cleaningRecordService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
+            const { data } = yield call(cleaningRecordService.getAll, { page: page, filterStr: filterStr, pageSize: pageSize });
             const { data: regionList } = yield call(commonDataService.getRegionList);
             const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
             const { data: staffList } = yield call(commonDataService.getStaffList);
