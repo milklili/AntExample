@@ -26,9 +26,7 @@ export default {
     },
     reducers: {
         updateState(state, { payload: { data: list, total, page, filterStr, staffList, pageSize } }) {
-            debugger;
             return { ...state, list, total, page, filterStr, staffList, pageSize };
-            debugger;
         },
         updateRegion(state, { payload: { regions } }) {
             return { ...state, regions };
@@ -55,18 +53,15 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
             var addWorkAttendance = { ...state.addWorkAttendance, [key]: value };
             return { ...state, addWorkAttendance };
         }
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
             const { data } = yield call(workAttendanceService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
             const { data: staffList } = yield call(commonDataService.getStaffList);
 
-            debugger;
             yield put({
                 type: 'updateState',
                 payload: {
@@ -89,8 +84,7 @@ export default {
             });
         },
 
-        *seniorSearch({ payload: values }, { call, put, select }) {
-           
+        *seniorSearch({ payload: values }, { call, put, select }) { 
             let seniorSearchData = {
                 staffName: null,
                 attendanceInterval: null,
@@ -127,11 +121,9 @@ export default {
         *addStaff({ payload: addStaff }, { call, put, select }) {
             const { data } = yield call(workAttendanceService.addStaff, addStaff);
             message.success(data.message, 3);
-            debugger;
             yield put({ type: 'reload' });
         },
         
-
         *auditDocuments({ payload: ids }, { call, put, select }) {
             const { data } = yield call(documentService.auditDocuments, ids);
             message.success(data.message, 3);

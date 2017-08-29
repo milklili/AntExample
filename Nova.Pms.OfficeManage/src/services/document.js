@@ -21,7 +21,7 @@ export function create(values) {
 }
 
 export function getDocumentById({id}) {
-    return request(`/api/officeManage/documentation/GetDocumentById/${id}`);
+    return request(`/api/officeManage/documentation/${id}`);
 }
 
 export function edit({val}) {

@@ -54,7 +54,7 @@ export default {
             const { data: meetingCategorys } = yield call(commonDataService.getMeetingCategoryList);
             id = formData.regionId;
             const { data: departments } = yield call(commonDataService.getDepartmentByRegionId, { id });
-            const { data: staffs } = yield call(meetingService.getStaffByRegionId, { id });
+            const { data: staffs } = yield call(commonDataService.getStaffByRegionId, { id });
             yield put({
                 type: "load",
                 payload: {

@@ -32,9 +32,7 @@ const Option = Select.Option;
 
 const AddWorkAttendanceForm = Form.create()(
     (props) => { 
-        debugger;
         const { visible, onCancel, onCreate, handleHoursValidate, form, workAttendance, staffList, dispatch, isHoursEdit, handleAttendanceTypeChange } = props;
-        debugger;
         const { getFieldDecorator } = form;
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -130,7 +128,6 @@ const AddWorkAttendanceForm = Form.create()(
         );
     }  
 );
-
 
 const AddStaffForm = Form.create()(
     (props) => {
@@ -292,7 +289,6 @@ const AddStaffForm = Form.create()(
     }
 );
 
-
 function WorkAttendanceList({
     dispatch,
     list: dataSource,
@@ -306,696 +302,691 @@ function WorkAttendanceList({
     staffList,
 }) {
 
+function editDocument(id) {
+    dispatch(
+        routerRedux.push({
+            pathname: "/editWorkAttendance",
+            query: { id }
+        })
+    );
+}
+function showDocument(id) {
+    dispatch(
+        routerRedux.push({
+            pathname: "/showWorkAttendance",
+            query: { id }
+        })
+    );
+}
 
-    function editDocument(id) {
-        dispatch(
-            routerRedux.push({
-                pathname: "/editWorkAttendance",
-                query: { id }
-            })
-        );
+class AddWorkAttendance extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false,
+            addWorkAttendance: null,
+            isHoursEdit:false,
+        };
+        this.dispatch = props.dispatch;
     }
-    function showDocument(id) {
-        dispatch(
-            routerRedux.push({
-                pathname: "/showWorkAttendance",
-                query: { id }
-            })
-        );
+    showModal = () => {
+        this.setState({ visible: true });
     }
-
-
-    class AddWorkAttendance extends React.Component {
-
-        constructor(props) {
-            super(props);
-            this.state = {
-                visible: false,
-                addWorkAttendance: null,
-                isHoursEdit:false,
-            };
-            this.dispatch = props.dispatch;
-        }
-        showModal = () => {
-            this.setState({ visible: true });
-        }
-        handleCancel = () => {
-            this.setState({ visible: false });
-        }
-        handleCreate = () => {
-            const form = this.form;
+    handleCancel = () => {
+        this.setState({ visible: false });
+    }
+    handleCreate = () => {
+        const form = this.form;
+        
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            const ids = this.props.workAttendance.map(value => value.staffId);
             
-            form.validateFields((err, values) => {
-                if (err) {
-                    return;
-                }
-                const ids = this.props.workAttendance.map(value => value.staffId);
-                
-                //staffList.map(value =>
-                //    <Option key={value.staffId} value={value.staffId}>{value.staffName}</Option>
-                //);
-                const addWorkAttendance = {
-                    ids: ids,
-                    workAttendance: values,
-                };
-                
-                //values.staffId = this.props.workAttendance.staffId;
-                dispatch({
-                    type: 'workAttendanceList/addWorkAttendance',
-                    payload: { addWorkAttendance: addWorkAttendance },
-                });
-                form.resetFields();
-                this.setState({ visible: false });
-            });
-        
-        }
-        saveFormRef = (form) => {
-            this.form = form;
-        }
-        handleAttendanceTypeChange = (value) => {
-            const form = this.form;
-            if (value == 1 || value == 2) {
-                //form.getValueProps
-                form.setFieldsValue({
-                    'hours': "",
-                });
-                this.setState({ isHoursEdit: false });
-            } else {
-                this.setState({ isHoursEdit: true });
-            }
-        }
-        handleHoursValidate = (rule, value, callback) => {
-            debugger;
-            if (value != null && value != "" && !((/^[0-9]+.?[0-9]*$/).test(value))) {
-                callback('小时格式错误');
-            }
-            callback();
-        } 
-        
-        render() {           
-            //let ids = [];
-           // ids.push(this.props.rowData.id);
-            return (
-                <span>
-                    <a onClick={this.showModal} >添加</a>
-                    {(<AddWorkAttendanceForm
-                        workAttendance={this.props.workAttendance}
-                        staffList={this.props.staffList}
-                        dispatch={this.props.dispatch}
-                        ref={this.saveFormRef}
-                        visible={this.state.visible}
-                        isHoursEdit={this.state.isHoursEdit}
-                        onCancel={this.handleCancel}
-                        onCreate={this.handleCreate}
-                        handleAttendanceTypeChange={this.handleAttendanceTypeChange}
-                        handleHoursValidate={this.handleHoursValidate} 
-
-                    />)}
-                </span>
-            );
-        }
-    };
-
-
-    class BatchAddWorkAttendance extends React.Component {
-
-        constructor(props) {
-            super(props);
-            this.state = {
-                visible: false,
-                addWorkAttendance: null,
-                isHoursEdit: false,
+            //staffList.map(value =>
+            //    <Option key={value.staffId} value={value.staffId}>{value.staffName}</Option>
+            //);
+            const addWorkAttendance = {
+                ids: ids,
+                workAttendance: values,
             };
-            this.dispatch = props.dispatch;
-        }
-        showModal = () => {
-            this.setState({ visible: true });
-        }
-        handleCancel = () => {
+            
+            //values.staffId = this.props.workAttendance.staffId;
+            dispatch({
+                type: 'workAttendanceList/addWorkAttendance',
+                payload: { addWorkAttendance: addWorkAttendance },
+            });
+            form.resetFields();
             this.setState({ visible: false });
-        }
-        handleCreate = () => {
-            const form = this.form;
-
-            form.validateFields((err, values) => {
-                if (err) {
-                    return;
-                }
-                const ids = this.props.workAttendance.map(value => value.staffId);
-
-                //staffList.map(value =>
-                //    <Option key={value.staffId} value={value.staffId}>{value.staffName}</Option>
-                //);
-                const addWorkAttendance = {
-                    ids: ids,
-                    workAttendance: values,
-                };
-
-                //values.staffId = this.props.workAttendance.staffId;
-                dispatch({
-                    type: 'workAttendanceList/addWorkAttendance',
-                    payload: { addWorkAttendance: addWorkAttendance },
-                });
-                form.resetFields();
-                this.setState({ visible: false });
+        });
+    
+    }
+    saveFormRef = (form) => {
+        this.form = form;
+    }
+    handleAttendanceTypeChange = (value) => {
+        const form = this.form;
+        if (value == 1 || value == 2) {
+            //form.getValueProps
+            form.setFieldsValue({
+                'hours': "",
             });
+            this.setState({ isHoursEdit: false });
+        } else {
+            this.setState({ isHoursEdit: true });
+        }
+    }
+    handleHoursValidate = (rule, value, callback) => {
+        debugger;
+        if (value != null && value != "" && !((/^[0-9]+.?[0-9]*$/).test(value))) {
+            callback('小时格式错误');
+        }
+        callback();
+    } 
+    
+    render() {           
+        //let ids = [];
+       // ids.push(this.props.rowData.id);
+        return (
+            <span>
+                <a onClick={this.showModal} >添加</a>
+                {(<AddWorkAttendanceForm
+                    workAttendance={this.props.workAttendance}
+                    staffList={this.props.staffList}
+                    dispatch={this.props.dispatch}
+                    ref={this.saveFormRef}
+                    visible={this.state.visible}
+                    isHoursEdit={this.state.isHoursEdit}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                    handleAttendanceTypeChange={this.handleAttendanceTypeChange}
+                    handleHoursValidate={this.handleHoursValidate} 
 
-        }
-        saveFormRef = (form) => {
-            this.form = form;
-        }
-        handleAttendanceTypeChange = (value) => {
-            const form = this.form;
-            if (value == 1 || value == 2) {
-                this.setState({ isHoursEdit: false });
-            } else {
-                this.setState({ isHoursEdit: true });
+                />)}
+            </span>
+        );
+    }
+};
+
+class BatchAddWorkAttendance extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false,
+            addWorkAttendance: null,
+            isHoursEdit: false,
+        };
+        this.dispatch = props.dispatch;
+    }
+    showModal = () => {
+        this.setState({ visible: true });
+    }
+    handleCancel = () => {
+        this.setState({ visible: false });
+    }
+    handleCreate = () => {
+        const form = this.form;
+
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
             }
-        }
-        handleHoursValidate = (rule, value, callback) => {
-            debugger;
-            if (value != null && value != "" && !((/^[0-9]+.?[0-9]*$/).test(value))) {
-                callback('小时格式错误');
-            }
-            callback();
-        } 
-        render() {
-            //let ids = [];
-            // ids.push(this.props.rowData.id);
-            return (
-                <span>
-                    <a onClick={this.showModal} disabled={!(this.props.hasSelected)}>批量添加考勤记录</a>
-                    {(<AddWorkAttendanceForm
-                        workAttendance={this.props.workAttendance}
-                        staffList={this.props.staffList}
-                        dispatch={this.props.dispatch}
-                        ref={this.saveFormRef}
-                        isHoursEdit={this.state.isHoursEdit}
-                        visible={this.state.visible}
-                        onCancel={this.handleCancel}
-                        onCreate={this.handleCreate}
-                        handleAttendanceTypeChange={this.handleAttendanceTypeChange}
-                        handleHoursValidate={this.handleHoursValidate} 
-                    />)}
-                </span>
-            );
-        }
-    };
+            const ids = this.props.workAttendance.map(value => value.staffId);
 
-    class AddStaff extends React.Component {
-
-        constructor(props) {
-            super(props);
-            this.state = {
-                visible: false,
+            //staffList.map(value =>
+            //    <Option key={value.staffId} value={value.staffId}>{value.staffName}</Option>
+            //);
+            const addWorkAttendance = {
+                ids: ids,
+                workAttendance: values,
             };
-        }
-        showModal = () => {
-            this.setState({ visible: true });
-        }
-        handleCancel = () => {
+
+            //values.staffId = this.props.workAttendance.staffId;
+            dispatch({
+                type: 'workAttendanceList/addWorkAttendance',
+                payload: { addWorkAttendance: addWorkAttendance },
+            });
+            form.resetFields();
             this.setState({ visible: false });
+        });
+
+    }
+    saveFormRef = (form) => {
+        this.form = form;
+    }
+    handleAttendanceTypeChange = (value) => {
+        const form = this.form;
+        if (value == 1 || value == 2) {
+            this.setState({ isHoursEdit: false });
+        } else {
+            this.setState({ isHoursEdit: true });
         }
-        handleCreate = (e) => {
-            e.preventDefault();
-            const form = this.form;
+    }
+    handleHoursValidate = (rule, value, callback) => {
+        debugger;
+        if (value != null && value != "" && !((/^[0-9]+.?[0-9]*$/).test(value))) {
+            callback('小时格式错误');
+        }
+        callback();
+    } 
+    render() {
+        //let ids = [];
+        // ids.push(this.props.rowData.id);
+        return (
+            <span>
+                <a onClick={this.showModal} disabled={!(this.props.hasSelected)}>批量添加考勤记录</a>
+                {(<AddWorkAttendanceForm
+                    workAttendance={this.props.workAttendance}
+                    staffList={this.props.staffList}
+                    dispatch={this.props.dispatch}
+                    ref={this.saveFormRef}
+                    isHoursEdit={this.state.isHoursEdit}
+                    visible={this.state.visible}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                    handleAttendanceTypeChange={this.handleAttendanceTypeChange}
+                    handleHoursValidate={this.handleHoursValidate} 
+                />)}
+            </span>
+        );
+    }
+};
 
-            form.validateFields((err, values) => {
-                if (err) {
-                    return;
-                }
+class AddStaff extends React.Component {
 
-                dispatch({
-                    type: 'workAttendanceList/addStaff',
-                    payload: { addStaff: values },
-                });
-                form.resetFields();
-                this.setState({ visible: false });
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible: false,
+        };
+    }
+    showModal = () => {
+        this.setState({ visible: true });
+    }
+    handleCancel = () => {
+        this.setState({ visible: false });
+    }
+    handleCreate = (e) => {
+        e.preventDefault();
+        const form = this.form;
+
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+
+            dispatch({
+                type: 'workAttendanceList/addStaff',
+                payload: { addStaff: values },
             });
+            form.resetFields();
+            this.setState({ visible: false });
+        });
 
+    }
+    saveFormRef = (form) => {
+        this.form = form;
+    }
+    handleIdCardNoValidate = (rule, value, callback) => {
+        debugger;
+        if (value != null && value != "" && (!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value))) {
+            callback('身份证格式错误');
         }
-        saveFormRef = (form) => {
-            this.form = form;
+        callback();
+    }
+    handleNameValidate = (rule, value, callback) => {
+        if (value != null && value != "" && (value.indexOf(" ")>-1)) {
+            callback('姓名中不能有空格');
         }
-        handleIdCardNoValidate = (rule, value, callback) => {
-            debugger;
-            if (value != null && value != "" && (!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value))) {
-                callback('身份证格式错误');
-            }
-            callback();
+        callback();
+    }
+    
+    handlePhoneValidate = (rule, value, callback) => {
+        if (value != null && value != "" && !(/(^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$)|(^0{0,1}1[3|4|5|6|7|8|9][0-9]{9}$)/.test(value))) {
+            callback('电话号码格式错误');
         }
-        handleNameValidate = (rule, value, callback) => {
-            debugger;
-            if (value != null && value != "" && (value.indexOf(" ")>-1)) {
-                callback('姓名中不能有空格');
-            }
-            callback();
-        }
-        
-        handlePhoneValidate = (rule, value, callback) => {
-            if (value != null && value != "" && !(/(^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$)|(^0{0,1}1[3|4|5|6|7|8|9][0-9]{9}$)/.test(value))) {
-                callback('电话号码格式错误');
-            }
-            callback();
-        }
+        callback();
+    }
 
-        render() {
-            return (
-                <span>
-                    <Button type="primary" onClick={this.showModal} >新建职员</Button>
-                    {(<AddStaffForm
-                        ref={this.saveFormRef}
-                        visible={this.state.visible}
-                        onCancel={this.handleCancel}
-                        onCreate={this.handleCreate}
-                        handleIdCardNoValidate={this.handleIdCardNoValidate}
-                        handleNameValidate={this.handleNameValidate}
-                        handlePhoneValidate={this.handlePhoneValidate}
-                    />)}
-                </span>
-            );
-        }
+    render() {
+        return (
+            <span>
+                <Button type="primary" onClick={this.showModal} >新建职员</Button>
+                {(<AddStaffForm
+                    ref={this.saveFormRef}
+                    visible={this.state.visible}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                    handleIdCardNoValidate={this.handleIdCardNoValidate}
+                    handleNameValidate={this.handleNameValidate}
+                    handlePhoneValidate={this.handlePhoneValidate}
+                />)}
+            </span>
+        );
+    }
+};
+
+class WorkAttendance extends React.Component {
+    state = {
+        selectedRowKeys: [], // Check here to configure the default column
+        selectedRows:[]
+    };
+    openSeniorSearch = () => {
+        dispatch({
+            type: "workAttendanceList/seniorSearchToggle",
+            payload: true
+        });
+    };
+    closeSeniorSearch = () => {
+        dispatch({
+            type: "workAttendanceList/seniorSearchToggle",
+            payload: false
+        });
+    };
+    seniorSearchHandler = e => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                dispatch({
+                    type: "workAttendanceList/seniorSearch",
+                    payload: values
+                });
+            }
+        });
+    };
+    resetSeniorSearch = () => {
+        dispatch({
+            type: "workAttendanceList/resetSeniorSearch"
+        });
     };
 
-    class WorkAttendance extends React.Component {
-        state = {
-            selectedRowKeys: [], // Check here to configure the default column
-            selectedRows:[]
-        };
-        openSeniorSearch = () => {
-            dispatch({
-                type: "workAttendanceList/seniorSearchToggle",
-                payload: true
-            });
-        };
-        closeSeniorSearch = () => {
-            dispatch({
-                type: "workAttendanceList/seniorSearchToggle",
-                payload: false
-            });
-        };
-        seniorSearchHandler = e => {
-            e.preventDefault();
-            this.props.form.validateFields((err, values) => {
-                if (!err) {
-                    dispatch({
-                        type: "workAttendanceList/seniorSearch",
-                        payload: values
-                    });
+
+    showWorkAttendance = (id) => {
+        dispatch(routerRedux.push({
+            pathname: '/showOrEditWorkAttendance',
+            query: { id },
+        }));
+    }
+    editWorkAttendance = (id) => {
+        dispatch(routerRedux.push({
+            pathname: '/showOrEditWorkAttendance',
+            query: { id },
+        }));
+    }
+
+    pageChangeHandler = (page) => {
+        dispatch(
+            routerRedux.push({
+                pathname: "/workAttendanceList",
+                query: { page, filterStr, pageSize, }
+            })
+        );
+    };
+    searchHandler = filterStr => {
+        dispatch(
+            routerRedux.push({
+                pathname: "/workAttendanceList",
+                query: { page: 1, filterStr, pageSize, }
+            })
+        );
+    };
+    //onSelectChange = selectedRowKeys => {
+    //    this.setState({ selectedRowKeys });
+
+    //};
+    onSelectChange = (selectedRowKeys, selectedRows) => {
+        this.setState({ selectedRowKeys });
+        this.setState({ selectedRows });
+    };
+
+    onShowSizeChange = (current, pageSize) => {
+        debugger;
+        dispatch(
+            routerRedux.push({
+                pathname: "/workAttendanceList",
+                query: { page: current, filterStr, pageSize }
+            })
+        );
+    };
+    render() {
+        const Search = Input.Search;
+        const { getFieldDecorator } = this.props.form;
+        const formItemLayout = {
+            labelCol: {
+                xs: {
+                    span: 24
+                },
+                sm: {
+                    span: 6
                 }
-            });
-        };
-        resetSeniorSearch = () => {
-            dispatch({
-                type: "workAttendanceList/resetSeniorSearch"
-            });
-        };
-
-
-        showWorkAttendance = (id) => {
-            dispatch(routerRedux.push({
-                pathname: '/showOrEditWorkAttendance',
-                query: { id },
-            }));
-        }
-        editWorkAttendance = (id) => {
-            dispatch(routerRedux.push({
-                pathname: '/showOrEditWorkAttendance',
-                query: { id },
-            }));
-        }
-
-        pageChangeHandler = (page) => {
-            dispatch(
-                routerRedux.push({
-                    pathname: "/workAttendanceList",
-                    query: { page, filterStr, pageSize, }
-                })
-            );
-        };
-        searchHandler = filterStr => {
-            dispatch(
-                routerRedux.push({
-                    pathname: "/workAttendanceList",
-                    query: { page: 1, filterStr, pageSize, }
-                })
-            );
-        };
-        //onSelectChange = selectedRowKeys => {
-        //    this.setState({ selectedRowKeys });
-
-        //};
-        onSelectChange = (selectedRowKeys, selectedRows) => {
-            this.setState({ selectedRowKeys });
-            this.setState({ selectedRows });
-        };
-
-        onShowSizeChange = (current, pageSize) => {
-            debugger;
-            dispatch(
-                routerRedux.push({
-                    pathname: "/workAttendanceList",
-                    query: { page: current, filterStr, pageSize }
-                })
-            );
-        };
-        render() {
-            const Search = Input.Search;
-            const { getFieldDecorator } = this.props.form;
-            const formItemLayout = {
-                labelCol: {
-                    xs: {
-                        span: 24
-                    },
-                    sm: {
-                        span: 6
-                    }
+            },
+            wrapperCol: {
+                xs: {
+                    span: 24
                 },
-                wrapperCol: {
-                    xs: {
-                        span: 24
-                    },
-                    sm: {
-                        span: 18
-                    }
+                sm: {
+                    span: 18
                 }
-            };
+            }
+        };
 
-            const columns = [
-                {
-                    title: "工号",
-                    dataIndex: "",
-                    key: "",
-                    width: 80
-                },
-                {
-                    title: "职员姓名",
-                    dataIndex: "staffName",
-                    key: "staffName",
-                    width: 200
-                },
-                {
-                    title: "岗位",
-                    dataIndex: "role",
-                    key: "role",
-                    width: 150
-                },
-                {
-                    title: "部门",
-                    dataIndex: "departmentName",
-                    key: "departmentName",
-                    width: 100,
+        const columns = [
+            {
+                title: "工号",
+                dataIndex: "",
+                key: "",
+                width: 80
+            },
+            {
+                title: "职员姓名",
+                dataIndex: "staffName",
+                key: "staffName",
+                width: 200
+            },
+            {
+                title: "岗位",
+                dataIndex: "role",
+                key: "role",
+                width: 150
+            },
+            {
+                title: "部门",
+                dataIndex: "departmentName",
+                key: "departmentName",
+                width: 100,
 
-                },
-                {
-                    title: "管理区",
-                    dataIndex: "regionName",
-                    key: "regionName",
-                    width: 120
-                },
-                {
-                    title: "职员状态",
-                    dataIndex: "staffStatus",
-                    key: "staffStatus",
-                    width: 80,
-                },
-                {
-                    title: "出勤(小时)",
-                    dataIndex: "attendance",
-                    key: "attendance",
-                    width: 80,
-                },
-                {
-                    title: "迟到(次)",
-                    dataIndex: "lateNumber",
-                    key: "lateNumber",
-                    width: 80,
-                    render: (text, record, index) => (
-                        record.lateNumber != 0 ? record.lateNumber : null
-                    )
-                },
-                {
-                    title: "早退(次)",
-                    dataIndex: "earlyLeaveNumber",
-                    key: "earlyLeaveNumber",
-                    width: 80,
-                    render: (text, record, index) => (
-                        record.earlyLeaveNumber != 0 ? record.earlyLeaveNumber : null
-                    )
-                },
-                {
-                    title: "请假(小时)",
-                    dataIndex: "leave",
-                    key: "leave",
-                    width: 80,
-                },
-                {
-                    title: "加班(小时)",
-                    dataIndex: "overTime",
-                    key: "overTime",
-                    width: 80,
-                },
-                {
-                    title: "出差(小时)",
-                    dataIndex: "businessTravel",
-                    key: "businessTravel",
-                    width: 80,
-                },
-                {
-                    title: "休假(小时)",
-                    dataIndex: "vacation",
-                    key: "vacation",
-                    width: 80,
-                },
-                {
-                    title: "最后操作日期",
-                    dataIndex: "lastOperationDate",
-                    key: "lastOperationDate",
-                    width: 180,
-                    render: (text, record, index) => (
-                        record.lastOperationDate != null ? (new Date(record.lastOperationDate)).toLocaleString() : null
-                    )
-                },
-                {
-                    title: "最后操作者",
-                    dataIndex: "lastOperationPersonName",
-                    key: "lastOperationPersonName",
-                    width: 120,
-                },
-                {
-                    title: "操作",
-                    fixed: "right",
-                    width: 110,
-                    render: (text, record) =>
-                        <span>
-                            <a onClick={this.showWorkAttendance.bind(null, record.staffId)}>查看</a>
-                            &nbsp;
-                            <a onClick={this.editWorkAttendance.bind(null, record.staffId)}>编辑</a>
-                            &nbsp;
-                            <AddWorkAttendance
-                                workAttendance={[record]}
+            },
+            {
+                title: "管理区",
+                dataIndex: "regionName",
+                key: "regionName",
+                width: 120
+            },
+            {
+                title: "职员状态",
+                dataIndex: "staffStatus",
+                key: "staffStatus",
+                width: 80,
+            },
+            {
+                title: "出勤(小时)",
+                dataIndex: "attendance",
+                key: "attendance",
+                width: 80,
+            },
+            {
+                title: "迟到(次)",
+                dataIndex: "lateNumber",
+                key: "lateNumber",
+                width: 80,
+                render: (text, record, index) => (
+                    record.lateNumber != 0 ? record.lateNumber : null
+                )
+            },
+            {
+                title: "早退(次)",
+                dataIndex: "earlyLeaveNumber",
+                key: "earlyLeaveNumber",
+                width: 80,
+                render: (text, record, index) => (
+                    record.earlyLeaveNumber != 0 ? record.earlyLeaveNumber : null
+                )
+            },
+            {
+                title: "请假(小时)",
+                dataIndex: "leave",
+                key: "leave",
+                width: 80,
+            },
+            {
+                title: "加班(小时)",
+                dataIndex: "overTime",
+                key: "overTime",
+                width: 80,
+            },
+            {
+                title: "出差(小时)",
+                dataIndex: "businessTravel",
+                key: "businessTravel",
+                width: 80,
+            },
+            {
+                title: "休假(小时)",
+                dataIndex: "vacation",
+                key: "vacation",
+                width: 80,
+            },
+            {
+                title: "最后操作日期",
+                dataIndex: "lastOperationDate",
+                key: "lastOperationDate",
+                width: 180,
+                render: (text, record, index) => (
+                    record.lastOperationDate != null ? (new Date(record.lastOperationDate)).toLocaleString() : null
+                )
+            },
+            {
+                title: "最后操作者",
+                dataIndex: "lastOperationPersonName",
+                key: "lastOperationPersonName",
+                width: 120,
+            },
+            {
+                title: "操作",
+                fixed: "right",
+                width: 110,
+                render: (text, record) =>
+                    <span>
+                        <a onClick={this.showWorkAttendance.bind(null, record.staffId)}>查看</a>
+                        &nbsp;
+                        <a onClick={this.editWorkAttendance.bind(null, record.staffId)}>编辑</a>
+                        &nbsp;
+                        <AddWorkAttendance
+                            workAttendance={[record]}
+                            staffList={staffList}
+                            dispatch={dispatch}
+                        />
+                    </span>
+            }
+        ];
+
+
+
+
+        const idShowSeniorSearchData = true;
+
+        const { selectedRowKeys, selectedRows } = this.state;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+            //onSelect: (record, selected, selectedRows) => {
+            //    console.log(record, selected, selectedRows);
+            //},
+            //onSelectAll: (selected, selectedRows, changeRows) => {
+            //    console.log(selected, selectedRows, changeRows);
+            //},
+        };
+        const selectLength = selectedRowKeys.length;
+        const selectInfo = "已选择" + selectLength + "项数据";
+
+        const isShowAdvancedSearch = this.state.isShowAdvancedSearch;
+
+
+        const hasSelected = selectLength > 0;
+        const searchInfo = {};
+
+        let { sortedInfo, filteredInfo } = this.state;
+        sortedInfo = sortedInfo || {};
+        filteredInfo = filteredInfo || {};
+        const record = selectedRows;
+
+        return (
+            <div className={styles.normal}>
+                <div className={styles.ListButton}>
+                    <Row>
+                        <Col span={16} style={{ textAlign: 'left' }}>
+                            <h1>
+                                考勤管理
+                            </h1>
+                        </Col>
+                        <Col span={8} style={{ textAlign: "right" }}>
+                            <Search
+                                placeholder="Search"
+                                style={{ width: 200 }}
+                                size="large"
+                                onSearch={filterStr => this.searchHandler(filterStr)}
+                            />
+                            <a style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
+                                高级搜索 <Icon type="down" />
+                            </a>
+                        </Col>
+                    </Row>
+                </div>
+               
+                {seniorSearch &&
+                    <Card style={{ marginBottom: 10 }} >
+                        <Form onSubmit={this.seniorSearchHandler}>
+                            <Row gutter={8}>
+                                <Col span={8}>
+                                    <FormItem {...formItemLayout} label="职员姓名">
+                                        {getFieldDecorator("staffName", {
+                                            initialValue: seniorSearchData.staffName
+                                        })(<Input />)}
+                                    </FormItem>
+                                </Col>
+                                <Col span={8}>
+                                    <FormItem {...formItemLayout} label="工号">
+                                        {getFieldDecorator("documentCategoryId", {
+                                            //initialValue: seniorSearchData.documentCategoryId
+                                        })(<Input />)}
+                                    </FormItem>
+                                </Col>
+                                <Col span={8}>
+                                    <FormItem {...formItemLayout} label="考勤区间">
+                                        {getFieldDecorator("attendanceInterval", {
+                                            initialValue: seniorSearchData.attendanceInterval
+                                        })(<RangePicker />)}
+
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row gutter={8}>
+                                <Col span={24} style={{ textAlign: "right" }}>
+                                    <Button type="primary" htmlType="submit">搜索</Button>
+                                    <Button
+                                        style={{ marginLeft: 8 }}
+                                        onClick={this.resetSeniorSearch}
+                                    >
+                                        重置
+                                    </Button>
+                                    <a
+                                        style={{ marginLeft: 8 }}
+                                        onClick={this.closeSeniorSearch}
+                                    >
+                                        收起搜索 <Icon type="up" />
+                                    </a>
+                                </Col>
+                            </Row>
+                        </Form>
+                    </Card>}
+                <div className={styles.info}><span >共搜索到{total}条数据。<a >清除搜索条件</a></span></div>
+                
+                <div className={styles.ListButton}>
+                <Row gutter={10} >
+                    <Col span={8}>
+                            <AddStaff />
+                            <MoreOptionsDropdownMenu
+                                workAttendance={record}
                                 staffList={staffList}
                                 dispatch={dispatch}
+                                hasSelected={hasSelected}
                             />
-                        </span>
+                    </Col>                        
+                </Row>
+                {
+                    hasSelected &&
+                    <Alert
+                        style={{ marginTop: 15 }}
+                        closeText="清除所选内容"
+                        type="info"
+                        message={selectInfo}
+                        showIcon
+                    />
                 }
-            ];
-
-
-
-
-            const idShowSeniorSearchData = true;
-
-            const { selectedRowKeys, selectedRows } = this.state;
-            const rowSelection = {
-                selectedRowKeys,
-                onChange: this.onSelectChange,
-                //onSelect: (record, selected, selectedRows) => {
-                //    console.log(record, selected, selectedRows);
-                //},
-                //onSelectAll: (selected, selectedRows, changeRows) => {
-                //    console.log(selected, selectedRows, changeRows);
-                //},
-            };
-            const selectLength = selectedRowKeys.length;
-            const selectInfo = "已选择" + selectLength + "项数据";
-
-            const isShowAdvancedSearch = this.state.isShowAdvancedSearch;
-
-
-            const hasSelected = selectLength > 0;
-            const searchInfo = {};
-
-            let { sortedInfo, filteredInfo } = this.state;
-            sortedInfo = sortedInfo || {};
-            filteredInfo = filteredInfo || {};
-            const record = selectedRows;
-
-            return (
-                <div className={styles.normal}>
-                    <div className={styles.ListButton}>
-                        <Row>
-                            <Col span={16} style={{ textAlign: 'left' }}>
-                                <h1>
-                                    考勤管理
-                                </h1>
-                            </Col>
-                            <Col span={8} style={{ textAlign: "right" }}>
-                                <Search
-                                    placeholder="Search"
-                                    style={{ width: 200 }}
-                                    size="large"
-                                    onSearch={filterStr => this.searchHandler(filterStr)}
-                                />
-                                <a style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
-                                    高级搜索 <Icon type="down" />
-                                </a>
-                            </Col>
-                        </Row>
-                    </div>
-                   
-                    {seniorSearch &&
-                        <Card style={{ marginBottom: 10 }} >
-                            <Form onSubmit={this.seniorSearchHandler}>
-                                <Row gutter={8}>
-                                    <Col span={8}>
-                                        <FormItem {...formItemLayout} label="职员姓名">
-                                            {getFieldDecorator("staffName", {
-                                                initialValue: seniorSearchData.staffName
-                                            })(<Input />)}
-                                        </FormItem>
-                                    </Col>
-                                    <Col span={8}>
-                                        <FormItem {...formItemLayout} label="工号">
-                                            {getFieldDecorator("documentCategoryId", {
-                                                //initialValue: seniorSearchData.documentCategoryId
-                                            })(<Input />)}
-                                        </FormItem>
-                                    </Col>
-                                    <Col span={8}>
-                                        <FormItem {...formItemLayout} label="考勤区间">
-                                            {getFieldDecorator("attendanceInterval", {
-                                                initialValue: seniorSearchData.attendanceInterval
-                                            })(<RangePicker />)}
-
-                                        </FormItem>
-                                    </Col>
-                                </Row>
-                                <Row gutter={8}>
-                                    <Col span={24} style={{ textAlign: "right" }}>
-                                        <Button type="primary" htmlType="submit">搜索</Button>
-                                        <Button
-                                            style={{ marginLeft: 8 }}
-                                            onClick={this.resetSeniorSearch}
-                                        >
-                                            重置
-                                        </Button>
-                                        <a
-                                            style={{ marginLeft: 8 }}
-                                            onClick={this.closeSeniorSearch}
-                                        >
-                                            收起搜索 <Icon type="up" />
-                                        </a>
-                                    </Col>
-                                </Row>
-                            </Form>
-                        </Card>}
-                    <div className={styles.info}><span >共搜索到{total}条数据。<a >清除搜索条件</a></span></div>
-                    
-                    <div className={styles.ListButton}>
-                    <Row gutter={10} >
-                        <Col span={8}>
-                                <AddStaff />
-                                <MoreOptionsDropdownMenu
-                                    workAttendance={record}
-                                    staffList={staffList}
-                                    dispatch={dispatch}
-                                    hasSelected={hasSelected}
-                                />
-                        </Col>                        
-                    </Row>
-                    {
-                        hasSelected &&
-                        <Alert
-                            style={{ marginTop: 15 }}
-                            closeText="清除所选内容"
-                            type="info"
-                            message={selectInfo}
-                            showIcon
-                        />
-                    }
-                    </div>
-                    <Table
-                        bordered
-                        columns={columns}
-                        dataSource={dataSource}
-                        loading={loading}
-                        rowSelection={rowSelection}
-                        rowKey={record => record.staffId}
-                        scroll={{ x: '145%' }}                        
-                        pagination={false}
-                    />
-                    <Pagination
-                        className="ant-table-pagination"
-                        total={total}
-                        current={current}
-                        pageSize={pageSize}
-                        onChange={this.pageChangeHandler}
-                        showTotal={total => `总计${total}条`}
-                        onShowSizeChange={this.onShowSizeChange}
-                        showSizeChanger
-                        showQuickJumper
-                    />
                 </div>
-            );
-        }
+                <Table
+                    bordered
+                    columns={columns}
+                    dataSource={dataSource}
+                    loading={loading}
+                    rowSelection={rowSelection}
+                    rowKey={record => record.staffId}
+                    scroll={{ x: '145%' }}                        
+                    pagination={false}
+                />
+                <Pagination
+                    className="ant-table-pagination"
+                    total={total}
+                    current={current}
+                    pageSize={pageSize}
+                    onChange={this.pageChangeHandler}
+                    showTotal={total => `总计${total}条`}
+                    onShowSizeChange={this.onShowSizeChange}
+                    showSizeChanger
+                    showQuickJumper
+                />
+            </div>
+        );
     }
+}
 
-    class MoreOptionsDropdownMenu extends React.Component {
-        state = {
-            visible: false
-            // attachments: [],
-        };
+class MoreOptionsDropdownMenu extends React.Component {
+    state = {
+        visible: false
+        // attachments: [],
+    };
 
-        handleVisibleChange = flag => {
-            this.setState({ visible: flag });
-        };
+    handleVisibleChange = flag => {
+        this.setState({ visible: flag });
+    };
 
-        render() {
-            //let ids = [];
-            //ids.push(this.props.rowData.id);
-            const menu = (
-                <Menu>                   
-                    <Menu.Item key="batchAddWorkAttendance">
-                        <BatchAddWorkAttendance
-                            workAttendance={this.props.workAttendance}
-                            staffList={this.props.staffList}
-                            dispatch={this.props.dispatch}
-                            hasSelected={this.props.hasSelected}
-                        >
-                        </BatchAddWorkAttendance>
-                    </Menu.Item>                   
-                    
-                </Menu>
-            );
-            return (
-                <span>
-                    <Dropdown
-                        overlay={menu}
-                        onVisibleChange={this.handleVisibleChange}
-                        visible={this.state.visible}
+    render() {
+        //let ids = [];
+        //ids.push(this.props.rowData.id);
+        const menu = (
+            <Menu>                   
+                <Menu.Item key="batchAddWorkAttendance">
+                    <BatchAddWorkAttendance
+                        workAttendance={this.props.workAttendance}
+                        staffList={this.props.staffList}
+                        dispatch={this.props.dispatch}
+                        hasSelected={this.props.hasSelected}
                     >
-                        <Button className="ant-dropdown-link">
-                            更多操作<Icon type="down" />
-                        </Button>
-                    </Dropdown>
-                </span>
-            );
-        }
+                    </BatchAddWorkAttendance>
+                </Menu.Item>                   
+                
+            </Menu>
+        );
+        return (
+            <span>
+                <Dropdown
+                    overlay={menu}
+                    onVisibleChange={this.handleVisibleChange}
+                    visible={this.state.visible}
+                >
+                    <Button className="ant-dropdown-link">
+                        更多操作<Icon type="down" />
+                    </Button>
+                </Dropdown>
+            </span>
+        );
     }
+}
 
-    const WorkAttendanceForm = Form.create()(WorkAttendance);
-    return <WorkAttendanceForm />;
+const WorkAttendanceForm = Form.create()(WorkAttendance);
+return <WorkAttendanceForm />;
 }
 
 function mapStateToProps(state) {

@@ -66,13 +66,13 @@ export default [
     name: '考勤管理',
     route: '/workAttendanceList',
   },
-  {
-    id: '4',
-    bpid: '1',
-    name: '合同管理',
-    icon: 'laptop',
-    route: '/contractList',
-  },
+  // {
+  //   id: '4',
+  //   bpid: '1',
+  //   name: '合同管理',
+  //   icon: 'laptop',
+  //   route: '/contractList',
+  // },
   {
     id: '5',
     bpid: '1',

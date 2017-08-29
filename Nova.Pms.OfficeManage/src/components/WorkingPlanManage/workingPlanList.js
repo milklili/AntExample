@@ -7,10 +7,8 @@ import moment from 'moment';
 import { PAGE_SIZE } from '../../constants';
 const FormItem = Form.Item;
 
-debugger;
 const ChangeStateForm = Form.create()(
     (props) => {
-        debugger;
         const { visible, onCancel, onCreate, form, workingPlan } = props;
         const { getFieldDecorator } = form;
         const formItemLayout = {
@@ -92,7 +90,6 @@ function WorkingPlanList({
     filterStr,
     pageSize,
 }) {
-    debugger;
     const FormItem = Form.Item;
     const RangePicker = DatePicker.RangePicker;
 
@@ -155,7 +152,6 @@ function WorkingPlanList({
         }
 
         editWorkingPlan = (id) => {
-            debugger;
             dispatch(routerRedux.push({
                 pathname: '/editWorkingPlan',
                 query: { id },
@@ -211,10 +207,8 @@ function WorkingPlanList({
         }
     }
 
-    class ChangeWorkingPlanState extends React.Component {
-        
+    class ChangeWorkingPlanState extends React.Component {       
         constructor(props) {
-            debugger;
             super(props);
             this.state = {
                 visible: false,
@@ -227,13 +221,11 @@ function WorkingPlanList({
             this.setState({ visible: false });
         }
         handleCreate = () => {
-            debugger;
             const form = this.form;
             form.validateFields((err, values) => {
                 if (err) {
                     return;
                 }
-                debugger;
                 values.id = this.props.workingPlan.id;
                 dispatch({
                     type: 'workingPlanList/changeWorkingPlanState',
@@ -287,7 +279,6 @@ function WorkingPlanList({
 
         handleSubmit = (e) => {
             e.preventDefault();
-            debugger;
             this.props.form.validateFields((err, values) => {
                 if (!err) {
                     dispatch(routerRedux.push({
@@ -385,7 +376,6 @@ function WorkingPlanList({
         closeAdvancedSearch = () => {
             //const { isShowAdvancedSearch } = this.state;
             this.setState({ isShowAdvancedSearch: false });
-            debugger;
             var searchInfos = [];
             for (var item in this.form) {
 
@@ -396,7 +386,6 @@ function WorkingPlanList({
 
         }
         handleReset = () => {
-            debugger;
             this.props.form.resetFields();
         }
 
@@ -415,7 +404,6 @@ function WorkingPlanList({
         };
         seniorSearchHandler = e => {
             e.preventDefault();
-            debugger;
             this.props.form.validateFields((err, values) => {
                 if (!err) {
                     dispatch({
@@ -444,7 +432,6 @@ function WorkingPlanList({
         };
 
         onShowSizeChange = (current, pageSize) => {
-            debugger;
             dispatch(
                 routerRedux.push({
                     pathname: "/workingPlanList",
@@ -457,7 +444,6 @@ function WorkingPlanList({
 
         render() {
             const Search = Input.Search;
-            debugger;
             const { getFieldDecorator } = this.props.form;
             const formItemLayout = {
                 labelCol: {
@@ -488,7 +474,6 @@ function WorkingPlanList({
             };
             const selectLength = selectedRowKeys.length;
             const hasSelected = selectLength > 0;
-            debugger;
             let review = selectedRows.map(function (element) {
                 if (element.auditState == true){
                     return element;
@@ -504,7 +489,6 @@ function WorkingPlanList({
             });
             cancelReview = cancelReview.filter(function (n) { return n != undefined });
             const cancelReviewLength = cancelReview.length > 0;
-            debugger;
             let isReview = true;
             if (hasSelected && !reviewLength){
                 isReview = false;
@@ -693,16 +677,7 @@ function WorkingPlanList({
 
                             <Row gutter={8}>
                                 <Col span={16}>
-                                    <Link to="/createWorkingPlan"><Button type="primary">新建</Button></Link>                                
-                                    <Popconfirm title="确定要删除该工作计划吗?" onConfirm={this.deleteHandler.bind(this, selectedRowKeys)}>
-                                        <Button type="primary" disabled={!hasSelected}>删除</Button>
-                                    </Popconfirm>                                                                                           
-                                    <Popconfirm title="确定要审核该工作计划吗?" onConfirm={this.reviewHandler.bind(this, selectedRowKeys, selectedRows)}>
-                                        <Button type="primary" disabled={isReview}>审核</Button>
-                                    </Popconfirm>
-                                    <Popconfirm title="确定要撤销审核该工作计划吗?" onConfirm={this.cancellationAuditHandler.bind(this, selectedRowKeys, selectedRows)}>
-                                        <Button type="primary" disabled={isCancelReview}>撤销审核</Button>
-                                    </Popconfirm>
+                                    <Link to="/createWorkingPlan"><Button type="primary">新建</Button></Link>                                                   
                                 </Col>
                                 <Col span={8} style={{ textAlign: 'right' }}>
                                     <Search
@@ -838,7 +813,6 @@ function WorkingPlanList({
                             </div>
                         }
                         <div className={styles.workingPlanList}>
-
                            
                             {
                                 hasSelected &&
@@ -892,7 +866,6 @@ function mapStateToProps(state) {
         pageSize,
         filterStr,
     } = state.workingPlanList;
-    debugger;
     return {
         loading: state.loading.models.workingPlanList,
         list,

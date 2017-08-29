@@ -1,4 +1,4 @@
-﻿import * as officeManageService from '../../services/category';
+﻿import * as categoryManageService from '../../services/category';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -23,7 +23,7 @@ export default {
     },
     effects: {
         *getDocumentCategoryData({ payload: { id } }, { put, call }) {
-            const {data} = yield call(officeManageService.get, { id });
+            const {data} = yield call(categoryManageService.get, { id });
             yield put({
                 type: 'updateState',
                 payload: {
@@ -38,7 +38,7 @@ export default {
                 name: documentCategory.name,
                 remark: documentCategory.remark
             }
-            const {data} = yield call(officeManageService.save, { values });
+            const {data} = yield call(categoryManageService.save, { values });
             message.success(data.message, 3);
             yield put(routerRedux.push('/officeManageList'));
         }

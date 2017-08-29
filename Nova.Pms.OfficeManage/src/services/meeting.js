@@ -4,7 +4,7 @@ import { PAGE_SIZE } from '../constants';
 
 
 export function getAll(pageInfo) {
-        var params = queryString.stringify({...pageInfo});
+    var params = queryString.stringify({...pageInfo});
     return request('/api/officeManage/meeting?'+params, {
         method: 'GET'
     });  

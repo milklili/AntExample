@@ -26,36 +26,36 @@ function RouterConfig({ history, app }) {
         })
       },
       childRoutes: [
-        {
-          path: "contractList",
-          name: "ContractList",
-          getComponent(nextState, cb) {
-            require.ensure([], require => {
-              registerModel(app, require("./models/contractList"));
-              cb(null, require("./routes/contractList"));
-            });
-          }
-        },
-        {
-          path: "createContract",
-          name: "createContract",
-          getComponent(nextState, cb) {
-            require.ensure([], require => {
-              registerModel(app, require("./models/createContract"));
-              cb(null, require("./routes/createContract"));
-            });
-          }
-        },
-        {
-          path: "editContract",
-          name: "editContract",
-          getComponent(nextState, cb) {
-            require.ensure([], require => {
-              registerModel(app, require("./models/editContract"));
-              cb(null, require("./routes/editContract"));
-            });
-          }
-        },
+        // {
+        //   path: "contractList",
+        //   name: "ContractList",
+        //   getComponent(nextState, cb) {
+        //     require.ensure([], require => {
+        //       registerModel(app, require("./models/contractList"));
+        //       cb(null, require("./routes/contractList"));
+        //     });
+        //   }
+        // },
+        // {
+        //   path: "createContract",
+        //   name: "createContract",
+        //   getComponent(nextState, cb) {
+        //     require.ensure([], require => {
+        //       registerModel(app, require("./models/createContract"));
+        //       cb(null, require("./routes/createContract"));
+        //     });
+        //   }
+        // },
+        // {
+        //   path: "editContract",
+        //   name: "editContract",
+        //   getComponent(nextState, cb) {
+        //     require.ensure([], require => {
+        //       registerModel(app, require("./models/editContract"));
+        //       cb(null, require("./routes/editContract"));
+        //     });
+        //   }
+        // },
         {
           path: "officeManageList",
           name: "officeManageList",

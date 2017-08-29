@@ -40,9 +40,7 @@ export default {
     },
     reducers: {
         updateState(state, { payload }) {
-            debugger;
             return { ...state, ...payload };
-            debugger;
         },
 
         updateSeniorSearchToggle(state, { payload: { seniorSearch } }) {
@@ -60,12 +58,10 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
             var securityEquipMent = { ...state.securityEquipMent, [key]: value };
             return { ...state, securityEquipMent };
         },
         updateSecurityEquipMent(state, { payload: { securityEquipMent } }) {
-            debugger;
             var securityEquipMent = { ...state.securityEquipMent, ...securityEquipMent }
             return { ...state, securityEquipMent };
         },
@@ -78,7 +74,6 @@ export default {
             let securityEquipMent = { ...state.securityEquipMent, ...initialSelected };
             return { ...state, ...payload, securityEquipMent };
         },
-
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
@@ -157,7 +152,6 @@ export default {
         },
 
         *remove({ payload: ids }, { call, put, select }) {
-            debugger;
             const { data } = yield call(securityEquipMentService.remove, ids);
             message.success(data.message, 3);
 
@@ -165,11 +159,8 @@ export default {
         },
 
         *addSecurityEquipMent({ payload: securityEquipMent }, { call, put, select }) {
-            debugger;
             const { data } = yield call(securityEquipMentService.addSecurityEquipMent, securityEquipMent);
-            debugger;
             message.success(data.message, 3);
-            debugger;
             yield put({
                 type: 'changeSecurityEquipMent',
                 payload: {
@@ -182,11 +173,8 @@ export default {
 
 
         *selectRegion({ payload: id }, { put, call }) {
-            debugger;
             const { data: departmentList } = yield call(commonDataService.getDepartmentByRegionId, { id });
-            debugger;
             const { data: staffList } = yield call(commonDataService.getStaffByRegionId, { id });
-            debugger;
             yield put({
                 type: "regionChanged",
                 payload: {
@@ -199,7 +187,6 @@ export default {
         },
 
         *changeSecurityEquipMent({ payload: securityEquipMent }, { call, put, select }) {
-            debugger;
             yield put({
                 type: 'updateState',
                 payload: {
@@ -209,7 +196,6 @@ export default {
         },
 
         *editSecurityEquipMent({ payload: securityEquipMent }, { call, put, select }) {
-            debugger;
             const { data } = yield call(securityEquipMentService.editSecurityEquipMent, securityEquipMent);
             message.success(data.message, 3);
             yield put({
@@ -219,9 +205,7 @@ export default {
 
 
         *reload(action, { put, select }) {
-            debugger;
             const page = yield select(state => state.securityEquipMentList.page);
-            debugger;
             const filterStr = yield select(state => state.securityEquipMentList.filterStr);
             const pageSize = yield select(state => state.securityEquipMentList.pageSize);
             yield put({ type: 'getData', payload: { page, filterStr, pageSize } });

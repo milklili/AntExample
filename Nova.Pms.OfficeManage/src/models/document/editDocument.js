@@ -25,7 +25,6 @@ export default {
     },
     reducers: {
         load(state, { payload }) {
-            debugger;
             return { ...state, ...payload };
         },
         addAttachment(state, { payload: { files } }) {
@@ -57,6 +56,7 @@ export default {
     },
     effects: {
         *getData({ payload: { id } }, { call, put }) {
+            debugger;
             const { data: documentData } = yield call(
                 documentService.getDocumentById, { id }
             );

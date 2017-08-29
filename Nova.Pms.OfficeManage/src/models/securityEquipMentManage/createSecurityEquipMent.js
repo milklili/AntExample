@@ -29,7 +29,6 @@ export default {
     },
     reducers: {
         load(state, { payload }) {
-            debugger;
             return { ...state, ...payload };
         },
 
@@ -58,23 +57,18 @@ export default {
             });
         },
         *addSecurityEquipMent({ payload: values }, { call, put, select }) {
-            debugger;
             let securityEquipMent = yield select(
                 state => state.createSecurityEquipMent.securityEquipMent
             );
             const val = Object.assign(securityEquipMent, values);
             const { data } = yield call(securityEquipMentManageService.create, { val });
             message.success(data.message, 3);
-            debugger;
             yield put(routerRedux.push("/securityEquipMentList"));
         },
 
         *selectRegion({ payload: id }, { put, call }) {
-            debugger;
             const { data: departmentList } = yield call(commonDataService.getDepartmentByRegionId, { id });
-            debugger;
             const { data: staffList } = yield call(commonDataService.getStaffByRegionId, { id });
-            debugger;
             yield put({
                 type: "regionChanged",
                 payload: {
@@ -89,7 +83,6 @@ export default {
     subscriptions: {
         setup({ dispatch, history }) {
             return history.listen(({ pathname, query }) => {
-                debugger;
                 if (pathname === '/createSecurityEquipMent') {
                     dispatch({ type: 'setSecurityEquipMent', payload: query });
                 }

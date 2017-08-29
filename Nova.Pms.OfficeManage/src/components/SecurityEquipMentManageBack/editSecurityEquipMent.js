@@ -28,7 +28,6 @@ class EditSecurityEquipment extends React.Component {
     };
 
     selectRegion = (value) => {
-        debugger;
         this.props.dispatch({
             type: "editSecurityEquipMent/selectRegion",
             payload: value

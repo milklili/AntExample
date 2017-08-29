@@ -30,7 +30,6 @@ export default {
     },
     effects: {
         *getSecurityEquipMent({ payload: { id } }, { put, call }) {
-            debugger;
             const { data: securityEquipMent } = yield call(
                 securityEquipMentManageService.getSecurityEquipMent, { id }
             );
@@ -54,7 +53,6 @@ export default {
     subscriptions: {
         setup({ dispatch, history }) {
             return history.listen(({ pathname, query }) => {
-                debugger;
                 if (pathname === '/watchSecurityEquipMent') {
                     dispatch({ type: 'getSecurityEquipMent', payload: query });
                 }

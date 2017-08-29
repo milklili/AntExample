@@ -7,7 +7,6 @@ import { PAGE_SIZE } from '../constants';
 //}
 
 export function getAll(parameter) {
-    debugger;
     var params = queryString.stringify({...parameter});
     return request('/api/officeManage/category?'+params, {
         method: 'GET'
@@ -25,11 +24,11 @@ export function create({values,type}) {
 }
 
 export function get({id}) {
-    return request(`/api/officeManage/category/${id}?type=Document`);
+    return request(`/api/officeManage/category/${id}`);
 }
 
 export function save({values}) {
-    return request('/api/officeManage/category?type=Document', {
+    return request('/api/officeManage/category', {
         headers: {
             'Content-Type': 'application/json'
         },
