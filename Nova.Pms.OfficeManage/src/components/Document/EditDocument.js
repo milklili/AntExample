@@ -91,14 +91,10 @@ class DocumentEditForm extends React.Component {
     //    this.setState({ fileList, attachments });
     //};
 
-
-
-
     closeUnfilledInfo = () => {
         const unfilled = 0;
         this.setState({ unfilled });
     };
-
 
     cancel = () => {
 
@@ -108,7 +104,6 @@ class DocumentEditForm extends React.Component {
             })
         );
     };
-
 
     handleSubmit = e => {
         e.preventDefault();
@@ -323,7 +318,6 @@ class DocumentEditForm extends React.Component {
 const WrappedDocumentEditForm = Form.create({
     mapPropsToFields(props) {
         const fields = {};
-        debugger;
         Object.keys(props.documentData).forEach(key => {
             fields[key] = {
                 value: props.documentData[key]

@@ -1,4 +1,5 @@
 import * as securityPositionService from '../../services/securityPositionManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -63,7 +64,7 @@ export default {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
             debugger;
             const { data } = yield call(securityPositionService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
-            const { data: staffList } = yield call(securityPositionService.getAllStaffList);
+            const { data: staffList } = yield call(commonDataService.getStaffList);
 
             debugger;
             yield put({

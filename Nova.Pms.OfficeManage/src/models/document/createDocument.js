@@ -1,4 +1,5 @@
 ﻿import * as documentService from "../../services/document";
+import * as commonDataService from '../../services/commonData';
 import { routerRedux } from "dva/router";
 import { message } from "antd";
 import moment from "moment";
@@ -59,8 +60,8 @@ export default {
     },
     effects: {
         *getData({ }, { call, put }) {
-            const { data: regions } = yield call(documentService.getRegionList);
-            const { data: documentCategories } = yield call(documentService.getDocumentCategoryList);
+            const { data: regions } = yield call(commonDataService.getRegionList);
+            const { data: documentCategories } = yield call(commonDataService.getDocumentCategoryList);
 
             yield put({
                 type: "load",

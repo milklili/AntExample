@@ -1,4 +1,5 @@
 import * as securityEventsService from '../../services/securityEventsManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -31,9 +32,7 @@ export default {
     },
     reducers: {
         updateState(state, { payload}) {
-            debugger;
             return { ...state, ...payload  };
-            debugger;
         },
         updateRegion(state, { payload: { regions } }) {
             return { ...state, regions };
@@ -60,23 +59,19 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
             var securityEvents = { ...state.securityEvents, [key]: value };
             return { ...state, securityEvents };
         },
         updateSecurityEvents(state, { payload: { securityEvents } }) {
-            debugger;
             var securityEvents = { ...state.securityEvents, ...securityEvents }
             return { ...state, securityEvents };
         },
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
             const { data } = yield call(securityEventsService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
-            const { data: regionList } = yield call(securityEventsService.getRegionList);
-            const { data: initialRegion } = yield call(securityEventsService.getInitialRegion);
-            debugger;
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
             yield put({
                 type: 'updateState',
                 payload: {
@@ -143,7 +138,6 @@ export default {
         },
 
         *remove({ payload: ids }, { call, put, select }) {
-            debugger;
             const { data } = yield call(securityEventsService.remove, ids);
             message.success(data.message, 3);
 
@@ -153,19 +147,16 @@ export default {
         *addSecurityEvents({ payload: securityEvents }, { call, put, select }) {
             const { data } = yield call(securityEventsService.addSecurityEvents, securityEvents);
             message.success(data.message, 3);
-            debugger;
             yield put({
                 type: 'changeSecurityEvents',
                 payload: {
                     securityEvents: securityEvents.securityEvents
                 }
             });
-            debugger
             yield put({ type: 'reload' });
         },
         
         *changeSecurityEvents({ payload: securityEvents }, { call, put, select }) {
-            debugger;
             yield put({
                 type: 'updateState',
                 payload: {
@@ -174,7 +165,6 @@ export default {
             });
         },
         *editSecurityEvents({ payload: securityEvents }, { call, put, select }) {
-            debugger;
             const { data } = yield call(securityEventsService.editSecurityEvents, securityEvents);
             message.success(data.message, 3);
             yield put({
@@ -182,11 +172,8 @@ export default {
             });
         },
 
-
         *reload(action, { put, select }) {
-            debugger;
             const page = yield select(state => state.securityEventsList.page);
-            debugger;
             const filterStr = yield select(state => state.securityEventsList.filterStr);
             const pageSize = yield select(state => state.securityEventsList.pageSize);
             yield put({ type: 'getData', payload: { page, filterStr, pageSize } });

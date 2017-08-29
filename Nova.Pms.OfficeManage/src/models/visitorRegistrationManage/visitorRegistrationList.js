@@ -1,4 +1,5 @@
 import * as visitorRegistrationService from '../../services/visitorRegistrationManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -64,8 +65,8 @@ export default {
             debugger;
             const { data } = yield call(visitorRegistrationService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
             debugger;
-            const { data: regionList } = yield call(visitorRegistrationService.getRegionList);
-            const { data: initialRegion } = yield call(visitorRegistrationService.getInitialRegion);
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
             debugger;
             yield put({
                 type: 'updateState',

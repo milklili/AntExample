@@ -1220,7 +1220,6 @@ function mapStateToProps(state) {
         seniorSearchData,
         seniorSearch
     } = state.initiatedList;
-    debugger;
     return {
         loading: state.loading.models.initiatedList,
         list,

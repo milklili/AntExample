@@ -1,4 +1,5 @@
 import * as approvedService  from '../../services/pendingApprovalManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -65,10 +66,10 @@ export default {
             debugger;
             const { data } = yield call(approvedService.getApprovedList, { page: page, filterStr: filterStr, pageSize: pageSize });
             debugger;
-            const { data: regionList } = yield call(approvedService.getRegionList);
-            const { data: initialRegion } = yield call(approvedService.getInitialRegion);
-            const { data: staffList } = yield call(approvedService.getAllStaffList);
-            const { data: cleaningAreaList } = yield call(approvedService.getAllCleaningAreaList);
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
+            const { data: staffList } = yield call(commonDataService.getStaffList);
+            const { data: cleaningAreaList } = yield call(commonDataService.cleaningAreaList);
             debugger;
             debugger;
             yield put({

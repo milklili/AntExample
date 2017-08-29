@@ -1,4 +1,5 @@
 import * as sendApprovalService  from '../../services/pendingApprovalManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -30,9 +31,7 @@ export default {
     },
     reducers: {
         updateState(state, { payload}) {
-            debugger;
             return { ...state, ...payload  };
-            debugger;
         },
         
         updateSeniorSearchToggle(state, { payload: { seniorSearch } }) {
@@ -50,26 +49,20 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
             var sendApprovalList = { ...state.sendApprovalList, [key]: value };
             return { ...state, sendApprovalList };
         },
         updateSendApprovalList(state, { payload: { sendApprovalList } }) {
-            debugger;
             var sendApprovalList = { ...state.sendApprovalList, ...sendApprovalList }
             return { ...state, sendApprovalList };
         },
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
             const { data } = yield call(sendApprovalService.getSendApprovalList, { page: page, filterStr: filterStr, pageSize: pageSize });
-            debugger;
-            const { data: regionList } = yield call(sendApprovalService.getRegionList);
-            const { data: initialRegion } = yield call(sendApprovalService.getInitialRegion);
-            const { data: staffList } = yield call(sendApprovalService.getAllStaffList);
-            debugger;
-            debugger;
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
+            const { data: staffList } = yield call(commonDataService.getStaffList);
             yield put({
                 type: 'updateState',
                 payload: {
@@ -116,7 +109,6 @@ export default {
         },
 
         *seniorSearch({ payload: values }, { call, put, select }) {
-           
             let seniorSearchData = {
                 staffName: null,
                 attendanceInterval: null,
@@ -140,7 +132,6 @@ export default {
 
        
         *addSendApprovalComment({ payload: personStatus }, { call, put, select }) {
-
             const { data } = yield call(sendApprovalService.addSendApprovalComment, personStatus);
             message.success(data.message, 3);
             yield put({
@@ -150,9 +141,7 @@ export default {
 
 
         *reload(action, { put, select }) {
-            debugger;
             const page = yield select(state => state.sendApprovalList.page);
-            debugger;
             const filterStr = yield select(state => state.sendApprovalList.filterStr);
             const pageSize = yield select(state => state.sendApprovalList.pageSize);
             yield put({ type: 'getData', payload: { page, filterStr, pageSize } });

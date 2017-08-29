@@ -1,4 +1,5 @@
 ﻿import * as securityPositionManageService from '../../services/securityPositionManage';
+import * as commonDataService from '../../services/commonData';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -117,7 +118,7 @@ export default {
                 debugger;
                 const { data } = yield call(securityPositionManageService.getDetailSecurityPositionList, { id});
                 debugger;
-                const { data: departmentList } = yield call(securityPositionManageService.getAllDepartmentList);
+                const { data: departmentList } = yield call(commonDataService.getDepartmentList);
                 if (action == "isEdit") {
                     yield put({
                         type: "load",
@@ -163,7 +164,7 @@ export default {
 
 
         *selectRegion({ payload: id }, { put, call }) {
-            const { data: staffList } = yield call(securityPositionManageService.getStaffList, { id: id });
+            const { data: staffList } = yield call(commonDataService.getStaffByRegionId, { id: id });
 
             const { data: securityDutyPlanList } = yield call(securityPositionManageService.getSecurityDutyPlanList, { regionId: id });
             yield put({
@@ -191,8 +192,7 @@ export default {
         }, 
 
         *addSecurityPositionMembers({ payload: { securityPositionMembers, model } }, { call,put}) {
-            debugger;
-            const { data: staff } = yield call(securityPositionManageService.getStaffData, { staffId: securityPositionMembers.staffId });
+            const { data: staff } = yield call(commonDataService.getStaffDataById, { id: securityPositionMembers.staffId });
             const { data: securityDutyPlan } = yield call(securityPositionManageService.getSecurityDutyPlanData, { securityDutyPlanId: securityPositionMembers.securityDutyPlanId });
 
             securityPositionMembers.staffName = staff.name;
@@ -205,7 +205,7 @@ export default {
 
         *editSecurityPositionMembers({ payload: { securityPositionMembers, model } }, { call, put }) {
             debugger;
-            const { data: staff } = yield call(securityPositionManageService.getStaffData, { staffId: securityPositionMembers.staffId });
+            const { data: staff } = yield call(commonDataService.getStaffDataById, { id: securityPositionMembers.staffId });
             const { data: securityDutyPlan } = yield call(securityPositionManageService.getSecurityDutyPlanData, { securityDutyPlanId: securityPositionMembers.securityDutyPlanId });
 
             securityPositionMembers.staffName = staff.name;

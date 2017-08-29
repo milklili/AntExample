@@ -1,29 +1,9 @@
 import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 
-export function createApproval(approval) {
-    debugger;
-    return request('/api/officeManage/createApproval', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(approval.approval),
-    });
-}
-export function editApproval(approval) {
-    debugger;
-    return request('/api/officeManage/editApproval', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(approval.approval),
-    });
-}
 export function addOpinions(personStatus) {
-    debugger;
-    return request('/api/officeManage/addOpinions', {
+    return request('/api/officeManage/pendingApproval/opinions', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -32,8 +12,7 @@ export function addOpinions(personStatus) {
     });
 }
 export function addPendingComment(personStatus) {
-    debugger;
-    return request('/api/officeManage/addPendingComment', {
+    return request('/api/officeManage/pendingApproval/pendingComment', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -41,11 +20,8 @@ export function addPendingComment(personStatus) {
         body: JSON.stringify(personStatus.personStatus),
     });
 }
-
-//我已审批的 添加评论
 export function addApprovedComment(personStatus) {
-    debugger;
-    return request('/api/officeManage/addApprovedComment', {
+    return request('/api/officeManage/pendingApproval/approvedComment', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -53,11 +29,8 @@ export function addApprovedComment(personStatus) {
         body: JSON.stringify(personStatus.personStatus),
     });
 }
-
-//抄送我的添加评论
 export function addSendApprovalComment(personStatus) {
-    debugger;
-    return request('/api/officeManage/addSendApprovalComment', {
+    return request('/api/officeManage/pendingApproval/sendApprovalComment', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -65,14 +38,9 @@ export function addSendApprovalComment(personStatus) {
         body: JSON.stringify(personStatus.personStatus),
     });
 }
-
-
-
-
-
 export function batchAddComment(personStatus) {
-    debugger;
-    return request('/api/officeManage/batchAddComment', {
+
+    return request('/api/officeManage/pendingApproval/comment', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -81,8 +49,7 @@ export function batchAddComment(personStatus) {
     });
 }
 export function transferApproval(personStatus) {
-    debugger;
-    return request('/api/officeManage/transferApproval', {
+    return request('/api/officeManage/pendingApproval/transferApproval', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -91,20 +58,17 @@ export function transferApproval(personStatus) {
     });
 }
 
-
 export function deleteApproval({ ids }) {
-    debugger;
-    return request(`/api/officeManage/deleteApproval`, {
+    return request(`/api/officeManage/pendingApproval`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify( ids ),
     });
 }
 
 export function revokedApproval({ ids }) {
-    debugger;
     return request(`/api/officeManage/revokedApproval`, {
         headers: {
             'Content-Type': 'application/json'
@@ -114,54 +78,24 @@ export function revokedApproval({ ids }) {
     });
 }
 
-
-
-export function getRegion() {
-    return request(`/api/officeManage/getRegion`);
-}
-export function getRegionList() {
-    debugger;
-    return request(`/api/officeManage/getRegionList`);
-}
-
-export function getAllStaffList() {
-    return request(`/api/officeManage/getAllStaffList`);
-}
-
-export function getInitialRegion() {
-    debugger;
-    return request(`/api/officeManage/getInitialRegion`);
-}
-
 export function getPendingApprovalList(pageInfo) {
-    return request('/api/officeManage/getPendingApprovalList', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(pageInfo),
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/pendingApproval/pendingApprovalList?'+params, {
+        method: 'GET'
     });
 }
 export function getApprovedList(pageInfo) {
-    return request('/api/officeManage/getApprovedList', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(pageInfo),
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/pendingApproval/approvedList?'+params, {
+        method: 'GET'
     });
 }
 export function getSendApprovalList(pageInfo) {
-    return request('/api/officeManage/getSendApprovalList', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(pageInfo),
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/pendingApproval/sendApprovalList?'+params, {
+        method: 'GET'
     });
 }
-
-
 
 export function getAllCleaningAreaList() {
     debugger;

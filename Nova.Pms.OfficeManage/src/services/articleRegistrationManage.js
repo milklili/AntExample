@@ -1,35 +1,16 @@
 ﻿import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
-//export function getData({ page, filterStr }) {
-//    return request(`/api/officeManage/getArticleRegistrationList/${page}/${PAGE_SIZE}`);
-//}
-export function getData(pageInfo) {
-    return request('/api/officeManage/getArticleRegistrationList', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(pageInfo),
+
+export function getAll(pageInfo) {
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/ArticleRegistration?'+params, {
+        method: 'GET'
     });
 }
-export function getRegionList() {
-    return request(`/api/officeManage/getRegionList`);
-}
-export function getUserList() {
-    return request(`/api/officeManage/getUserList`);
-}
 
-
-export function getInitialRegion() {
-    debugger;
-    return request(`/api/officeManage/getInitialRegion`);
-}
-export function getInitialUser() {
-    return request(`/api/officeManage/getInitialUser`);
-}
-export function addArticleRegistration(articleRegistration) {
-    debugger;
-    return request(`/api/officeManage/addArticleRegistration`, {
+export function create(articleRegistration) {
+    return request(`/api/officeManage/ArticleRegistration`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -38,31 +19,23 @@ export function addArticleRegistration(articleRegistration) {
     });
 }
 
-
-
-
-export function editArticleRegistration({ articleRegistration }) {
-    debugger;
-    return request('/api/officeManage/editArticleRegistration', {
+export function edit({ articleRegistration }) {
+    return request('/api/officeManage/ArticleRegistration', {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(articleRegistration),
     });
 }
 
-export function getArticleRegistrationData({ id }) {
-    return request(`/api/officeManage/getArticleRegistrationData/${id}`);
-}
 export function remove({ ids }) {
-    debugger;
-    return request(`/api/officeManage/deleteArticleRegistration`, {
+    return request(`/api/officeManage/ArticleRegistration`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify(ids),
     });
 }
 

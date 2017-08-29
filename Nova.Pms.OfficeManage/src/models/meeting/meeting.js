@@ -17,7 +17,7 @@ export default {
   },
   effects: {
       *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE} }, { call, put }) {
-          const { data, headers } = yield call(meetingService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
+          const { data, headers } = yield call(meetingService.getAll, { page: page, filterStr: filterStr, pageSize: pageSize });
           yield put({
               type: 'updateState',
               payload: {

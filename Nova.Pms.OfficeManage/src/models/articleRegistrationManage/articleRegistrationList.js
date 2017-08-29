@@ -1,4 +1,6 @@
 import * as articleRegistrationService from '../../services/articleRegistrationManage';
+import * as commonDataService from '../../services/commonData';
+
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -32,12 +34,9 @@ export default {
     },
     reducers: {
         updateState(state, { payload}) {
-            debugger;
             return { ...state, ...payload  };
-            debugger;
         },
         updateArticleRegistration(state, { payload: { articleRegistration} }) {
-            debugger;
             var articleRegistration = { ...state.articleRegistration, ...articleRegistration }
             return { ...state, articleRegistration};
         },
@@ -56,24 +55,17 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
             var articleRegistration = { ...state.articleRegistration, [key]: value };
             return { ...state, articleRegistration };
         }
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE} }, { call, put }) {
-            debugger;
-            const { data } = yield call(articleRegistrationService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
-            debugger;
-            const { data: regionList } = yield call(articleRegistrationService.getRegionList);
-            const { data: userList } = yield call(articleRegistrationService.getUserList);
-            const { data: initialUser } = yield call(articleRegistrationService.getInitialUser);
-            debugger;
-            const { data: initialRegion } = yield call(articleRegistrationService.getInitialRegion);
-            debugger;
-            
-            debugger;
+            const { data } = yield call(articleRegistrationService.getAll, { page: page, filterStr: filterStr, pageSize: pageSize });
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: userList } = yield call(commonDataService.getStaffList);
+            const { data: initialUser } = yield call(commonDataService.getCurrentStaff);
+            const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
             yield put({
                 type: 'updateState',
                 payload: {
@@ -97,18 +89,6 @@ export default {
                 }
             }); 
         },
-
-        *setArticleRegistrationData({ payload: { id } }, { put, call }) {
-            const { data: articleRegistration } = yield call(articleRegistrationService.getArticleRegistrationData, { id });
-            yield put({
-                type: "updateState",
-                payload: {
-                    articleRegistration,
-                }
-            });
-
-        },
-
 
         *seniorSearchToggle({ payload: seniorSearch }, { put }) {
             yield put({
@@ -143,7 +123,6 @@ export default {
         },
 
         *remove({ payload: ids }, { call, put, select }) {
-            debugger;
             const { data } = yield call(articleRegistrationService.remove, ids);
             message.success(data.message, 3);
 
@@ -151,10 +130,8 @@ export default {
         },
      
         *addArticleRegistration({ payload: articleRegistration }, { call, put, select }) {
-            debugger;
-            const { data } = yield call(articleRegistrationService.addArticleRegistration, articleRegistration);
+            const { data } = yield call(articleRegistrationService.create, articleRegistration);
             message.success(data.message, 3);  
-            debugger;
             yield put({
                 type: 'changeArticleRegistration',
                 payload: {
@@ -166,7 +143,6 @@ export default {
         },
 
         *changeArticleRegistration({ payload: articleRegistration }, { call, put, select }) {
-            debugger;
             yield put({
                 type: 'updateState',
                 payload: {
@@ -176,8 +152,7 @@ export default {
         },
         
         *editArticleRegistration({ payload: articleRegistration }, { call, put, select }) {
-            debugger;
-            const { data } = yield call(articleRegistrationService.editArticleRegistration, articleRegistration);
+            const { data } = yield call(articleRegistrationService.edit, articleRegistration);
             message.success(data.message, 3);
             yield put({
                 type: 'reload',
@@ -186,9 +161,7 @@ export default {
 
 
         *reload(action, { put, select }) {
-            debugger;
             const page = yield select(state => state.articleRegistrationList.page);
-            debugger;
             const filterStr = yield select(state => state.articleRegistrationList.filterStr);
             const pageSize = yield select(state => state.articleRegistrationList.pageSize);
             yield put({ type: 'getData', payload: { page, filterStr, pageSize } });

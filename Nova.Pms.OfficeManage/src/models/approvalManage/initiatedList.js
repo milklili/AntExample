@@ -1,4 +1,5 @@
 import * as approvalService  from '../../services/approvalManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -17,17 +18,6 @@ export default {
         initialRegion:null,
         regionList: [],
         staffList: [],
-        //initiatedList: {
-        //    id: null,
-        //    typeStr:null,
-        //    content: null,
-        //    regionName: null,
-        //    creatDate: null,
-        //    completeDate: null,
-        //    statusStr: null,
-        //    suitorPersonName: null,
-        //    approvalPersonName: null,
-        //},
         approval: {
             regionId: null,
             code: null,
@@ -41,9 +31,7 @@ export default {
     },
     reducers: {
         updateState(state, { payload}) {
-            debugger;
             return { ...state, ...payload  };
-            debugger;
         },
         
         updateSeniorSearchToggle(state, { payload: { seniorSearch } }) {
@@ -61,27 +49,21 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
             var initiatedList = { ...state.initiatedList, [key]: value };
             return { ...state, initiatedList };
         },
         updateInitiatedList(state, { payload: { initiatedList } }) {
-            debugger;
             var initiatedList = { ...state.initiatedList, ...initiatedList }
             return { ...state, initiatedList };
         },
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
-            const { data } = yield call(approvalService.getInitiatedList, { page: page, filterStr: filterStr, pageSize: pageSize });
-            debugger;
-            const { data: regionList } = yield call(approvalService .getRegionList);
-            const { data: initialRegion } = yield call(approvalService .getInitialRegion);
-            const { data: staffList } = yield call(approvalService .getAllStaffList);
-            const { data: cleaningAreaList } = yield call(approvalService .getAllCleaningAreaList);
-            debugger;
-            debugger;
+            const { data } = yield call(approvalService.getAll, { page: page, filterStr: filterStr, pageSize: pageSize });
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
+            const { data: staffList } = yield call(commonDataService.getStaffList);
+            const { data: cleaningAreaList } = yield call(commonDataService.cleaningAreaList);
             yield put({
                 type: 'updateState',
                 payload: {
@@ -115,9 +97,7 @@ export default {
                     initiatedList,
                 }
             });
-
         },
-
 
         *seniorSearchToggle({ payload: seniorSearch }, { put }) {
             yield put({
@@ -152,40 +132,32 @@ export default {
         },
 
         *deleteApproval({ payload: ids }, { call, put, select }) {
-            debugger;
-            const { data } = yield call(approvalService .deleteApproval, ids);
+            const { data } = yield call(approvalService.remove, ids);
             message.success(data.message, 3);
 
             yield put({ type: 'reload' });
         },
         *revokedApproval({ payload: ids }, { call, put, select }) {
-            debugger;
-            const { data } = yield call(approvalService.revokedApproval, ids);
+            const { data } = yield call(approvalService.revoked, ids);
             message.success(data.message, 3);
 
             yield put({ type: 'reload' });
         },
-
-        
-     
-        *editApproval({ payload: approval }, { call, put, select }) {
-            
-            const { data } = yield call(approvalService.editApproval, approval);
+  
+        *editApproval({ payload: approval }, { call, put, select }) {         
+            const { data } = yield call(approvalService.edit, approval);
             message.success(data.message, 3);
             yield put({ type: 'reload' });
             //yield put(routerRedux.push("/documentList"));
         },
         *addComment({ payload: personStatus }, { call, put, select }) {
-
-            const { data } = yield call(approvalService.addComment, personStatus);
+            const { data } = yield call(approvalService.comment, personStatus);
             message.success(data.message, 3);
             yield put({ type: 'reload' });
             //yield put(routerRedux.push("/documentList"));
         },
         
-
         *changeInitiatedList({ payload: initiatedList }, { call, put, select }) {
-            debugger;
             yield put({
                 type: 'updateState',
                 payload: {
@@ -195,7 +167,6 @@ export default {
         },
         
         *editInitiatedList({ payload: initiatedList }, { call, put, select }) {
-            debugger;
             const { data } = yield call(approvalService .editInitiatedList, initiatedList);
             message.success(data.message, 3);
             yield put({
@@ -203,11 +174,8 @@ export default {
             });
         },
 
-
         *reload(action, { put, select }) {
-            debugger;
             const page = yield select(state => state.initiatedList.page);
-            debugger;
             const filterStr = yield select(state => state.initiatedList.filterStr);
             const pageSize = yield select(state => state.initiatedList.pageSize);
             yield put({ type: 'getData', payload: { page, filterStr, pageSize } });

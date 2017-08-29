@@ -1,4 +1,5 @@
 ﻿import * as workingPlanManageService from '../../services/workingPlanManage';
+import * as commonDataService from '../../services/commonData';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -65,8 +66,8 @@ export default {
     effects: {
 
         *setWorkingPlan({}, { put, call }) {
-            const { data: regionList } = yield call(workingPlanManageService.getRegionList);
-            const { data: officeManagementCategoryList } = yield call(workingPlanManageService.getOfficeManagementCategoryList);
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: officeManagementCategoryList } = yield call(commonDataService.getWorkingPlanCategoryList);
             yield put({
                 type: 'updateState',
                 payload: {
@@ -80,8 +81,8 @@ export default {
         },
 
         *selectRegion({ payload: id }, { put, call }) {
-            const { data: departmentList } = yield call(workingPlanManageService.getDepartmentList, { id });
-            const { data: staffList } = yield call(workingPlanManageService.getStaffList, { id });
+            const { data: departmentList } = yield call(commonDataService.getDepartmentByRegionId, { id });
+            const { data: staffList } = yield call(commonDataService.getStaffByRegionId, { id });
             yield put({
                 type: "regionChanged",
                 payload: {

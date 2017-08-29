@@ -1,4 +1,5 @@
 import * as securityDutyPlanService from '../../services/securityDutyPlanManage';
+import * as commonDataPlanService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -49,24 +50,19 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
             var securityDutyPlan = { ...state.securityDutyPlan, [key]: value };
             return { ...state, securityDutyPlan };
         },
         updateSecurityDutyPlan(state, { payload: { securityDutyPlan } }) {
-            debugger;
             var securityDutyPlan = { ...state.securityDutyPlan, ...securityDutyPlan }
             return { ...state, securityDutyPlan };
         },
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
             const { data } = yield call(securityDutyPlanService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
-            debugger;
-            const { data: regionList } = yield call(securityDutyPlanService.getRegionList);
-            const { data: initialRegion } = yield call(securityDutyPlanService.getInitialRegion);
-            debugger;
+            const { data: regionList } = yield call(commonDataPlanService.getRegionList);
+            const { data: initialRegion } = yield call(commonDataPlanService.getCurrentRegion);
             yield put({
                 type: 'updateState',
                 payload: {
@@ -88,19 +84,6 @@ export default {
                 }
             }); 
         },
-
-        *setSecurityDutyPlanData({ payload: { id } }, { put, call }) {
-            const { data: securityDutyPlan } = yield call(securityDutyPlanService.getSecurityDutyPlanData, { id });
-            yield put({
-                type: "updateState",
-                payload: {
-                    securityDutyPlan,
-                }
-            });
-
-        },
-
-
         *seniorSearchToggle({ payload: seniorSearch }, { put }) {
             yield put({
                 type: 'updateSeniorSearchToggle',

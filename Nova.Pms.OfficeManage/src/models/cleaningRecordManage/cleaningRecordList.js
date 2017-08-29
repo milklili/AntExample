@@ -1,4 +1,5 @@
 import * as cleaningRecordService from '../../services/cleaningRecordManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -39,9 +40,7 @@ export default {
     },
     reducers: {
         updateState(state, { payload}) {
-            debugger;
             return { ...state, ...payload  };
-            debugger;
         },
         
         updateSeniorSearchToggle(state, { payload: { seniorSearch } }) {
@@ -59,27 +58,21 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
             var cleaningRecord = { ...state.cleaningRecord, [key]: value };
             return { ...state, cleaningRecord };
         },
         updateCleaningRecord(state, { payload: { cleaningRecord } }) {
-            debugger;
             var cleaningRecord = { ...state.cleaningRecord, ...cleaningRecord }
             return { ...state, cleaningRecord };
         },
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
             const { data } = yield call(cleaningRecordService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
-            debugger;
-            const { data: regionList } = yield call(cleaningRecordService.getRegionList);
-            const { data: initialRegion } = yield call(cleaningRecordService.getInitialRegion);
-            const { data: staffList } = yield call(cleaningRecordService.getAllStaffList);
-            const { data: cleaningAreaList } = yield call(cleaningRecordService.getAllCleaningAreaList);
-            debugger;
-            debugger;
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
+            const { data: staffList } = yield call(commonDataService.getStaffList);
+            const { data: cleaningAreaList } = yield call(commonDataService.cleaningAreaList);
             yield put({
                 type: 'updateState',
                 payload: {
@@ -116,7 +109,6 @@ export default {
 
         },
 
-
         *seniorSearchToggle({ payload: seniorSearch }, { put }) {
             yield put({
                 type: 'updateSeniorSearchToggle',
@@ -150,7 +142,6 @@ export default {
         },
 
         *remove({ payload: ids }, { call, put, select }) {
-            debugger;
             const { data } = yield call(cleaningRecordService.remove, ids);
             message.success(data.message, 3);
 
@@ -158,22 +149,18 @@ export default {
         },
      
         *addCleaningRecord({ payload: cleaningRecord }, { call, put, select }) {
-            debugger;
-            const { data } = yield call(cleaningRecordService.addCleaningRecord, cleaningRecord);
+            const { data } = yield call(cleaningRecordService.create, cleaningRecord);
             message.success(data.message, 3);  
-            debugger;
             yield put({
                 type: 'changeCleaningRecord',
                 payload: {
                     cleaningRecord: cleaningRecord.cleaningRecord
                 }
             });
-            debugger;
             yield put({ type: 'reload' });
         },
 
         *changeCleaningRecord({ payload: cleaningRecord }, { call, put, select }) {
-            debugger;
             yield put({
                 type: 'updateState',
                 payload: {
@@ -183,19 +170,15 @@ export default {
         },
         
         *editCleaningRecord({ payload: cleaningRecord }, { call, put, select }) {
-            debugger;
-            const { data } = yield call(cleaningRecordService.editCleaningRecord, cleaningRecord);
+            const { data } = yield call(cleaningRecordService.edit, cleaningRecord);
             message.success(data.message, 3);
             yield put({
                 type: 'reload',
             });
         },
 
-
         *reload(action, { put, select }) {
-            debugger;
             const page = yield select(state => state.cleaningRecordList.page);
-            debugger;
             const filterStr = yield select(state => state.cleaningRecordList.filterStr);
             const pageSize = yield select(state => state.cleaningRecordList.pageSize);
             yield put({ type: 'getData', payload: { page, filterStr, pageSize } });

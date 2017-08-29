@@ -1,4 +1,5 @@
 import * as cleaningToolService from '../../services/cleaningToolManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -34,9 +35,7 @@ export default {
     },
     reducers: {
         updateState(state, { payload: { data: list, total, page, filterStr, staffList, regionList, departmentList, initialRegion, pageSize } }) {
-            debugger;
             return { ...state, list, total, page, filterStr, staffList, regionList, departmentList, initialRegion, pageSize };
-            debugger;
         },
         updateRegion(state, { payload: { regions } }) {
             return { ...state, regions };
@@ -69,11 +68,11 @@ export default {
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
             debugger;
-            const { data } = yield call(cleaningToolService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
-            const { data: staffList } = yield call(cleaningToolService.getAllStaffList);
-            const { data: regionList } = yield call(cleaningToolService.getRegionList);
-            const { data: departmentList } = yield call(cleaningToolService.getAllDepartmentList);
-            const { data: initialRegion } = yield call(cleaningToolService.getInitialRegion);
+            const { data } = yield call(cleaningToolService.getAll, { page: page, filterStr: filterStr, pageSize: pageSize });
+            const { data: staffList } = yield call(commonDataService.getStaffList);
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: departmentList } = yield call(commonDataService.getDepartmentList);
+            const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
 
             debugger;
             yield put({
@@ -125,7 +124,6 @@ export default {
         },
 
         *remove({ payload: ids }, { call, put, select }) {
-            debugger;
             const { data } = yield call(cleaningToolService.remove, ids);
             message.success(data.message, 3);
 
@@ -133,12 +131,11 @@ export default {
         },
 
         *addCleaningTool({ payload: cleaningTool }, { call, put, select }) {
-            const { data } = yield call(cleaningToolService.addCleaningTool, cleaningTool);
+            const { data } = yield call(cleaningToolService.create, cleaningTool);
             message.success(data.message, 3);
             yield put({ type: 'reload' });
         },
         *receiveOrReturnToolItems({ payload: cleaningToolItems }, { call, put, select }) {
-            debugger;
             const { data } = yield call(cleaningToolService.receiveOrReturnToolItems, cleaningToolItems);
             message.success(data.message, 3);
             yield put({ type: 'reload' });
@@ -146,9 +143,7 @@ export default {
         
        
         *reload(action, { put, select }) {
-            debugger;
             const page = yield select(state => state.cleaningToolList.page);
-            debugger;
             const filterStr = yield select(state => state.cleaningToolList.filterStr);
             const pageSize = yield select(state => state.cleaningToolList.pageSize);
             yield put({ type: 'getData', payload: { page, filterStr, pageSize} });

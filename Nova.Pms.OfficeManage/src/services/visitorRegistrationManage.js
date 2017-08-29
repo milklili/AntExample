@@ -1,25 +1,18 @@
 ﻿import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 //export function getData({ page, filterStr }) {
 //    return request(`/api/officeManage/getVisitorRegistrationList/${page}/${PAGE_SIZE}`);
 //}
 export function getData(pageInfo) {
-    return request('/api/officeManage/getVisitorRegistrationList', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(pageInfo),
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/visitorRegistration/visitorRegistrationList?'+params, {
+        method: 'GET'
     });
-}
-export function getRegionList() {
-    debugger;
-    return request(`/api/officeManage/getRegionList`);
 }
 
 export function addVisitorRegistration(visitorRegistration) {
-    debugger;
-    return request(`/api/officeManage/addVisitorRegistration`, {
+    return request(`/api/officeManage/visitorRegistration/visitorRegistration`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -28,34 +21,26 @@ export function addVisitorRegistration(visitorRegistration) {
     });
 }
 
-
-
-
 export function editVisitorRegistration({ visitorRegistration }) {
-    debugger;
-    return request('/api/officeManage/editVisitorRegistration', {
+    return request('/api/officeManage/visitorRegistration/visitorRegistration', {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(visitorRegistration),
     });
 }
 
 export function getVisitorRegistrationData({ id }) {
-    return request(`/api/officeManage/getVisitorRegistrationData/${id}`);
+    return request(`/api/officeManage/visitorRegistration/visitorRegistration/${id}`);
 }
 export function remove({ ids }) {
-    debugger;
-    return request(`/api/officeManage/deleteVisitorRegistration`, {
+    return request(`/api/officeManage/visitorRegistration/visitorRegistration`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify(ids),
     });
 }
-export function getInitialRegion() {
-    debugger;
-    return request(`/api/officeManage/getInitialRegion`);
-}
+

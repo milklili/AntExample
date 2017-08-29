@@ -1,49 +1,29 @@
 ﻿import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 
 //export function getData({ page, filterStr }) {
 //    return request(`/api/officeManage/getWorkAttendanceList/${page}/${PAGE_SIZE}`);
 //}
 export function getData(pageInfo) {
-    debugger;
-    return request('/api/officeManage/getWorkAttendanceList', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(pageInfo),
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/workAttendance?'+params, {
+        method: 'GET'
     });
 }
 
-
-export function getRegionList() {
-    debugger;
-    return request(`/api/officeManage/getRegionList`);
-}
-
-export function getDepartmentList({ id }) {
-    return request(`/api/officeManage/getDepartmentList/${id}`);
-}
-
 export function getWorkAttendanceInformation({ id }) {
-debugger;
-    return request(`/api/officeManage/getWorkAttendanceInformation/${id}`);
+    return request(`/api/officeManage/workAttendance/WorkAttendance/${id}`);
 } 
 export function getDetailWorkAttendanceList({ id, page}) {
-    debugger;
-    return request(`/api/officeManage/getDetailWorkAttendanceList/${id}/${page}/${PAGE_SIZE}`);
-}
-
-export function getAllStaffList() {
-    return request(`/api/officeManage/getAllStaffList`);
-}
-export function getAllDepartmentList() {
-    return request(`/api/officeManage/getAllDepartmentList`);
+    var params = queryString.stringify({page:page,pageSize:PAGE_SIZE});
+    return request(`/api/officeManage/workAttendance/detailWorkAttendanceList/${id}?`+params, {
+        method: 'GET'
+    });
 }
 
 export function addWorkAttendance(addWorkAttendance) {
-    debugger;
-    return request(`/api/officeManage/addWorkAttendance`, {
+    return request(`/api/officeManage/workAttendance/workAttendance`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -52,18 +32,16 @@ export function addWorkAttendance(addWorkAttendance) {
     });
 }
 export function editWorkAttendance(editWorkAttendance) {
-    debugger;
-    return request(`/api/officeManage/editWorkAttendance`, {
+    return request(`/api/officeManage/workAttendance/workAttendance`, {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'Post',
+        method: 'PUT',
         body: JSON.stringify(editWorkAttendance.editWorkAttendance)
     });
 }
 export function addStaff(addStaff) {
-    debugger;
-    return request(`/api/officeManage/addStaff`, {
+    return request(`/api/officeManage/workAttendance/staff`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -74,8 +52,7 @@ export function addStaff(addStaff) {
 
 
 export function remove({ id }) {
-    debugger;
-    return request(`/api/officeManage/deleteWorkAttendance/${id}`, {
+    return request(`/api/officeManage/workAttendance/workAttendance/${id}`, {
         headers: {
             'Content-Type': 'application/json'
         },

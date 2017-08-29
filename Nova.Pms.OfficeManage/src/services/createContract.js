@@ -1,4 +1,5 @@
 ﻿import request from '../utils/request';
+import queryString from 'query-string';
 
 export function create(values) {
     return request('/api/saas/createContract', {

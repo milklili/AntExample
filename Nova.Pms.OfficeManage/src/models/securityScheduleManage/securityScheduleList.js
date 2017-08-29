@@ -1,4 +1,5 @@
 import * as securityScheduleService from '../../services/securityScheduleManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -64,8 +65,8 @@ export default {
             debugger;
             const { data } = yield call(securityScheduleService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
             debugger;
-            const { data: regionList } = yield call(securityScheduleService.getRegionList);
-            const { data: initialRegion } = yield call(securityScheduleService.getInitialRegion);
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
             debugger;
             yield put({
                 type: 'updateState',
@@ -131,14 +132,6 @@ export default {
             yield put({
                 type: 'resetSeniorSearchData'
             });
-        },
-
-        *remove({ payload: ids }, { call, put, select }) {
-            debugger;
-            const { data } = yield call(securityScheduleService.remove, ids);
-            message.success(data.message, 3);
-
-            yield put({ type: 'reload' });
         },
      
         *addSecuritySchedule({ payload: securitySchedule }, { call, put, select }) {

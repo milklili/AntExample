@@ -1,67 +1,40 @@
-﻿import request from '../utils/request';
+import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
-//export function getData({ page, filterStr }) {
-//    return request(`/api/officeManage/getVisitorRegistrationList/${page}/${PAGE_SIZE}`);
-//}
-export function getData(pageInfo) {
-    return request('/api/officeManage/getCleanRecordList', {
+
+export function getAll(pageInfo) {
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/cleaningRecord?'+params, {
+        method: 'GET'
+    });
+}
+
+export function create(cleaningRecord) {
+    return request(`/api/officeManage/cleaningRecord`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify(pageInfo),
-    });
-}
-export function getRegionList() {
-    debugger;
-    return request(`/api/officeManage/getRegionList`);
-}
-
-export function addCleaningRecord(cleaningRecord) {
-    debugger;
-    return request(`/api/officeManage/addCleaningRecord`, {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'Post',
         body: JSON.stringify(cleaningRecord.cleaningRecord)
     });
 }
 
-
-
-
-export function editCleaningRecord({ cleaningRecord }) {
-    debugger;
-    return request('/api/officeManage/editCleaningRecord', {
+export function edit({ cleaningRecord }) {
+    return request('/api/officeManage/cleaningRecord', {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(cleaningRecord),
     });
 }
 
-
 export function remove({ ids }) {
-    debugger;
-    return request(`/api/officeManage/deleteCleaningRecord`, {
+    return request(`/api/officeManage/cleaningRecord`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify(ids),
     });
-}
-export function getInitialRegion() {
-    debugger;
-    return request(`/api/officeManage/getInitialRegion`);
-}
-export function getAllStaffList() {
-    debugger;
-    return request(`/api/officeManage/getAllStaffList`);
-}
-export function getAllCleaningAreaList() {
-    debugger;
-    return request(`/api/officeManage/getAllCleaningAreaList`);
 }

@@ -1,4 +1,4 @@
-import * as planTypeCategoryService from '../../services/planTypeCategory';
+import * as categoryManageService from '../../services/category';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -32,7 +32,7 @@ export default {
             });
         },
         *addPlanType({ payload: values }, { call, put }) {          
-            const {data} = yield call(planTypeCategoryService.create_plan, { values });
+            const {data} = yield call(categoryManageService.create, { values:values,type:'WorkingPlan' });
             message.success(data.message, 3);
             yield put(routerRedux.push('/planTypeList'));
         }

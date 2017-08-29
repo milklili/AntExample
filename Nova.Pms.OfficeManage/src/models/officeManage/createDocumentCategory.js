@@ -1,4 +1,4 @@
-﻿import * as officeManageService from '../../services/category';
+﻿import * as categoryManageService from '../../services/category';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -32,7 +32,7 @@ export default {
             });
         },
         *addDocumentCategory({ payload: values }, { call, put }) {          
-            const {data} = yield call(officeManageService.create, { values });
+            const {data} = yield call(categoryManageService.create, { values:values,type:'Document' });
             message.success(data.message, 3);
             yield put(routerRedux.push('/officeManageList'));
         }

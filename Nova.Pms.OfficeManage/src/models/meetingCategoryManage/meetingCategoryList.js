@@ -1,4 +1,4 @@
-﻿import * as meetingCategoryManageService from '../../services/meetingCategoryManage';
+﻿import * as categoryManageService from '../../services/category';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -17,7 +17,8 @@ export default {
     },
     effects: {
         *getMeetingCategorylist({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE} }, { call, put }) {
-            const { data, headers } = yield call(meetingCategoryManageService.getMeetingCategorylist, { page: page, filterStr: filterStr, pageSize: pageSize });
+            const parameter = { page: page, filterStr: filterStr, pageSize: pageSize,type:"Meeting" };
+            const { data, headers } = yield call(categoryManageService.getAll, parameter);
             yield put({
                 type: 'updateState',
                 payload: {
@@ -31,7 +32,7 @@ export default {
         },
 
         *remove({ payload: ids }, { call, put, select }) {
-            const {data} = yield call(meetingCategoryManageService.remove, ids);
+            const {data} = yield call(categoryManageService.remove, ids);
             message.success(data.message, 3);
 
             yield put({ type: 'reload' });
@@ -40,7 +41,7 @@ export default {
         *reload(action, { put, select }) {
             const page = yield select(state => state.meetingCategoryList.page);
             const filterStr = yield select(state => state.meetingCategoryList.filterStr);
-            const pageSize = yield select(state => state.workingPlanList.pageSize);
+            const pageSize = yield select(state => state.meetingCategoryList.pageSize);
             yield put({ type: 'getMeetingCategorylist', payload: { page, filterStr, pageSize } });
         }
     },

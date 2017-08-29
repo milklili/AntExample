@@ -1,4 +1,5 @@
 ﻿import * as cleaningToolManageService from '../../services/cleaningToolManage';
+import * as commonDataService from '../../services/commonData';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -25,7 +26,6 @@ export default {
     },
     reducers: {
         load(state, { payload }) {
-            debugger;
             return { ...state, ...payload };
         },
         changeField(state, { payload: { key, value } }) {
@@ -35,17 +35,12 @@ export default {
     },
     effects: {
         *getCleaningToolData({ payload: { id, page = 1 } }, { put, call }) {
-            debugger;
             const { data: information } = yield call(cleaningToolManageService.getCleaningToolInformation, { id });
-            debugger;
             const { data } = yield call(cleaningToolManageService.getDetailCleaningToolList, { id, page });
-            debugger;
-            const { data: staffList } = yield call(cleaningToolManageService.getAllStaffList);
-            debugger;
-            const { data: regionList } = yield call(cleaningToolManageService.getRegionList);
-            debugger;
-            const { data: departmentList } = yield call(cleaningToolManageService.getAllDepartmentList);
-            debugger
+            const { data: staffList } = yield call(commonDataService.getStaffList);
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: departmentList } = yield call(commonDataService.getDepartmentList);
+
             yield put({
                 type: "load",
                 payload: {
@@ -85,17 +80,13 @@ export default {
 
         *reload(action, { put, select }) {
             const id = yield select(state => state.showOrEditCleaningTool.information.id);
-            debugger;
             const page = yield select(state => state.showOrEditCleaningTool.cleaningTool.page);
-            debugger;
             
             yield put({ type: 'getCleaningToolData', payload: { page, id} });
         },
 
         *editReceiveOrReturnToolItems({ payload: cleaningToolItems }, { call, put, select }) {
-            debugger;
-            const { data } = yield call(cleaningToolManageService.editReceiveOrReturnToolItems, cleaningToolItems);
-            debugger;
+            const { data } = yield call(cleaningToolManageService.edit, cleaningToolItems);
             message.success(data.message, 3);
             yield put({ type: 'reload' });
         },
@@ -104,7 +95,6 @@ export default {
     subscriptions: {
         setup({ dispatch, history }) {
             return history.listen(({ pathname, query }) => {
-                debugger;
                 if (pathname === '/showOrEditCleaningTool') {
                     dispatch({ type: 'getCleaningToolData', payload: query });
                 }

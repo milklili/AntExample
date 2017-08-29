@@ -1,33 +1,17 @@
 import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 
-//export function getData({page, filterString}) {
-//    return request(`/api/officeManage/meetingList/${page}/${PAGE_SIZE}/${filterString}`);
-//}
-export function getData(pageInfo) {
-    debugger;
-    return request('/api/officeManage/meetingList', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(pageInfo),
-    });
+
+export function getAll(pageInfo) {
+        var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/meeting?'+params, {
+        method: 'GET'
+    });  
 }
-export function getRegion() {
-    return request(`/api/officeManage/getRegion`);
-}
-export function getMeetingCategoryList() {
-    return request(`/api/officeManage/getMeetingCategoryList`);
-}
-export function getDepartmentByRegionId({id}) {
-    return request(`/api/officeManage/getDepartmentByRegionId/${id}`);
-}
-export function getStaffByRegionId({id}) {
-    return request(`/api/officeManage/getStaffByRegionId/${id}`);
-}
+
 export function create(values) {
-    return request('/api/officeManage/createMeetingRecord', {
+    return request('/api/officeManage/meeting', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -36,23 +20,23 @@ export function create(values) {
     });
 }
 export function getMeetingData({id}) {
-    return request(`/api/officeManage/getMeetingData/${id}`);
+    return request(`/api/officeManage/meeting/${id}`);
 }
 export function edit({val}) {
-    return request('/api/officeManage/editMeeting', {
+    return request('/api/officeManage/meeting', {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(val),
     });
 }
 export function remove({ids}) {
-    return request(`/api/officeManage/deleteMeeting`, {
+    return request(`/api/officeManage/meeting`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify(ids),
     });
 }

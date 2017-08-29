@@ -1,4 +1,5 @@
 ﻿import * as securityEquipMentManageService from '../../services/securityEquipMentManage';
+import * as commonDataService from '../../services/commonData';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -46,10 +47,10 @@ export default {
             const { data: securityEquipMent } = yield call(
                 securityEquipMentManageService.getSecurityEquipMent, { id }
             );
-            const { data: regionList } = yield call(securityEquipMentManageService.getRegionList);
+            const { data: regionList } = yield call(commonDataService.getRegionList);
             id = securityEquipMent.regionId;
-            const { data: departmentList } = yield call(securityEquipMentManageService.getDepartmentList, { id });
-            const { data: staffList } = yield call(securityEquipMentManageService.getStaffList, { id });
+            const { data: departmentList } = yield call(commonDataService.getDepartmentByRegionId, { id });
+            const { data: staffList } = yield call(commonDataService.getStaffByRegionId, { id });
 
             yield put({
                 type: "load",

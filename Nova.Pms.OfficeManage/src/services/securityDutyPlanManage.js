@@ -1,36 +1,19 @@
 ﻿import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 
 //export function getData({ page, filterStr }) {
 //    return request(`/api/officeManage/getSecurityDutyPlanList/${page}/${PAGE_SIZE}`);
 //}
 export function getData(pageInfo) {
-    return request('/api/officeManage/getSecurityDutyPlanList', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(pageInfo),
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/securityDutyPlan/securityDutyPlanList?'+params, {
+        method: 'GET'
     });
 }
 
-export function getRegionList() {
-    debugger;
-    return request(`/api/officeManage/getRegionList`);
-}
-export function getInitialRegion() {
-    debugger;
-    return request(`/api/officeManage/getInitialRegion`);
-}
-
-
-
-
-
-
 export function addSecurityDutyPlan(securityDutyPlan) {
-    debugger;
-    return request(`/api/officeManage/addsecurityDutyPlan`, {
+    return request(`/api/officeManage/securityDutyPlan/securityDutyPlan`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -39,31 +22,22 @@ export function addSecurityDutyPlan(securityDutyPlan) {
     });
 }
 
-
-
-
 export function editSecurityDutyPlan({ securityDutyPlan }) {
-    debugger;
-    return request('/api/officeManage/editSecurityDutyPlan', {
+    return request('/api/officeManage/securityDutyPlan/securityDutyPlan', {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'POST',
+        method: 'Put',
         body: JSON.stringify(securityDutyPlan),
     });
 }
-
-export function getSecurityDutyPlanData({ id }) {
-    return request(`/api/officeManage/getSecurityDutyPlanData/${id}`);
-}
 export function remove({ ids }) {
-    debugger;
-    return request(`/api/officeManage/deleteSecurityDutyPlan`, {
+    return request(`/api/officeManage/securityDutyPlan/securityDutyPlan`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify(ids),
     });
 }
 

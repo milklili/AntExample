@@ -1,4 +1,5 @@
 ﻿import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 
 export function getData({page, filterStr}) {

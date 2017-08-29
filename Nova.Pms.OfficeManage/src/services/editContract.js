@@ -1,4 +1,5 @@
 ﻿import request from '../utils/request';
+import queryString from 'query-string';
 
 export function getContractDataById(model) {
     return request(`/api/saas/getContract/${model.id.id}`);

@@ -43,9 +43,6 @@ const Option = Select.Option;
         };
 
         handleCancel = () => {
-            debugger;
-            //this.uploadPictures.onChange();
-            debugger;
             this.props.dispatch({
                 type: 'createApproval/resetData',
                 //payload: { approval: values },
@@ -117,7 +114,6 @@ const Option = Select.Option;
         }
 
         uploadPicturesOnChange = info => {
-            debugger;
 
              if (info.file.status === "done") {
                 message.success(`${info.file.name} 文件上传成功`);
@@ -146,7 +142,6 @@ const Option = Select.Option;
             let pictures = attachmentsAll.map(attachments => (attachments.fileType == 0));
            
             pictures = pictures.filter(function (n) { return n != undefined });
-          
              
             const isJPG = ((file.type.toLowerCase() === 'image/jpeg')
                 || (file.type.toLowerCase() === 'image/bmp')

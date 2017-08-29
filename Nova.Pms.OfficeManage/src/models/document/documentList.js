@@ -1,4 +1,5 @@
-﻿import * as documentService from '../../services/document';
+import * as documentService from '../../services/document';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 
@@ -69,10 +70,10 @@ export default {
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE} }, { call, put }) {
-            const { data } = yield call(documentService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
-            const {data:region} = yield call(documentService.getRegionList);
-            const {data:documentCategory} = yield call(documentService.getDocumentCategoryList);
-            const {data:user} = yield call(documentService.getUsers);
+            const { data } = yield call(documentService.getAll, { page: page, filterStr: filterStr, pageSize: pageSize });
+            const {data:region} = yield call(commonDataService.getRegionList);
+            const {data:documentCategory} = yield call(commonDataService.getDocumentCategoryList);
+            const {data:user} = yield call(commonDataService.getStaffList);
 
             yield put({
                 type: 'updateState',

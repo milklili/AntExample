@@ -1,29 +1,17 @@
-﻿import request from '../utils/request';
+import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 
-//export function getData({page, filterStr}) {
-//    return request(`/api/officeManage/documentation/${page}/${PAGE_SIZE}`);
-//}
-export function getData(pageInfo) {
-    return request('/api/officeManage/DocumentationList', {
-        headers: {
-            'Content-Type': 'application/json'
-        },	  
-        method: 'POST',
-        body: JSON.stringify(pageInfo),
+export function getAll(pageInfo) {
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/documentation?'+params, {
+        method: 'GET'
     });
+
 }
-export function getRegionList() {
-    return request(`/api/officeManage/GetRegionList`);
-}
-export function getDocumentCategoryList() {
-    return request(`/api/officeManage/getDocumentCategoryList`);
-}
-export function getUsers() {
-    return request(`/api/officeManage/getUsersList`);
-}
+
 export function create(values) {
-    return request('/api/officeManage/createDocument', {
+    return request('/api/officeManage/documentation', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -31,60 +19,66 @@ export function create(values) {
         body: JSON.stringify(values.val),
     });
 }
+
 export function getDocumentById({id}) {
-    return request(`/api/officeManage/getDocumentById/${id}`);
+    return request(`/api/officeManage/documentation/GetDocumentById/${id}`);
 }
+
 export function edit({val}) {
-    return request('/api/officeManage/editDocument', {
+    return request('/api/officeManage/documentation', {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(val),
     });
 }
 export function remove({ids}) {
-    return request(`/api/officeManage/deleteDocument`, {
+    return request(`/api/officeManage/documentation`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify(ids),
     });
 }
+
 export function auditDocuments({ids}) {
-    return request(`/api/officeManage/auditDocuments`, {
+    return request(`/api/officeManage/documentation/auditDocuments`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify(ids),
     });
 }
+
 export function cancelAuditDocuments({ids}) {
-    return request(`/api/officeManage/cancelAuditDocuments`, {
+    return request(`/api/officeManage/documentation/cancelAuditDocuments`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify(ids),
     });
 }
+
 export function deleteDocumentAttachments({ids}) {
-    return request(`/api/officeManage/deleteDocumentAttachments`, {
+    return request(`/api/officeManage/documentation/deleteDocumentAttachments`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify(ids),
     });
 }
+
 export function addDocumentAttachments(data) {
-    return request(`/api/officeManage/addDocumentAttachments`, {
+    return request(`/api/officeManage/documentation/addDocumentAttachments`, {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'Post',
+        method: 'POST',
         body: JSON.stringify(data),
     });
 }

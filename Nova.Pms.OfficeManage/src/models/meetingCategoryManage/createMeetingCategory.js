@@ -1,4 +1,4 @@
-﻿import * as meetingCategoryManageService from '../../services/meetingCategoryManage';
+﻿import * as categoryManageService from '../../services/category';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -38,7 +38,7 @@ export default {
                     meetingCategory: values
                 }
             });
-            const {data} = yield call(meetingCategoryManageService.create, { values });
+            const {data} = yield call(categoryManageService.create, { values:values,type:'Meeting' });
             message.success(data.message, 3);
             yield put(routerRedux.push('/meetingCategoryList'));
         }

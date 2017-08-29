@@ -1,4 +1,5 @@
 ﻿import * as securityEquipMentService from '../../services/securityEquipMentManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -81,14 +82,11 @@ export default {
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
             const { data } = yield call(securityEquipMentService.securityEquipMentList, { page: page, filterStr: filterStr, pageSize: pageSize });
-            debugger;
-            const { data: regionList } = yield call(securityEquipMentService.getRegionList);
-            const { data: initialRegion } = yield call(securityEquipMentService.getInitialRegion);
-            const { data: staffList } = yield call(securityEquipMentService.getAllStaffList);
-            const { data: departmentList } = yield call(securityEquipMentService.getAllDepartmentList);
-            debugger;
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
+            const { data: staffList } = yield call(commonDataService.getStaffList);
+            const { data: departmentList } = yield call(commonDataService.getDepartmentList);
             yield put({
                 type: 'updateState',
                 payload: {
@@ -185,9 +183,9 @@ export default {
 
         *selectRegion({ payload: id }, { put, call }) {
             debugger;
-            const { data: departmentList } = yield call(securityEquipMentService.getDepartmentList, { id });
+            const { data: departmentList } = yield call(commonDataService.getDepartmentByRegionId, { id });
             debugger;
-            const { data: staffList } = yield call(securityEquipMentService.getStaffList, { id });
+            const { data: staffList } = yield call(commonDataService.getStaffByRegionId, { id });
             debugger;
             yield put({
                 type: "regionChanged",

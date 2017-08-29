@@ -1,5 +1,6 @@
 ﻿import * as securityEquipMentManageService from '../../services/securityEquipMentManage';
 import * as workingPlanManageService from '../../services/workingPlanManage';
+import * as commonDataService from '../../services/commonData';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -48,7 +49,7 @@ export default {
     },
     effects: {
         *setSecurityEquipMent({ }, { put, call }) {
-            const { data: regionList } = yield call(securityEquipMentManageService.getRegionList);
+            const { data: regionList } = yield call(commonDataService.getRegionList);
             yield put({
                 type: 'load',
                 payload: {
@@ -70,9 +71,9 @@ export default {
 
         *selectRegion({ payload: id }, { put, call }) {
             debugger;
-            const { data: departmentList } = yield call(securityEquipMentManageService.getDepartmentList, { id });
+            const { data: departmentList } = yield call(commonDataService.getDepartmentByRegionId, { id });
             debugger;
-            const { data: staffList } = yield call(securityEquipMentManageService.getStaffList, { id });
+            const { data: staffList } = yield call(commonDataService.getStaffByRegionId, { id });
             debugger;
             yield put({
                 type: "regionChanged",

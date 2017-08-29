@@ -1,4 +1,5 @@
 import * as pendingApprovalService  from '../../services/pendingApprovalManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -65,10 +66,10 @@ export default {
             debugger;
             const { data } = yield call(pendingApprovalService.getPendingApprovalList, { page: page, filterStr: filterStr, pageSize: pageSize });
             debugger;
-            const { data: regionList } = yield call(pendingApprovalService.getRegionList);
-            const { data: initialRegion } = yield call(pendingApprovalService.getInitialRegion);
-            const { data: staffList } = yield call(pendingApprovalService.getAllStaffList);
-            const { data: cleaningAreaList } = yield call(pendingApprovalService.getAllCleaningAreaList);
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
+            const { data: staffList } = yield call(commonDataService.getStaffList);
+            const { data: cleaningAreaList } = yield call(commonDataService.cleaningAreaList);
             debugger;
             debugger;
             yield put({
@@ -153,18 +154,6 @@ export default {
             message.success(data.message, 3);
 
             yield put({ type: 'reload' });
-        },
-
-        
-     
-        *editApproval({ payload: approval }, { call, put, select }) {
-            
-            const { data } = yield call(pendingApprovalService.editApproval, approval);
-            message.success(data.message, 3);
-            yield put({
-                type: 'reload',
-            });
-            //yield put(routerRedux.push("/documentList"));
         },
         *addOpinions({ payload: personStatus }, { call, put, select }) {
 

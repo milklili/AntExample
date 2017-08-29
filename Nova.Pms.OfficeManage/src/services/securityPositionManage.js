@@ -1,54 +1,30 @@
 ﻿import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 
 //export function getData({ page, filterStr }) {
 //    return request(`/api/officeManage/getSecurityPositionList/${page}/${PAGE_SIZE}`);
 //}
 export function getData(pageInfo) {
-    return request('/api/officeManage/getSecurityPositionList', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(pageInfo),
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/securityPosition/securityPositionList?'+params, {
+        method: 'GET'
     });
 }
 
-
-export function getRegionList() {
-    debugger;
-    return request(`/api/officeManage/getRegionList`);
-}
-
 export function getSecurityDutyPlanList({ regionId}) {
-    debugger;
-    return request(`/api/officeManage/getSecurityDutyPlanList/${regionId}`);
-}
-
-
-export function getDepartmentList({ id }) {
-    return request(`/api/officeManage/getDepartmentList/${id}`);
+    return request(`/api/officeManage/securityPosition/securityDutyPlanList?RegionId=${regionId}`);
 }
 
 export function getSecurityPositionInformation({ id }) {
-debugger;
-return request(`/api/officeManage/getSecurityPositionInformation/${id}`);
+    return request(`/api/officeManage/securityPosition/securityPositionInformation/${id}`);
 } 
 export function getDetailSecurityPositionList({ id}) {
-    debugger;
-    return request(`/api/officeManage/getDetailSecurityPositionList/${id}`);
-}
-
-export function getAllStaffList() {
-    return request(`/api/officeManage/getAllStaffList`);
-}
-export function getAllDepartmentList() {
-    return request(`/api/officeManage/getAllDepartmentList`);
+    return request(`/api/officeManage/securityPosition/detailSecurityPositionList/${id}`);
 }
 
 export function addSecurityPosition(securityPosition) {
-    debugger;
-    return request(`/api/officeManage/addSecurityPosition`, {
+    return request(`/api/officeManage/securityPosition/SecurityPosition`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -57,8 +33,7 @@ export function addSecurityPosition(securityPosition) {
     });
 }
 export function addSecurityPositionMembers(securityPositionMembers) {
-    debugger;
-    return request(`/api/officeManage/addSecurityPositionMembers`, {
+    return request(`/api/officeManage/securityPosition/securityPositionMembers`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -66,48 +41,33 @@ export function addSecurityPositionMembers(securityPositionMembers) {
         body: JSON.stringify(securityPositionMembers.securityPositionMembers)
     });
 }
-export function getStaffList({ id }) {
-    debugger;
-    return request(`/api/officeManage/getStaffList/${id}`);
-}
-
-
-
-export function getStaffData({ staffId }) {
-    debugger;
-    return request(`/api/officeManage/getStaffData/${staffId}`);
-}
 
 export function getSecurityDutyPlanData({ securityDutyPlanId }) {
-    debugger;
-    return request(`/api/officeManage/getSecurityDutyPlanData/${securityDutyPlanId}`);
+    return request(`/api/officeManage/securityPosition/securityDutyPlanData/${securityDutyPlanId}`);
 }
 
 export function editSecurityPosition(securityPosition) {
-    debugger;
-    return request(`/api/officeManage/editSecurityPosition`, {
+    return request(`/api/officeManage/securityPosition/securityPosition`, {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'Post',
+        method: 'PUT',
         body: JSON.stringify(securityPosition)
     });
 }
 export function editSecurityPositionMembers(securityPositionMembers) {
-    debugger;
-    return request(`/api/officeManage/editSecurityPositionMembers`, {
+    return request(`/api/officeManage/securityPosition/securityPositionMembers`, {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'Post',
+        method: 'PUT',
         body: JSON.stringify(securityPositionMembers.securityPositionMembers)
     });
 }
 
 
 export function removeSecurityPositionMembers({ id }) {
-    debugger;
-    return request(`/api/officeManage/deleteSecurityPositionMembers/${id}`, {
+    return request(`/api/officeManage/securityPosition/securityPositionMembers/${id}`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -116,8 +76,7 @@ export function removeSecurityPositionMembers({ id }) {
     });
 }
 export function removeSecurityPosition({ id }) {
-    debugger;
-    return request(`/api/officeManage/deleteSecurityPosition/${id}`, {
+    return request(`/api/officeManage/securityPosition/securityPositionMembers/${id}`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -127,11 +86,11 @@ export function removeSecurityPosition({ id }) {
 }
 
 export function edit({ editWorkAttendance }) {
-    return request('/api/officeManage/editWorkAttendance', {
+    return request('/api/officeManage/workAttendance/workAttendance', {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(editWorkAttendance.editWorkAttendance),
     });
 }

@@ -77,10 +77,9 @@ class DocumentCreateForm extends React.Component {
             })
         );
     };
-    handleNumberValidate = (rule, value, callback) => {
-         
+    handleNumberValidate = (rule, value, callback) => {        
         if (value != null && value != "" && !((/^[A-Za-z0-9]+$/).test(value))) {
-            callback('文档名称或编号格式错误');
+            callback('文档编号格式错误');
         }
         callback();
     } 
@@ -89,11 +88,9 @@ class DocumentCreateForm extends React.Component {
          
         var fileDate = this.props.form.getFieldValue("fileDate");
         this.props.form.validateFields((err, values) => {
-            if (!err) {
-                 
+            if (!err) {              
                 const unfilled = 0;
                 this.setState({ unfilled });
-
                 this.props.dispatch({
                     type: "createDocument/addDocument",
                     payload: values
@@ -214,7 +211,7 @@ class DocumentCreateForm extends React.Component {
                                 {getFieldDecorator("name", {
                                     rules: [{ required: true, type: "string", max: 10, message: "请填写文档名称,长度不超过10" },
                                     {
-                                        validator: this.handleNumberValidate
+                                       // validator: this.handleNumberValidate
                                     },
                                     ]
                                 })(<Input />)}

@@ -6,7 +6,7 @@
   "autoprefixer": null,
   "proxy": {
     "/api": {
-      "target": "http://localhost:14770/",
+      "target": "http://localhost:14770/api/",
       "changeOrigin": true,
       "pathRewrite": { "^/api" : "" }
     }

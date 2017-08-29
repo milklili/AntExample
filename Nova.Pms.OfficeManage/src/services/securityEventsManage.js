@@ -1,26 +1,19 @@
 ﻿import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 
 //export function getData({ page, filterStr }) {
 //    return request(`/api/officeManage/getSecurityEventsList/${page}/${PAGE_SIZE}`);
 //}
 export function getData(pageInfo) {
-    return request('/api/officeManage/getSecurityEventsList', {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(pageInfo),
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/securityEvents/securityEventsList?'+params, {
+        method: 'GET'
     });
-}
-export function getRegionList() {
-    debugger;
-    return request(`/api/officeManage/getRegionList`);
 }
 
 export function addSecurityEvents(securityEvents) {
-    debugger;
-    return request(`/api/officeManage/addSecurityEvents`, {
+    return request(`/api/officeManage/securityEvents/securityEvents`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -29,35 +22,27 @@ export function addSecurityEvents(securityEvents) {
     });
 }
 
-
-
-
 export function editSecurityEvents({ securityEvents }) {
-    debugger;
-    return request('/api/officeManage/editSecurityEvents', {
+    return request('/api/officeManage/securityEvents/securityEvents', {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'POST',
+        method: 'Put',
         body: JSON.stringify(securityEvents),
     });
 }
 
 export function getSecurityEventsData({ id }) {
-    return request(`/api/officeManage/getSecurityEventsData/${id}`);
+    return request(`/api/officeManage/securityEvents/securityEventsData/${id}`);
 }
 export function remove({ ids }) {
-    debugger;
-    return request(`/api/officeManage/deleteSecurityEvents`, {
+    return request(`/api/officeManage/securityEvents/securityEvents`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify(ids),
     });
 }
-export function getInitialRegion() {
-    debugger;
-    return request(`/api/officeManage/getInitialRegion`);
-}
+
 

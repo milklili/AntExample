@@ -1,4 +1,5 @@
 ﻿import * as workAttendanceManageService from '../../services/workAttendanceManage';
+import * as commonDataService from '../../services/commonData';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -38,9 +39,9 @@ export default {
 
             const { data: information } = yield call(workAttendanceManageService.getWorkAttendanceInformation, { id });
             const { data } = yield call(workAttendanceManageService.getDetailWorkAttendanceList, { id, page });
-            const { data: staffList } = yield call(workAttendanceManageService.getAllStaffList);
-            const { data: regionList } = yield call(workAttendanceManageService.getRegionList);
-            const { data: departmentList } = yield call(workAttendanceManageService.getAllDepartmentList);
+            const { data: staffList } = yield call(commonDataService.getStaffList);
+            const { data: regionList } = yield call(commonDataService.getRegionList);
+            const { data: departmentList } = yield call(commonDataService.getDepartmentList);
             
             yield put({
                 type: "load",

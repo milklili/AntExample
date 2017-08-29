@@ -1,4 +1,5 @@
 ﻿import * as approvedService from '../../services/approvalManage';
+import * as commonDataService from '../../services/commonData';
 import { message } from 'antd';
 import { PAGE_SIZE } from '../../constants';
 export default {
@@ -22,25 +23,19 @@ export default {
         current:null,
     },
     reducers: {
-        updateState(state, { payload }) {
-             
-            return { ...state, ...payload };
-             
+        updateState(state, { payload }) {           
+            return { ...state, ...payload };         
         },
-
        
-        changeField(state, { payload: { key, value } }) {
-             
+        changeField(state, { payload: { key, value } }) {      
             var  showApproval = { ...state. showApproval, [key]: value };
             return { ...state,  showApproval };
         },
        
     },
     effects: {
-        *getData({ payload: { id } }, { call, put }) {
-             
-            const { data } = yield call(approvedService.getApprovalInformation, { id });
-             
+        *getData({ payload: { id } }, { call, put }) {  
+            const { data } = yield call(approvedService.get, { id }); 
             yield put({
                 type: 'updateState',
                 payload: {
@@ -54,8 +49,7 @@ export default {
     subscriptions: {
         setup({ dispatch, history }) {
             return history.listen(({ pathname, query }) => {
-                if (pathname === '/showApproval') {
-                     
+                if (pathname === '/showApproval') {          
                     dispatch({ type: 'getData', payload: query });
                 }
             });

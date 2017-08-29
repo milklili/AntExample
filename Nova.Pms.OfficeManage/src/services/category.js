@@ -6,20 +6,21 @@ import { PAGE_SIZE } from '../constants';
 //    return request(`/api/officeManage/documentCategorylist/${page}/${PAGE_SIZE}/${filterStr}`);
 //}
 
-export function getAll(pageInfo) {
-    var params = queryString.stringify({...pageInfo, type:'Document'});
+export function getAll(parameter) {
+    debugger;
+    var params = queryString.stringify({...parameter});
     return request('/api/officeManage/category?'+params, {
         method: 'GET'
     });
 }
 
-export function create(values) {
-    return request('/api/officeManage/category?type=Document', {
+export function create({values,type}) {
+    return request(`/api/officeManage/category?type=${type}`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify(values.values),
+        body: JSON.stringify(values),
     });
 }
 
@@ -38,7 +39,7 @@ export function save({values}) {
 }
 
 export function remove({ids}) {
-    return request(`/api/officeManage/category?type=Document`, {
+    return request(`/api/officeManage/category`, {
         headers: {
             'Content-Type': 'application/json'
         },

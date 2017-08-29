@@ -1,104 +1,73 @@
 ﻿import request from '../utils/request';
+import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 
-export function getData(pageInfo) {
-    debugger;
-    return request('/api/officeManage/getCleaningToolList', {
+export function getAll(pageInfo) {
+    var params = queryString.stringify({...pageInfo});
+    return request('/api/officeManage/cleaningTool?'+params, {
+        method: 'GET'
+    });
+}
+
+export function create(cleaningTool) {
+    return request(`/api/officeManage/cleaningTool`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify(pageInfo),
-    });
-}
-
-
-export function getRegionList() {
-    debugger;
-    return request(`/api/officeManage/getRegionList`);
-}
-
-export function getDepartmentList({ id }) {
-    return request(`/api/officeManage/getDepartmentList/${id}`);
-}
-
-
-export function addCleaningTool(cleaningTool) {
-    debugger;
-    return request(`/api/officeManage/addCleaningTool`, {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'Post',
         body: JSON.stringify(cleaningTool.cleaningTool)
     });
 }
 
-
 export function receiveOrReturnToolItems(cleaningToolItems) {
-    debugger;
-    return request(`/api/officeManage/receiveOrReturnToolItems`, {
+    return request(`/api/officeManage/cleaningTool/receiveOrReturnToolItems`, {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'Post',
+        method: 'POST',
         body: JSON.stringify(cleaningToolItems.cleaningToolItems)
     });
 }
-export function editReceiveOrReturnToolItems(cleaningToolItems) {
-    debugger;
-    return request(`/api/officeManage/editReceiveOrReturnToolItems`, {
+
+export function edit(cleaningToolItems) {
+    return request(`/api/officeManage/cleaningTool`, {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'Post',
+        method: 'PUT',
         body: JSON.stringify(cleaningToolItems.cleaningToolItems)
     });
 }
 
 export function remove({ ids }) {
-    debugger;
-    return request(`/api/officeManage/deleteCleaningTool`, {
+    return request(`/api/officeManage/cleaningTool`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
-        body: JSON.stringify({ ids: ids }),
+        body: JSON.stringify(ids),
     });
 }
 
 export function removeCleaningToolItems({ id }) {
-    return request(`/api/officeManage/deleteCleaningToolItems/${id}`, {
-        headers: {
-            'Content-Type': 'application/json'
-        },
+    return request(`/api/officeManage/cleaningTool/deleteCleaningToolItems?id=${id}`, {
+        // headers: {
+        //     'Content-Type': 'application/json'
+        // },
         method: 'DELETE',
         //body: JSON.stringify(id),
     });
 }
 
-
-
-
 export function getCleaningToolInformation({ id }) {
-debugger;
-    return request(`/api/officeManage/getCleaningToolInformation/${id}`);
+    return request(`/api/officeManage/cleaningTool/getCleaningToolInformation?id=${id}`);
 } 
 export function getDetailCleaningToolList({ id, page}) {
-    debugger;
-    return request(`/api/officeManage/getCleaningToolItemsList/${id}/${page}/${PAGE_SIZE}`);
+    var params = queryString.stringify({page:page,pageSize:PAGE_SIZE,id:id});
+    return request('/api/officeManage/cleaningTool/getCleaningToolItemsList?'+params, {
+        method: 'GET'
+    });   
 }
 
-export function getAllStaffList() {
-    return request(`/api/officeManage/getAllStaffList`);
-}
-export function getAllDepartmentList() {
-    return request(`/api/officeManage/getAllDepartmentList`);
-}
-
-export function getInitialRegion() {
-    debugger;
-    return request(`/api/officeManage/getInitialRegion`);
-}
 
 

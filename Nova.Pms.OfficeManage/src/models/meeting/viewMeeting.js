@@ -1,6 +1,7 @@
 ﻿import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import * as meetingService from '../../services/meeting';
+import * as commonDataService from '../../services/commonData';
 
 export default {
     namespace: 'viewMeeting',
@@ -35,11 +36,11 @@ export default {
     effects: {
         *getData({ payload: { id } }, { put, call }) {
             const { data: formData } = yield call(meetingService.getMeetingData, { id });
-            const { data: regions } = yield call(meetingService.getRegion);
-            const { data: meetingCategorys } = yield call(meetingService.getMeetingCategoryList);
+            const { data: regions } = yield call(commonDataService.getRegionList);
+            const { data: meetingCategorys } = yield call(commonDataService.getMeetingCategoryList);
             id = formData.regionId;
-            const { data: departments } = yield call(meetingService.getDepartmentByRegionId, { id });
-            const { data: staffs } = yield call(meetingService.getStaffByRegionId, { id });
+            const { data: departments } = yield call(commonDataService.getDepartmentByRegionId, { id });
+            const { data: staffs } = yield call(commonDataService.getStaffByRegionId, { id });
             yield put({
                 type: "load",
                 payload: {
