@@ -65,7 +65,7 @@ const Header = ({
     handleMenuItemClick,
   }
 
-  const indexPage = menu.find(m => m.route === '/dashboard')
+  const indexPage = menu.find(m => m.route === '/dashboard' || m.route === '/')
   const logoutMenu = (
     <Menu className={styles.dropdown}>
       <Menu.Item key="logout">

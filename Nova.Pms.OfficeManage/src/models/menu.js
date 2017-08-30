@@ -4,7 +4,7 @@ const menu = [
     mpid: '-1',
     icon: 'home',
     name: '首页',
-    route: '/dashboard',
+    route: '/',
   },
   {
     id: '2',

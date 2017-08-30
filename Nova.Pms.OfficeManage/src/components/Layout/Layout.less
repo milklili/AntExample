@@ -112,17 +112,25 @@
     height: 100%;
     transition: @transition-ease-out;
     background-color: #f2f8ff;
+    // 下一版需要恢复回来
     :global {
       .content-inner {
-        background: #fff;
-        padding: 24px;
-        box-shadow: @shadow-1;
-        min-height: e("calc(100vh - 183px)");
+        // background: #fff;
+        // padding: 24px;
+        // box-shadow: @shadow-1;
+        // border-radius: 2px;
+        // min-height: e("calc(100vh - 183px)");
       }
     }
 
     .container {
       margin: 24px;
+      // 下一版去掉
+      background: #fff;
+      padding: 24px;
+      box-shadow: @shadow-1;
+      border-radius: 2px;
+      min-height: e("calc(100vh - 183px)");
     }
 
     .content {
