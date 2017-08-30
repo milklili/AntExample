@@ -1,13 +1,11 @@
-﻿.mainLayoutBreadcrumb {
-    margin: 12px 0
+﻿.ListButton {
+    margin-bottom: 15px;
+}
+button {
+    margin-right: 15px;
+}
+.paginationStyle {
+    float: left;
+    margin-top: 15px;
 }
 
-.mainLayoutChildContent {
-    padding: 24px;
-    background-color: #fff;
-}
-
-.normal {
-    font-family: "Microsoft Yahei";
-    margin: auto 0;
-}

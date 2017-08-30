@@ -167,7 +167,7 @@ const PopMenu = ({ menu, handleMenuItemClick }) => {
 
   return (
     <div className={styles.allMenu} onClick={clear} onMouseLeave={clear}>
-      <ul className={styles.menu}>
+      <ul className={styles.menu} data-selectid={`${config.prefix}-menu-quick`}>
         {quickMenu.length && quickMenuEle }
         {menuItems}
       </ul>

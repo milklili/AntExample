@@ -68,6 +68,7 @@ const menu = [
     bpid: '3',
     name: '考勤管理',
     route: '/workAttendanceList',
+    quick: true,
   },
   // {
   //   id: '4',
@@ -111,6 +112,7 @@ const menu = [
     bpid: '5',
     name: '物品出入登记',
     route: '/articleRegistrationList',
+    quick: true,
   },
   {
     id: '55',
@@ -183,7 +185,6 @@ const menu = [
     bpid: '7',
     name: '新建审批',
     route: '/createApproval',
-    quick: true,
   },
   {
     id: '63',
@@ -198,7 +199,6 @@ const menu = [
     bpid: '7',
     name: '待我审批的',
     route: '/pendingApprovalList',
-    quick: true,
   },
   {
     id: '65',

@@ -7,6 +7,9 @@
     "comma-dangle": [2, "always-multiline"],
     "max-len": 0,
     "react/jsx-first-prop-new-line": 0,
+    "react/prop-types": 0,
+    "react/sort-comp": 0,
+    "react/no-multi-comp": 0,
     "space-before-function-paren": [2, "always"],
     "no-unused-expressions": [0, {
       "allowShortCircuit": true,

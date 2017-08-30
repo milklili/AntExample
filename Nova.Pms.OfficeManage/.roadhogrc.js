@@ -14,7 +14,7 @@ export default {
   
   "proxy": {
     "/api": {
-      "target": "http://10.10.120.157:14770/api/",
+      "target": "http://10.10.120.137:8091/api/",
       "changeOrigin": true,
       "pathRewrite": { "^/api" : "" }
     },
