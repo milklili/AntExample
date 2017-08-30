@@ -4,7 +4,9 @@ const APIV2 = '/api/v2'
 module.exports = {
   name: 'AntD Admin',
   prefix: 'antdAdmin',
-  footerText: 'Ant Design Admin  © 2017 Nova',
+  footerText: 'Ant Design Admin  © 2017 zuiidea',
+  headerMenuText: '常用服务',
+  popMenu: 'antd-admin-menu',
   logo: '/logo.png',
   iconFontCSS: '/iconfont.css',
   iconFontJS: '/iconfont.js',

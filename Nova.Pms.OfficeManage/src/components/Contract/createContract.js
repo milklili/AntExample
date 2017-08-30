@@ -401,7 +401,7 @@ function createContract({ dispatch, cityData, streetRegisterData, streetWarkingD
         handleSubmit = (e) => {
             e.preventDefault();
             this.props.form.validateFields((err, values) => {
-                debugger;
+                
                 if (!err) {
                     dispatch({
                         type: 'createContract/addContract',
@@ -784,7 +784,7 @@ function createContract({ dispatch, cityData, streetRegisterData, streetWarkingD
 
 function mapStateToProps(state) {
     const { cityData, streetRegisterData, streetWarkingData, contract} = state.createContract;
-    debugger;
+    
     var files = [];
     contract.attachments.forEach(function (currentFile) {
         var file = {};

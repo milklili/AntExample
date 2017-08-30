@@ -93,7 +93,7 @@ class WorkingPlanForm extends React.Component {
 
         const { unfilled } = this.state;
 
-        debugger;
+        
         const regionOptions = this.props.regionList.map(value =>
             <Option key={value.id} value={value.id}>{value.name}</Option>
         );

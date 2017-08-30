@@ -16,6 +16,6 @@ export function getCityData() {
 }
 
 export function getStreet(code) {
-    debugger;
+    
     return request(`http://passer-by.com/data_location/town/${code.code}.json`)
 }

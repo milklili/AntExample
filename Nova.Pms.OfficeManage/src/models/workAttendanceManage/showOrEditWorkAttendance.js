@@ -26,7 +26,7 @@ export default {
     },
     reducers: {
         load(state, { payload }) {
-            debugger;
+            
             return { ...state, ...payload };
         },
         changeField(state, { payload: { key, value } }) {
@@ -75,9 +75,9 @@ export default {
 
         *reload(action, { put, select }) {
             const id = yield select(state => state.showOrEditWorkAttendance.information.id);
-            debugger;
+            
             const page = yield select(state => state.showOrEditWorkAttendance.workAttendance.page);
-            debugger;
+            
             
             yield put({ type: 'getWorkAttendanceData', payload: { page, id} });
         }
@@ -86,7 +86,7 @@ export default {
     subscriptions: {
         setup({ dispatch, history }) {
             return history.listen(({ pathname, query }) => {
-                debugger;
+                
                 if (pathname === '/showOrEditWorkAttendance') {
                     dispatch({ type: 'getWorkAttendanceData', payload: query });
                 }

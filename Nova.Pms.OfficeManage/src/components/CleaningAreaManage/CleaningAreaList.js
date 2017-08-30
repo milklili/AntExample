@@ -45,7 +45,7 @@ const AddCleaningAreaForm = Form.create()(
             labelCol: { span: 3 },
             wrapperCol: { span: 21 },
         };
-        debugger;
+        
         const regionOptions = regionList.map(value =>
             <Option key={value.id} value={value.id}>{value.name}</Option>
         ); 
@@ -184,7 +184,7 @@ const NormalAddCleaningAreaForm = Form.create(
         }, 
        
         onFieldsChange(props, changedFields) {
-            debugger;
+            
             switch (Object.keys(changedFields)[0]) {
                 case "regionId":
                     props.cleaningArea.regionId = changedFields.regionId.value;
@@ -274,7 +274,7 @@ function CleaningAreaList({
                 }
             });
             staffList = staffList.filter(function (n) { return n != undefined });
-            debugger;
+            
             this.setState({
                 staffList: staffList,
                 cleaningArea: {
@@ -301,7 +301,7 @@ function CleaningAreaList({
             const form = this.form;
 
             form.validateFields((err, values) => {
-                debugger;
+                
                 dispatch({
                     type: 'cleaningAreaList/changeCleaningArea',
                     payload: { cleaningArea: values },
@@ -313,9 +313,9 @@ function CleaningAreaList({
         }
         handleCreate = () => {
             const form = this.form;
-            debugger;
+            
             form.validateFields((err, values) => {
-                debugger;
+                
                 if (err) {
                     return;
                 }
@@ -367,16 +367,16 @@ function CleaningAreaList({
         }
         showModal = (e) => {
             e.preventDefault();
-            debugger;
+            
             var cleaningAreaprops = this.props.cleaningArea;
             var staffList = this.props.staffList.map(function (x) {
-                debugger;
+                
                 if (x.staffRegionId == cleaningAreaprops.regionId) {
                     return x;
                 }
             });
             staffList = staffList.filter(function (n) { return n != undefined });
-            debugger;
+            
             this.setState({
                 staffList: staffList,
                 cleaningArea: {
@@ -397,19 +397,19 @@ function CleaningAreaList({
                 },
             });
 
-            debugger;
+            
             this.setState({ visible: true });
             
         }
         selectRegion = (value) => {
-            debugger;
+            
             var staffList = this.props.staffList.map(function (x) {
                 if (x.staffRegionId == value) {
                     return x;
                 }
             });
             staffList = staffList.filter(function (n) { return n != undefined });
-            debugger;
+            
             this.setState({
                 staffList: staffList,
                 cleaningArea: {
@@ -435,12 +435,12 @@ function CleaningAreaList({
         }
         handleCreate = () => {
             const form = this.form;
-            debugger;
+            
             form.validateFields((err, values) => {
                 if (err) {
                     return;
                 }
-                debugger;
+                
                 values.id = this.props.cleaningArea.id;
                 dispatch({
                     type: 'cleaningAreaList/editCleaningArea',
@@ -489,7 +489,7 @@ function CleaningAreaList({
             this.dispatch = props.dispatch;
         }
         showModal = (e) => {
-            debugger;
+            
             e.preventDefault();
             this.setState({ visible: true });
 
@@ -505,7 +505,7 @@ function CleaningAreaList({
             this.form = form;
         }
         handleIdCardNoValidate = (rule, value, callback) => {
-            debugger;
+            
             if (value != null && value != "" && (!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value))) {
                 callback('身份证格式错误');
             }
@@ -588,7 +588,7 @@ function CleaningAreaList({
             }));
         }
         deleteCleaningArea = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'cleaningAreaList/remove',
                 payload: { ids }
@@ -615,7 +615,7 @@ function CleaningAreaList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/cleaningAreaList",

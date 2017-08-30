@@ -187,7 +187,7 @@ function DocumentList({
             });
         };
         audit = (ids,record) => {
-            debugger;
+            
             if (record.auditState == true) {
                 message.error('该文档资料已审核');
             } else {
@@ -420,7 +420,7 @@ function DocumentList({
         };
 
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/documentList",

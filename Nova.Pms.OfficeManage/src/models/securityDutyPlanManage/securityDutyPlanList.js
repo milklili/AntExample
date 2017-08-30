@@ -30,9 +30,9 @@ export default {
     },
     reducers: {
         updateState(state, { payload}) {
-            debugger;
+            
             return { ...state, ...payload  };
-            debugger;
+            
         },
         
         updateSeniorSearchToggle(state, { payload: { seniorSearch } }) {
@@ -117,7 +117,7 @@ export default {
         },
 
         *remove({ payload: ids }, { call, put, select }) {
-            debugger;
+            
             const { data } = yield call(securityDutyPlanService.remove, ids);
             message.success(data.message, 3);
 
@@ -125,10 +125,10 @@ export default {
         },
      
         *addSecurityDutyPlan({ payload: securityDutyPlan }, { call, put, select }) {
-            debugger;
+            
             const { data } = yield call(securityDutyPlanService.addSecurityDutyPlan, securityDutyPlan);
             message.success(data.message, 3);  
-            debugger;
+            
             yield put({
                 type: 'changeSecurityDutyPlan',
                 payload: {
@@ -140,7 +140,7 @@ export default {
         },
 
         *changeSecurityDutyPlan({ payload: securityDutyPlan }, { call, put, select }) {
-            debugger;
+            
             yield put({
                 type: 'updateState',
                 payload: {
@@ -150,7 +150,7 @@ export default {
         },
         
         *editSecurityDutyPlan({ payload: securityDutyPlan }, { call, put, select }) {
-            debugger;
+            
             const { data } = yield call(securityDutyPlanService.editSecurityDutyPlan, securityDutyPlan);
             message.success(data.message, 3);
             yield put({
@@ -160,9 +160,9 @@ export default {
 
 
         *reload(action, { put, select }) {
-            debugger;
+            
             const page = yield select(state => state.securityDutyPlanList.page);
-            debugger;
+            
             const filterStr = yield select(state => state.securityDutyPlanList.filterStr);
             const pageSize = yield select(state => state.securityDutyPlanList.pageSize);
             yield put({ type: 'getData', payload: { page, filterStr, pageSize } });

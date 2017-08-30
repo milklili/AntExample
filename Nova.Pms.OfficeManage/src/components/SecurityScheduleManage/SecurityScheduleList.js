@@ -103,7 +103,7 @@ function SecurityScheduleList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/securityScheduleList",

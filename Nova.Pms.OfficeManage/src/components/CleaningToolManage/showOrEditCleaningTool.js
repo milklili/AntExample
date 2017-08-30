@@ -16,7 +16,7 @@ const ReceiveCleaningToolForm = Form.create()(
     (props) => {
 
         const { visible, onCancel, onCreate, handleHoursValidate, countValidate, form, selectRegion, staffList, cleaningToolItems, dispatch } = props;
-        debugger;
+        
         const { getFieldDecorator } = form;
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -26,7 +26,7 @@ const ReceiveCleaningToolForm = Form.create()(
             labelCol: { span: 3 },
             wrapperCol: { span: 21 },
         };
-        debugger;
+        
         const staffOptions = staffList.map(value =>
             <Option key={value.staffId} value={value.staffId}>{value.staffName}</Option>
         );
@@ -267,9 +267,9 @@ const NormalReturnCleaningToolForm = Form.create(
 
 const EssentialInformationForm = Form.create()(
     (props) => {
-        debugger;
+        
         const { visible, onCancel, onCreate, form, information, regionList, departmentList } = props;
-        debugger;
+        
         const { getFieldDecorator } = form;
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -291,14 +291,14 @@ const EssentialInformationForm = Form.create()(
                 },
             },
         };
-        debugger;
+        
         const regionOptions = regionList.map(value =>
             <Option key={value.id} value={value.id}>{value.name}</Option>
         );
         const departmentOptions = departmentList.map(value =>
             <Option key={value.id} value={value.id}>{value.name}</Option>
         );
-        debugger;
+        
         return (
             <div >
                 <Row gutter={20}>
@@ -383,9 +383,9 @@ const NormalEssentialInformationForm = Form.create(
         },
 
         mapPropsToFields(props) {
-            debugger;
+            
             const fields = {};
-            debugger;
+            
             Object.keys(props.information).forEach(key => {
                 fields[key] = {
                     value: props.information[key]
@@ -396,7 +396,7 @@ const NormalEssentialInformationForm = Form.create(
             };
         },
         onFieldsChange(props, changedFields) {
-            debugger;
+            
             const key = Object.keys(changedFields)[0];
             props.dispatch({
                 type: "showRoEditCleaningTool/changeField",
@@ -461,18 +461,18 @@ class ReceiveCleaningTool extends React.Component {
             //    <Option key={value.staffId} value={value.staffId}>{value.staffName}</Option>
             //);
 
-            debugger;
+            
             values.id = this.props.cleaningToolItems.id,
             values.cleaningToolId = this.props.cleaningTool.id;
             values.count = parseInt(values.recipientsCount);
             values.recipientsCount = parseInt(values.recipientsCount);
             values.type = 0;
-            debugger;
+            
             this.props.dispatch({
                 type: 'showOrEditCleaningTool/editReceiveOrReturnToolItems',
                 payload: { cleaningToolItems: values },
             });
-            debugger;
+            
             form.resetFields();
             this.setState({ visible: false });
         });
@@ -483,7 +483,7 @@ class ReceiveCleaningTool extends React.Component {
     }
 
     countValidate = (rule, value, callback) => {
-        debugger;
+        
         if (value != null && value != "" && (!(/^\d+(?=\.{0,1}\d+$|$)/.test(value)) || value > this.props.cleaningTool.inventoryCount)) {
             callback('请正确输入领用数量,最多' + this.props.cleaningTool.inventoryCount + '个');
         }
@@ -577,13 +577,13 @@ class ReturnCleaningTool extends React.Component {
                 return;
             }
 
-            debugger;
+            
             values.id = this.props.cleaningToolItems.id,
             values.cleaningToolId = this.props.cleaningTool.id;
             values.count = parseInt(values.returnCount);
             values.returnCount = parseInt(values.returnCount);
             values.type = 1;
-            debugger;
+            
             this.props.dispatch({
                 type: 'showOrEditCleaningTool/editReceiveOrReturnToolItems',
                 payload: { cleaningToolItems: values },
@@ -597,7 +597,7 @@ class ReturnCleaningTool extends React.Component {
         this.form = form;
     }
     countValidate = (rule, value, callback) => {
-        debugger;
+        
         if (value != null && value != "" && (!(/^\d+(?=\.{0,1}\d+$|$)/.test(value)) || value > this.props.cleaningTool.recipientsCount)) {
             callback('请正确输入归还数量,最多' + this.props.cleaningTool.recipientsCount + '个');
         }
@@ -653,7 +653,7 @@ class NormalCleaningToolForm extends React.Component {
         }
 
         pageChangeHandler = page => {
-            debugger;
+            
             const id = this.props.information.id;
             this.props.dispatch({
                 type: 'showOrEditCleaningTool/getCleaningToolData',
@@ -662,7 +662,7 @@ class NormalCleaningToolForm extends React.Component {
         };
 
         deleteCleaningToolItems = (id) => {    
-            debugger;
+            
             this.props.dispatch({
                 type: 'showOrEditCleaningTool/removeCleaningToolItems',
                 payload: { id }
@@ -724,7 +724,7 @@ class NormalCleaningToolForm extends React.Component {
                 },
             };
 
-            debugger;
+            
             const columns = [
                 
                 {
@@ -846,9 +846,9 @@ class NormalCleaningToolForm extends React.Component {
     }
 const CleaningToolForm = Form.create({
         mapPropsToFields(props) {
-            debugger;
+            
             const fields = {};
-            debugger;
+            
             Object.keys(props.cleaningTool).forEach(key => {
                 fields[key] = {
                     value: props.cleaningTool[key]
@@ -863,7 +863,7 @@ const CleaningToolForm = Form.create({
 
 
 function mapStateToProps(state) {
-    debugger;
+    
     const { cleaningTool, regionList, departmentList, information,staffList} = state.showOrEditCleaningTool;
     return {
         cleaningTool,

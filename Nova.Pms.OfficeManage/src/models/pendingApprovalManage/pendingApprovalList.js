@@ -31,9 +31,9 @@ export default {
     },
     reducers: {
         updateState(state, { payload}) {
-            debugger;
+            
             return { ...state, ...payload  };
-            debugger;
+            
         },
         
         updateSeniorSearchToggle(state, { payload: { seniorSearch } }) {
@@ -51,27 +51,27 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
+            
             var pendingApprovalList = { ...state.pendingApprovalList, [key]: value };
             return { ...state, pendingApprovalList };
         },
         updatePendingApprovalList(state, { payload: { pendingApprovalList } }) {
-            debugger;
+            
             var pendingApprovalList = { ...state.pendingApprovalList, ...pendingApprovalList }
             return { ...state, pendingApprovalList };
         },
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
+            
             const { data } = yield call(pendingApprovalService.getPendingApprovalList, { page: page, filterStr: filterStr, pageSize: pageSize });
-            debugger;
+            
             const { data: regionList } = yield call(commonDataService.getRegionList);
             const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
             const { data: staffList } = yield call(commonDataService.getStaffList);
             const { data: cleaningAreaList } = yield call(commonDataService.cleaningAreaList);
-            debugger;
-            debugger;
+            
+            
             yield put({
                 type: 'updateState',
                 payload: {
@@ -142,14 +142,14 @@ export default {
         },
 
         *deleteApproval({ payload: ids }, { call, put, select }) {
-            debugger;
+            
             const { data } = yield call(pendingApprovalService .deleteApproval, ids);
             message.success(data.message, 3);
 
             yield put({ type: 'reload' });
         },
         *revokedApproval({ payload: ids }, { call, put, select }) {
-            debugger;
+            
             const { data } = yield call(pendingApprovalService.revokedApproval, ids);
             message.success(data.message, 3);
 
@@ -196,7 +196,7 @@ export default {
         
 
         *changePendingApprovalList({ payload: pendingApprovalList }, { call, put, select }) {
-            debugger;
+            
             yield put({
                 type: 'updateState',
                 payload: {
@@ -206,7 +206,7 @@ export default {
         },
         
         *editPendingApprovalList({ payload: pendingApprovalList }, { call, put, select }) {
-            debugger;
+            
             const { data } = yield call(pendingApprovalService .editPendingApprovalList, pendingApprovalList);
             message.success(data.message, 3);
             yield put({
@@ -216,9 +216,9 @@ export default {
 
 
         *reload(action, { put, select }) {
-            debugger;
+            
             const page = yield select(state => state.pendingApprovalList.page);
-            debugger;
+            
             const filterStr = yield select(state => state.pendingApprovalList.filterStr);
             const pageSize = yield select(state => state.pendingApprovalList.pageSize);
             yield put({ type: 'getData', payload: { page, filterStr, pageSize} });

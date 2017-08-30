@@ -57,7 +57,7 @@ export default {
             ContactModel.id = maxId;
             ContactModel.key = maxId;
             state.contract.contacts.push(ContactModel);
-            debugger;
+            
             return state;
         },
         editContractUser(state, {payload: {ContactModel, model}}) {

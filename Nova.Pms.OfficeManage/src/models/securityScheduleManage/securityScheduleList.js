@@ -30,9 +30,9 @@ export default {
     },
     reducers: {
         updateState(state, { payload}) {
-            debugger;
+            
             return { ...state, ...payload  };
-            debugger;
+            
         },
         
         updateSeniorSearchToggle(state, { payload: { seniorSearch } }) {
@@ -50,24 +50,24 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
+            
             var securitySchedule = { ...state.securitySchedule, [key]: value };
             return { ...state, securitySchedule };
         },
         updateSecuritySchedule(state, { payload: { securitySchedule } }) {
-            debugger;
+            
             var securitySchedule = { ...state.securitySchedule, ...securitySchedule }
             return { ...state, securitySchedule };
         },
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
+            
             const { data } = yield call(securityScheduleService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
-            debugger;
+            
             const { data: regionList } = yield call(commonDataService.getRegionList);
             const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
-            debugger;
+            
             yield put({
                 type: 'updateState',
                 payload: {
@@ -135,10 +135,10 @@ export default {
         },
      
         *addSecuritySchedule({ payload: securitySchedule }, { call, put, select }) {
-            debugger;
+            
             const { data } = yield call(securityScheduleService.addSecuritySchedule, securitySchedule);
             message.success(data.message, 3);  
-            debugger;
+            
             yield put({
                 type: 'changeSecuritySchedule',
                 payload: {
@@ -150,7 +150,7 @@ export default {
         },
 
         *changeSecuritySchedule({ payload: securitySchedule }, { call, put, select }) {
-            debugger;
+            
             yield put({
                 type: 'updateState',
                 payload: {
@@ -160,7 +160,7 @@ export default {
         },
         
         *editSecuritySchedule({ payload: securitySchedule }, { call, put, select }) {
-            debugger;
+            
             const { data } = yield call(securityScheduleService.editSecuritySchedule, securitySchedule);
             message.success(data.message, 3);
             yield put({
@@ -170,9 +170,9 @@ export default {
 
 
         *reload(action, { put, select }) {
-            debugger;
+            
             const page = yield select(state => state.securityScheduleList.page);
-            debugger;
+            
             const filterStr = yield select(state => state.securityScheduleList.filterStr);
             const pageSize = yield select(state => state.securityScheduleList.pageSize);
             yield put({ type: 'getData', payload: { page, filterStr, pageSize } });

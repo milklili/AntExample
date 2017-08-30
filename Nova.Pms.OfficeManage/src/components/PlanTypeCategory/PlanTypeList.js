@@ -63,7 +63,7 @@ function PlanTypeList({ dispatch, list: dataSource, loading, total, page: curren
             });
         }
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/planTypeList",

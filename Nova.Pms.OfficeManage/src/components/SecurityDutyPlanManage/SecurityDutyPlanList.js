@@ -229,7 +229,7 @@ function SecurityDutyPlanList({
             const form = this.form;
 
             form.validateFields((err, values) => {
-                debugger;
+                
                 dispatch({
                     type: 'securityDutyPlanList/changeSecurityDutyPlan',
                     payload: { securityDutyPlan: values },
@@ -243,7 +243,7 @@ function SecurityDutyPlanList({
             const form = this.form;
             
             form.validateFields((err, values) => {
-                debugger;
+                
                 if (err) {
                     return;
                 }
@@ -314,7 +314,7 @@ function SecurityDutyPlanList({
                 if (err) {
                     return;
                 }
-                debugger;
+                
                 values.id = this.props.securityDutyPlan.id;
                 dispatch({
                     type: 'securityDutyPlanList/editSecurityDutyPlan',
@@ -373,7 +373,7 @@ function SecurityDutyPlanList({
             this.dispatch = props.dispatch;
         }
         showModal = (e) => {
-            debugger;
+            
             e.preventDefault();
             this.setState({ visible: true });
 
@@ -445,7 +445,7 @@ function SecurityDutyPlanList({
 
 
         deleteSecurityDutyPlan = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'securityDutyPlanList/remove',
                 payload: { ids }
@@ -472,7 +472,7 @@ function SecurityDutyPlanList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/securityDutyPlanList",

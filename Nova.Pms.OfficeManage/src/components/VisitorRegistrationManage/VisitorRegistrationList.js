@@ -225,7 +225,7 @@ function VisitorRegistrationList({
             const form = this.form;
 
             form.validateFields((err, values) => {
-                debugger;
+                
                 dispatch({
                     type: 'visitorRegistrationList/changeVisitorRegistration',
                     payload: { visitorRegistration: values },
@@ -315,7 +315,7 @@ function VisitorRegistrationList({
                 if (err) {
                     return;
                 }
-                debugger;
+                
                 values.id = this.props.visitorRegistration.id;
                 dispatch({
                     type: 'visitorRegistrationList/editVisitorRegistration',
@@ -328,7 +328,7 @@ function VisitorRegistrationList({
         }
 
         handleIdCardNoValidate = (rule, value, callback) => {
-            debugger;
+            
             if (value != null && value != "" && (!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value))) {
                 callback('身份证格式错误');
             }
@@ -379,7 +379,7 @@ function VisitorRegistrationList({
             this.dispatch = props.dispatch;
         }
         showModal = (e) => {
-            debugger;
+            
             e.preventDefault();
             this.setState({ visible: true });
 
@@ -395,7 +395,7 @@ function VisitorRegistrationList({
             this.form = form;
         }
         handleIdCardNoValidate = (rule, value, callback) => {
-            debugger;
+            
             if (value != null && value != "" && (!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value))) {
                 callback('身份证格式错误');
             }
@@ -477,7 +477,7 @@ function VisitorRegistrationList({
             }));
         }
         deleteVisitorRegistration = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'visitorRegistrationList/remove',
                 payload: { ids }
@@ -504,7 +504,7 @@ function VisitorRegistrationList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/visitorRegistrationList",

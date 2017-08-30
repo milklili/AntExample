@@ -542,7 +542,7 @@ function CleaningToolList({
         }
 
         countValidate = (rule, value, callback) => {
-            debugger;
+            
             if (value != null && value != "" && (!/^\d+(?=\.{0,1}\d+$|$)/.test(value))) {
                 callback('请正确输入总数量');
             }
@@ -652,11 +652,11 @@ function CleaningToolList({
                 //    <Option key={value.staffId} value={value.staffId}>{value.staffName}</Option>
                 //);
 
-                debugger;
+                
                 values.cleaningToolId = this.props.cleaningTool.id;
                 values.count = parseInt(values.count);
                 values.type = 0;
-                debugger;
+                
                 dispatch({
                     type: 'cleaningToolList/receiveOrReturnToolItems',
                     payload: { cleaningToolItems: values },
@@ -671,7 +671,7 @@ function CleaningToolList({
         }
 
         countValidate = (rule, value, callback) => {
-            debugger;
+            
             if (value != null && value != "" &&( !(/^\d+(?=\.{0,1}\d+$|$)/.test(value)) || value > this.props.cleaningTool.inventoryCount) ){
                 callback('请正确输入领用数量,最多' +this.props.cleaningTool.inventoryCount+'个');
             }
@@ -772,11 +772,11 @@ function CleaningToolList({
                     return;
                 }
                
-                debugger;
+                
                 values.cleaningToolId = this.props.cleaningTool.id;
                 values.count = parseInt(values.count);
                 values.type = 1;
-                debugger;
+                
                 dispatch({
                     type: 'cleaningToolList/receiveOrReturnToolItems',
                     payload: { cleaningToolItems: values },
@@ -790,7 +790,7 @@ function CleaningToolList({
             this.form = form;
         }
         countValidate = (rule, value, callback) => {
-            debugger;
+            
             if (value != null && value != "" && (!(/^\d+(?=\.{0,1}\d+$|$)/.test(value)) || value > this.props.cleaningTool.recipientsCount)) {
                 callback('请正确输入归还数量,最多' + this.props.cleaningTool.recipientsCount + '个');
             }
@@ -909,7 +909,7 @@ function CleaningToolList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/cleaningToolList",
@@ -918,7 +918,7 @@ function CleaningToolList({
             );
         };
         deleteCleaningTool = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'cleaningToolList/remove',
                 payload: { ids }

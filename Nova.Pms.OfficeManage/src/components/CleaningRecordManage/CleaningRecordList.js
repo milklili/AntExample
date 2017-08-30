@@ -331,20 +331,20 @@ function CleaningRecordList({
                 }
             });
             cleaningAreaList = cleaningAreaList.filter(function (n) { return n != undefined });
-            debugger;
+            
             this.setState({
                 staffList: staffList,
                 cleaningAreaList: cleaningAreaList,
                 
             });
-            debugger;
+            
         }
 
         handleCancel = () => {
             const form = this.form;
 
             form.validateFields((err, values) => {
-                debugger;
+                
                 dispatch({
                     type: 'cleaningRecordList/changeCleaningRecord',
                     payload: { cleaningRecord: values },
@@ -356,9 +356,9 @@ function CleaningRecordList({
         }
         handleCreate = () => {
             const form = this.form;
-            debugger;
+            
             form.validateFields((err, values) => {
-                debugger;
+                
                 if (err) {
                     return;
                 }
@@ -387,16 +387,16 @@ function CleaningRecordList({
             let data = { [key]: value };
 
             if (key == "cleaningAreaId") {
-                debugger;
+                
                 var staff = this.props.cleaningAreaList.find(findCleaningArea);
-                debugger;
+                
                 if (staff != null) {
                     data = { staffId: staff.staffId, [key]: value };
                 }
 
             }
             if (key == "regionId") {
-                debugger;
+                
                 data = { cleaningAreaId: null, staffId: null, [key]: value };
             }
 
@@ -404,7 +404,7 @@ function CleaningRecordList({
             this.setState({
                 cleaningRecord: { ...this.state.cleaningRecord, ...cleaningRecord },
             });
-            debugger;
+            
         }
         render() {           
             return (
@@ -463,7 +463,7 @@ function CleaningRecordList({
                 cleaningAreaList: cleaningAreaList,
             });
 
-            debugger;
+            
             this.setState({ visible: true });
             
         }
@@ -482,7 +482,7 @@ function CleaningRecordList({
                 }
             });
             cleaningAreaList = cleaningAreaList.filter(function (n) { return n != undefined });
-            debugger;
+            
             this.setState({
                 staffList: staffList,
                 cleaningAreaList: cleaningAreaList,
@@ -493,12 +493,12 @@ function CleaningRecordList({
         }
         handleCreate = () => {
             const form = this.form;
-            debugger;
+            
             form.validateFields((err, values) => {
                 if (err) {
                     return;
                 }
-                debugger;
+                
                 values.id = this.props.cleaningRecord.id;
                 dispatch({
                     type: 'cleaningRecordList/editCleaningRecord',
@@ -522,9 +522,9 @@ function CleaningRecordList({
             let data = { [key]: value };
 
             if (key == "cleaningAreaId") {
-                debugger;
+                
                 var staff = this.props.cleaningAreaList.find(findCleaningArea);
-                debugger;
+                
                 if (staff != null) {
                     data = { staffId: staff.staffId, [key]: value };
                 }
@@ -538,7 +538,7 @@ function CleaningRecordList({
             this.setState({
                 cleaningRecord: { ...this.state.cleaningRecord, ...cleaningRecord },
             });
-            debugger;
+            
         }
        
         render() {
@@ -576,7 +576,7 @@ function CleaningRecordList({
             this.dispatch = props.dispatch;
         }
         showModal = (e) => {
-            debugger;
+            
             e.preventDefault();
             this.setState({ visible: true });
 
@@ -592,7 +592,7 @@ function CleaningRecordList({
             this.form = form;
         }
         handleIdCardNoValidate = (rule, value, callback) => {
-            debugger;
+            
             if (value != null && value != "" && (!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value))) {
                 callback('身份证格式错误');
             }
@@ -676,7 +676,7 @@ function CleaningRecordList({
             }));
         }
         deleteCleaningRecord = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'cleaningRecordList/remove',
                 payload: { ids }
@@ -703,7 +703,7 @@ function CleaningRecordList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/cleaningRecordList",

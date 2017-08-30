@@ -98,6 +98,6 @@ export function getSendApprovalList(pageInfo) {
 }
 
 export function getAllCleaningAreaList() {
-    debugger;
+    
     return request(`/api/officeManage/getAllCleaningAreaList`);
 }

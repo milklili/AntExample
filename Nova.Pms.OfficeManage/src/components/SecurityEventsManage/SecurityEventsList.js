@@ -128,7 +128,7 @@ const AddSecurityEventsForm = Form.create()(
                                     //initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss'), 
                                     rules: [{ required: isAddOrEdit, message: "请选择发生时间" }],
                                     getValueProps: value => {
-                                        debugger;
+                                        
                                         if (!(value)){
                                             securityEvents.occurrenceDateTime = moment(new Date(), 'YYYY-MM-DD HH:mm:ss');
                                         }
@@ -189,9 +189,9 @@ const AddSecurityEventsForm = Form.create()(
 const NormalAddSecurityEventsForm = Form.create(
     {
         mapPropsToFields(props) {
-            debugger;
+            
             const fields = {};
-            debugger;
+            
             Object.keys(props.securityEvents).forEach(key => {
                 fields[key] = {
                     value: props.securityEvents[key]
@@ -237,7 +237,7 @@ function SecurityEventsList({
             const form = this.form;
 
             form.validateFields((err, values) => {
-                debugger;
+                
                 dispatch({
                     type: 'securityEventsList/changeSecurityEvents',
                     payload: { securityEvents: values },
@@ -251,7 +251,7 @@ function SecurityEventsList({
             const form = this.form;
             
             form.validateFields((err, values) => {
-                debugger;
+                
                 if (err) {
                     return;
                 }
@@ -297,7 +297,7 @@ function SecurityEventsList({
             this.dispatch = props.dispatch;
         }
         showModal = (e) => {
-            debugger;
+            
             e.preventDefault();
             this.setState({ visible: true });
             
@@ -312,7 +312,7 @@ function SecurityEventsList({
                 if (err) {
                     return;
                 }
-                debugger;
+                
                 values.id = this.props.securityEvents.id;
                 dispatch({
                     type: 'securityEventsList/editSecurityEvents',
@@ -358,7 +358,7 @@ function SecurityEventsList({
             this.dispatch = props.dispatch;
         }
         showModal = (e) => {
-            debugger;
+            
             e.preventDefault();
             this.setState({ visible: true });
 
@@ -441,7 +441,7 @@ function SecurityEventsList({
             }));
         }
         deleteSecurityEvents = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'securityEventsList/remove',
                 payload: { ids }
@@ -468,7 +468,7 @@ function SecurityEventsList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/securityEventsList",

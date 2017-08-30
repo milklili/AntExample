@@ -29,7 +29,7 @@ export default {
         },
 
         addAttachment(state, { payload: { files } }) {
-            debugger;
+            
             let maxId = state.documentData.attachments.length + 1;
             const documentData = state.documentData;
             for (let file of files) {
@@ -39,10 +39,10 @@ export default {
                 maxId++;
             }
             return { ...state, documentData };
-            debugger;
+            
         },
         removeAttachment(state, { payload: model }) {
-            debugger;
+            
             let file = state.documentData.attachments.find(
                 file => file.id == model.uid
             );

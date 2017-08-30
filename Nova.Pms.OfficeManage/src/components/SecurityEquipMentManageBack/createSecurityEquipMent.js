@@ -53,7 +53,7 @@ class SecurityEquipMentCreateForm extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        debugger;
+        
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 const unfilled = 0;
@@ -314,7 +314,7 @@ const WrappedSecurityEquipMentCreateForm = Form.create({
         };
     },
     onFieldsChange(props, changedFields) {
-        debugger;
+        
         const key = Object.keys(changedFields)[0];
         props.dispatch({
             type: "createSecurityEquipMent/changeField",
@@ -330,7 +330,7 @@ function mapStateToProps(state) {
 
     const { securityEquipMent, regionList, departmentList, staffList } = state.createSecurityEquipMent;
 
-    debugger;
+    
     return {
         loading: state.loading.models.createSecurityEquipMent,
         securityEquipMent: securityEquipMent,

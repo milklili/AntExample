@@ -82,7 +82,7 @@ class NormalWorkingPlanForm extends React.Component {
         const officeManagementCategoryOptions = this.props.officeManagementCategoryList.map(value =>
             <Option key={value.id} value={value.id}>{value.name}</Option>
         );
-        debugger;
+        
         const userOptions = this.props.userList.map(value =>
             <Option key={value.id} value={value.id}>{value.name}</Option>
         );

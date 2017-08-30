@@ -158,7 +158,7 @@ function WorkingPlanList({
             }));
         }
 
-        //debugger;
+        //
         watchWorkingPlan = (id) => {
             dispatch(routerRedux.push({
                 pathname: '/watchWorkingPlan',

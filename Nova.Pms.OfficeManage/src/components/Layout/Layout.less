@@ -1,143 +1,64 @@
 @import "../../themes/vars.less";
+@import "../../themes/mixin.less";
 
 .layout {
   position: relative;
-  height: 100vh;
-
-  &.withnavbar {
+  &.fold {
+    .sider {
+     left: -1px;
+     width: 0;
+      .switch {
+        right: -38px;
+      }
+    }
     .main {
       margin-left: 0;
     }
   }
 
-  &.fold {
-    .sider {
-      width: 42px;
-
-      .logo {
-        img {
-          width: 28px;
-          margin: 6px 7px;
-        }
-      }
-
-      :global {
-        .ant-menu-root {
-          width: 100%;
-          overflow: visible;
-
-          & > .ant-menu-item {
-            padding: 0;
-            text-align: center;
-
-            .anticon {
-              font-size: 14px;
-              margin-right: 0;
-            }
-          }
-
-          & > .ant-menu-submenu {
-            & > .ant-menu-submenu-title {
-              padding: 0;
-              text-align: center;
-
-              .anticon {
-                font-size: 14px;
-                margin-right: 0;
-              }
-
-              &::after {
-                display: none;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .main {
-      margin-left: 42px;
-    }
-  }
-
   .sider {
+    left: 0;
     width: 224px;
-    background: #3e3e3e;
+    background: #fff;
+    border-right: @border-1px;
+    color: #999;
     position: absolute;
     overflow: visible;
     padding-bottom: 24px;
-    height: 100vh;
+    height: 100%;
     transition: @transition-ease-out;
     box-shadow: @shadow-1;
-    color: #999;
-
-    &.light {
-      background: #fff;
-
-      .switchtheme {
-        background: #fff;
-        border-top: solid 1px #f8f8f8;
-      }
-    }
-
-    .logo {
+    z-index: 8;
+    h2 {
+      padding: 20px 0;
       text-align: center;
-      height: 40px;
-      line-height: 40px;
-      cursor: pointer;
-      margin: 28px 0;
-      transition: @transition-ease-out;
+      margin-bottom: 20px;
+      border-bottom: @border-1px;
       overflow: hidden;
-
-      img {
-        width: 40px;
-        margin-right: 8px;
-        transition: @transition-ease-out;
-      }
-
-      span {
-        vertical-align: text-bottom;
-        font-size: 16px;
-        text-transform: uppercase;
-        display: inline-block;
-      }
-
-      .anticon {
-        transition: @transition-ease-out;
-      }
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-
-    .switchtheme {
-      width: 100%;
+    .switch {
       position: absolute;
-      bottom: 0;
-      height: 48px;
-      background-color: @dark-half;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 16px 0 24px;
-      overflow: hidden;
-      z-index: 1000;
-
-      span {
-        white-space: nowrap;
-        overflow: hidden;
-      }
-
-      :global {
-        .anticon {
-          min-width: 14px;
-          margin-right: 8px;
-          font-size: 14px;
-        }
-      }
+      right: 0;
+      top: ~"calc(100% - 50px)";
+      font-size: 20px;
+      border: 1px solid lighten(@primary-color, 10%);
+      width: 36px;
+      height: 36px;
+      text-align: center;
+      line-height: 36px;
+      background-color: @primary-color;
+      color: lighten(@primary-color, 40%);
+      border-radius: 50%;
+      box-shadow: 0px 5px 7px rgba(30, 148, 234, .45);
+      z-index: 9;
     }
 
     :global {
       .ant-menu-dark,
       .ant-menu-dark .ant-menu-sub {
-        color: #999;
+        color: #eee;
       }
 
       .ant-menu-root {
@@ -173,7 +94,7 @@
 
       .ant-menu {
         transition: @transition-ease-out;
-
+        
         .ant-menu-item,
         .ant-menu-submenu-title {
           overflow: hidden;
@@ -184,82 +105,81 @@
   }
 
   .main {
+    position: relative;
     margin-left: 224px;
-    overflow: auto;
-    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
     transition: @transition-ease-out;
-
+    background-color: #f2f8ff;
     :global {
       .content-inner {
         background: #fff;
         padding: 24px;
         box-shadow: @shadow-1;
-        min-height: e("calc(100vh - 184px)");
+        min-height: e("calc(100vh - 183px)");
       }
     }
 
     .container {
       margin: 24px;
-      background-color: white;
-      padding: 24px;
-      border-radius: 5px;
     }
 
     .content {
-      min-height: e("calc(100vh - 184px)");
+      min-height: e("calc(100vh - 183px)");
       position: relative;
     }
   }
 }
 
 :global .ant-menu-dark {
-  color: #999;
-  background-color: #3e3e3e;
+  color: #eee;
+  background-color: inherit;
 
   .ant-menu-submenu-title:hover,
   .ant-menu-submenu:hover {
-    color: @primary-color;
+    color: @menu-color-dark;
   }
 
   .ant-menu-sub {
-    color: #999;
+    color: #eee;
   }
 
   .ant-menu-submenu-selected {
-    color: @primary-color;
+    color: @menu-color-dark;
 
     &:not(.ant-menu-submenu-open) {
-      background-color: @dark-half;
+      background-color: @dark-theme-side;
     }
   }
 
   .ant-menu-item,
   .ant-menu-submenu-title {
     & > a {
-      color: #999;
+      color: #eee;
     }
 
     &:hover > a {
-      color: @primary-color;
+      color: @menu-color-dark;
     }
   }
 
   &.ant-menu-inline {
     .ant-menu-item-selected {
-      background-color: @dark-half;
+      background-color: @dark-theme-side;
     }
   }
 
   .ant-menu-item-selected {
-    color: @primary-color;
-    background-color: @dark-half;
+    color: @menu-color-dark;
+    background-color: @dark-theme-side !important;
 
     & > a {
-      color: @primary-color;
+      color: @menu-color-dark;
     }
 
     &:hover {
-      background-color: @dark-half;
+      background-color: @dark-theme-side;
     }
   }
 }
@@ -281,13 +201,13 @@
       }
 
       .content {
-        min-height: e("calc(100vh - 160px)");
+        min-height: e("calc(100vh - 159px)");
       }
 
       :global {
         .content-inner {
           padding: 12px;
-          min-height: e("calc(100vh - 160px)");
+          min-height: e("calc(100vh - 159px)");
         }
       }
     }

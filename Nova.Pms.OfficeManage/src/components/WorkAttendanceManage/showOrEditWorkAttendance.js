@@ -511,7 +511,7 @@ class NormalWorkAttendanceForm extends React.Component {
                 }
 
             ];
-            debugger;
+            
             var pagination = {
                 total: this.props.workAttendance.total,
                 

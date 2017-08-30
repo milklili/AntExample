@@ -2,12 +2,12 @@
 import { PAGE_SIZE } from '../constants';
 
 //export function getData_plan({ page, filterStr }) {
-//    debugger;
+//    
 //    return request(`/api/officeManage/workingPlanCategorylist/${page}/${PAGE_SIZE}/${filterStr }`);
 //}
 
 export function getData_plan(pageInfo) {
-    debugger;
+    
     return request('/api/officeManage/workingPlanCategorylist', {
         headers: {
             'Content-Type': 'application/json'

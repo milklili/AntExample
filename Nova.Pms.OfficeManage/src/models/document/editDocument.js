@@ -56,7 +56,7 @@ export default {
     },
     effects: {
         *getData({ payload: { id } }, { call, put }) {
-            debugger;
+            
             const { data: documentData } = yield call(
                 documentService.getDocumentById, { id }
             );

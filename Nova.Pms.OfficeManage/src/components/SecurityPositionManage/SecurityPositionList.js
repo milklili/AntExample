@@ -81,7 +81,7 @@ function SecurityPositionList({
 
 
         addSecurityPosition = (id) => {
-            debugger;
+            
             const action = "isAdd";
             dispatch(routerRedux.push({
                 pathname: '/showOrEditSecurityPosition',
@@ -90,7 +90,7 @@ function SecurityPositionList({
         }
 
         deleteSecurityPosition = (id) => {
-            debugger;
+            
             dispatch({
                 type: 'securityPositionList/removeSecurityPosition',
                 payload: { id }
@@ -100,7 +100,7 @@ function SecurityPositionList({
 
 
         showSecurityPosition = (id) => {
-            debugger;
+            
             const action = "isShow";
             dispatch(routerRedux.push({
                 pathname: '/showOrEditSecurityPosition',
@@ -110,7 +110,7 @@ function SecurityPositionList({
        
 
         editSecurityPosition = (id) => {
-            debugger;
+            
             const action = "isEdit";
             dispatch(routerRedux.push({
                 pathname: '/showOrEditSecurityPosition',
@@ -140,7 +140,7 @@ function SecurityPositionList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/securityPositionList",

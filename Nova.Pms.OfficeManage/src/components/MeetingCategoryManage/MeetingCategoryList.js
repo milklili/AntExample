@@ -19,7 +19,7 @@ function MeetingCategoryList({ dispatch, list: dataSource, loading, total, page:
             dataIndex: "remark",
             key: "remark",
             render: (text, row) => 
-                //debugger;
+                //
                 <Tooltip title={text} placement="topLeft" >
                     <span className={styles.remark}>{text}</span>
                 </Tooltip>
@@ -68,7 +68,7 @@ function MeetingCategoryList({ dispatch, list: dataSource, loading, total, page:
             });
         }
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/meetingCategoryList",

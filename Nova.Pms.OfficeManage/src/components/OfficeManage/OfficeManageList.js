@@ -58,7 +58,7 @@ function OfficeManageList({ dispatch, list: dataSource, loading, total, page: cu
             this.setState({ selectedRowKeys });
         }
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/officeManageList",

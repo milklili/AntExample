@@ -78,7 +78,7 @@ export default {
     subscriptions: {
         setup({ dispatch, history }) {
             return history.listen(({ pathname, query }) => {
-                debugger;
+                
                 if (pathname === '/watchWorkingPlan') {
                     dispatch({ type: 'getWorkingPlan', payload: query });
                 }

@@ -14,7 +14,7 @@ export default {
     reducers: {
         updateState(state, {payload: {data: list, total, page, filterStr,pageSize}}) {
             return { ...state, list, total, page, filterStr,pageSize };
-            debugger;
+            
         },
 
         changeField(state, { payload: { key, value } }) {
@@ -26,7 +26,7 @@ export default {
     effects: {
         *getWorkingPlanList({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE} }, { call, put }) {
             const { data, headers } = yield call(workingPlanManageService.getWorkingPlanlist, { page: page, filterStr: filterStr, pageSize: pageSize });
-            debugger;
+            
             yield put({
                 type: 'updateState',
                 payload: {
@@ -37,7 +37,7 @@ export default {
                     filterStr: filterStr
                 }
             });
-            debugger;
+            
         },
 
         *remove({ payload: ids }, { call, put }) {

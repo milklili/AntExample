@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import pathToRegexp from 'path-to-regexp'
 import { Breadcrumb, Icon } from 'antd'
 import { Link } from 'dva/router'
 import styles from './Bread.less'
-import pathToRegexp from 'path-to-regexp'
 import { queryArray } from '../../utils'
 
 const Bread = ({ menu }) => {
@@ -11,13 +11,16 @@ const Bread = ({ menu }) => {
   let pathArray = []
   let current
   for (let index in menu) {
-    if (menu[index].route && pathToRegexp(menu[index].route).exec(location.pathname)) {
+    if (
+      menu[index].route &&
+      pathToRegexp(menu[index].route).exec(location.hash.slice(1).split('?')[0])
+    ) {
       current = menu[index]
       break
     }
   }
 
-  const getPathArray = (item) => {
+  const getPathArray = item => {
     pathArray.unshift(item)
     if (item.bpid) {
       getPathArray(queryArray(menu, item.bpid, 'id'))
@@ -25,11 +28,13 @@ const Bread = ({ menu }) => {
   }
 
   if (!current) {
-    pathArray.push(menu[0] || {
-      id: 1,
-      icon: 'home',
-      name: '首页',
-    })
+    pathArray.push(
+      menu[0] || {
+        id: 1,
+        icon: 'home',
+        name: '首页',
+      }
+    )
     pathArray.push({
       id: 404,
       name: 'Not Found',
@@ -41,15 +46,16 @@ const Bread = ({ menu }) => {
   // 递归查找父级
   const breads = pathArray.map((item, key) => {
     const content = (
-      <span>{item.icon
-          ? <Icon type={item.icon} style={{ marginRight: 4 }} />
-          : ''}{item.name}</span>
+      <span>
+        {item.icon ? <Icon type={item.icon} style={{ marginRight: 4 }} /> : ''}
+        {item.name}
+      </span>
     )
     return (
       <Breadcrumb.Item key={key}>
-        {((pathArray.length - 1) !== key)
+        {pathArray.length - 1 !== key
           ? <Link to={item.route}>
-              {content}
+            {content}
           </Link>
           : content}
       </Breadcrumb.Item>

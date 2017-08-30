@@ -798,7 +798,7 @@ class NormalSecurityPositionForm extends React.Component {
             }
 
         ];
-        debugger;
+        
         const data = this.props.securityPosition.securityPositionData;
         var pagination = {
             total:this.props.securityPosition.total,

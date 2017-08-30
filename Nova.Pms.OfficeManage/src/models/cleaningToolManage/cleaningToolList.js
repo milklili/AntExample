@@ -60,21 +60,21 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
+            
             var cleaningTool = { ...state.cleaningTool, [key]: value };
             return { ...state, cleaningTool };
         }
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
+            
             const { data } = yield call(cleaningToolService.getAll, { page: page, filterStr: filterStr, pageSize: pageSize });
             const { data: staffList } = yield call(commonDataService.getStaffList);
             const { data: regionList } = yield call(commonDataService.getRegionList);
             const { data: departmentList } = yield call(commonDataService.getDepartmentList);
             const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
 
-            debugger;
+            
             yield put({
                 type: 'updateState',
                 payload: {

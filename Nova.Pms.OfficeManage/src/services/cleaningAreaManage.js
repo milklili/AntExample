@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 
 export function getAll(pageInfo) {
-    debugger;
+    
     var params = queryString.stringify({...pageInfo});
     return request('/api/officeManage/cleaningArea?'+params, {
         method: 'GET'

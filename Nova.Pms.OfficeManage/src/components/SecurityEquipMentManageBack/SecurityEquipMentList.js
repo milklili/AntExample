@@ -61,9 +61,9 @@ function SecurityEquipMentList({
             }));
         }
 
-        //debugger;
+        //
         watchSecurityEquipMent = (id) => {
-            debugger;
+            
             dispatch(routerRedux.push({
                 pathname: '/watchSecurityEquipMent',
                 query: { id },
@@ -154,7 +154,7 @@ function SecurityEquipMentList({
 
 
         deleteHandler = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'securityEquipMentList/remove',
                 payload: { ids}
@@ -170,7 +170,7 @@ function SecurityEquipMentList({
 
         
         watchSecurityEquipMent = (id) => {
-            debugger;
+            
             dispatch(routerRedux.push({
                 pathname: '/watchSecurityEquipMent',
                 query: { id },
@@ -206,7 +206,7 @@ function SecurityEquipMentList({
         closeAdvancedSearch = () => {
             //const { isShowAdvancedSearch } = this.state;
             this.setState({ isShowAdvancedSearch: false });
-            debugger;
+            
             var searchInfos = [];
             for (var item in this.form) {
 
@@ -226,7 +226,7 @@ function SecurityEquipMentList({
                 labelCol: { span: 8 },
                 wrapperCol: { span: 16 },
             };
-            debugger;
+            
             const isShowAdvancedSearch = this.state.isShowAdvancedSearch;
 
 
@@ -242,7 +242,7 @@ function SecurityEquipMentList({
             const searchInfo = {};
             const Search = Input.Search;
 
-            debugger;
+            
             let { sortedInfo, filteredInfo } = this.state;
             sortedInfo = sortedInfo || {};
             filteredInfo = filteredInfo || {};

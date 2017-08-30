@@ -31,9 +31,9 @@ export default {
     },
     reducers: {
         updateState(state, { payload}) {
-            debugger;
+            
             return { ...state, ...payload  };
-            debugger;
+            
         },
         
         updateSeniorSearchToggle(state, { payload: { seniorSearch } }) {
@@ -51,27 +51,27 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
+            
             var approvedList = { ...state.approvedList, [key]: value };
             return { ...state, approvedList };
         },
         updateApprovedList(state, { payload: { approvedList } }) {
-            debugger;
+            
             var approvedList = { ...state.approvedList, ...approvedList }
             return { ...state, approvedList };
         },
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
+            
             const { data } = yield call(approvedService.getApprovedList, { page: page, filterStr: filterStr, pageSize: pageSize });
-            debugger;
+            
             const { data: regionList } = yield call(commonDataService.getRegionList);
             const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
             const { data: staffList } = yield call(commonDataService.getStaffList);
             const { data: cleaningAreaList } = yield call(commonDataService.cleaningAreaList);
-            debugger;
-            debugger;
+            
+            
             yield put({
                 type: 'updateState',
                 payload: {
@@ -172,7 +172,7 @@ export default {
         
 
         *changeApprovedList({ payload: approvedList }, { call, put, select }) {
-            debugger;
+            
             yield put({
                 type: 'updateState',
                 payload: {
@@ -182,7 +182,7 @@ export default {
         },
         
         *editApprovedList({ payload: approvedList }, { call, put, select }) {
-            debugger;
+            
             const { data } = yield call(approvedService .editApprovedList, approvedList);
             message.success(data.message, 3);
             yield put({
@@ -192,9 +192,9 @@ export default {
 
 
         *reload(action, { put, select }) {
-            debugger;
+            
             const page = yield select(state => state.approvedList.page);
-            debugger;
+            
             const filterStr = yield select(state => state.approvedList.filterStr);
             const pageSize = yield select(state => state.approvedList.pageSize);
             yield put({ type: 'getData', payload: { page, filterStr, pageSize} });

@@ -265,7 +265,7 @@ function ArticleRegistrationList({
             const form = this.form;
 
             form.validateFields((err, values) => {
-                debugger;
+                
                 dispatch({
                     type: 'articleRegistrationList/changeArticleRegistration',
                     payload: { articleRegistration: values },
@@ -365,7 +365,7 @@ function ArticleRegistrationList({
                 if (err) {
                     return;
                 }
-                debugger;
+                
                 values.id = this.props.articleRegistration.id;
                 dispatch({
                     type: 'articleRegistrationList/editArticleRegistration',
@@ -378,7 +378,7 @@ function ArticleRegistrationList({
         }
 
         handleIdCardNoValidate = (rule, value, callback) => {
-            debugger;
+            
             if (value != null && value != "" && (!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value))) {
                 callback('身份证格式错误');
             }
@@ -437,7 +437,7 @@ function ArticleRegistrationList({
             this.dispatch = props.dispatch;
         }
         showModal = (e) => {
-            debugger;
+            
             e.preventDefault();
             this.setState({ visible: true });
 
@@ -523,7 +523,7 @@ function ArticleRegistrationList({
             }));
         }
         deleteArticleRegistration = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'articleRegistrationList/remove',
                 payload: { ids }
@@ -550,7 +550,7 @@ function ArticleRegistrationList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/articleRegistrationList",

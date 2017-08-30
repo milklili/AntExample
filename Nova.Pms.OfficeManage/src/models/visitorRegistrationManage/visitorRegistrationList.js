@@ -30,9 +30,9 @@ export default {
     },
     reducers: {
         updateState(state, { payload}) {
-            debugger;
+            
             return { ...state, ...payload  };
-            debugger;
+            
         },
         
         updateSeniorSearchToggle(state, { payload: { seniorSearch } }) {
@@ -50,24 +50,24 @@ export default {
         },
 
         changeField(state, { payload: { key, value } }) {
-            debugger;
+            
             var visitorRegistration = { ...state.visitorRegistration, [key]: value };
             return { ...state, visitorRegistration };
         },
         updateVisitorRegistration(state, { payload: { visitorRegistration } }) {
-            debugger;
+            
             var visitorRegistration = { ...state.visitorRegistration, ...visitorRegistration }
             return { ...state, visitorRegistration };
         },
     },
     effects: {
         *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE } }, { call, put }) {
-            debugger;
+            
             const { data } = yield call(visitorRegistrationService.getData, { page: page, filterStr: filterStr, pageSize: pageSize });
-            debugger;
+            
             const { data: regionList } = yield call(commonDataService.getRegionList);
             const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
-            debugger;
+            
             yield put({
                 type: 'updateState',
                 payload: {
@@ -135,7 +135,7 @@ export default {
         },
 
         *remove({ payload: ids }, { call, put, select }) {
-            debugger;
+            
             const { data } = yield call(visitorRegistrationService.remove, ids);
             message.success(data.message, 3);
 
@@ -145,7 +145,7 @@ export default {
         *addVisitorRegistration({ payload: visitorRegistration }, { call, put, select }) {
             const { data } = yield call(visitorRegistrationService.addVisitorRegistration, visitorRegistration);
             message.success(data.message, 3);  
-            debugger;
+            
             yield put({
                 type: 'changeVisitorRegistration',
                 payload: {
@@ -157,7 +157,7 @@ export default {
         },
 
         *changeVisitorRegistration({ payload: visitorRegistration }, { call, put, select }) {
-            debugger;
+            
             yield put({
                 type: 'updateState',
                 payload: {
@@ -167,7 +167,7 @@ export default {
         },
         
         *editVisitorRegistration({ payload: visitorRegistration }, { call, put, select }) {
-            debugger;
+            
             const { data } = yield call(visitorRegistrationService.editVisitorRegistration, visitorRegistration);
             message.success(data.message, 3);
             yield put({
@@ -177,9 +177,9 @@ export default {
 
 
         *reload(action, { put, select }) {
-            debugger;
+            
             const page = yield select(state => state.visitorRegistrationList.page);
-            debugger;
+            
             const filterStr = yield select(state => state.visitorRegistrationList.filterStr); pageSize
             const pageSize = yield select(state => state.visitorRegistrationList.pageSize); 
             yield put({ type: 'getData', payload: { page, filterStr, pageSize } });

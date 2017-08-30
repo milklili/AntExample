@@ -34,16 +34,16 @@ class DocumentEditForm extends React.Component {
     };
 
     uploadOnChange = info => {
-        debugger;
+        
         if (info.file.status === "done") {
-            debugger;
+            
             message.success(`${info.file.name} 文件上传成功`);
             this.props.dispatch({
                 type: "editDocument/addUploadFiles",
                 payload: { file: info.file.response }
             });
         } else if (info.file.status === "removed") {
-            debugger;
+            
             this.props.dispatch({
                 type: "editDocument/removeUploadFiles",
                 payload: info.file.uid
@@ -132,7 +132,7 @@ class DocumentEditForm extends React.Component {
         onChange: this.uploadOnChange,
         beforeUpload: this.beforeAttachmentsOnChange,
         defaultFileList: this.props.documentData.attachments.map(attachment => {
-            debugger;
+            
             return {
                 uid: attachment.id,
                 name: attachment.fileName,

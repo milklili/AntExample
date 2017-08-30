@@ -21,7 +21,7 @@ class NormalPlanTypeCategoryForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 const unfilled = 0;
-                debugger;
+                
                 this.setState({ unfilled });
                 this.props.dispatch({
                     type: 'createPlanType/addPlanType',

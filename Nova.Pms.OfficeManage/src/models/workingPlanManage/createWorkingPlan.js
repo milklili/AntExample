@@ -110,7 +110,7 @@ export default {
     subscriptions: {
         setup({ dispatch, history }) {
             return history.listen(({ pathname, query }) => {
-                debugger;
+                
                 if (pathname === '/createWorkingPlan') {
                     dispatch({ type: 'setWorkingPlan', payload: query });
                 }

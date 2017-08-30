@@ -67,7 +67,7 @@ const Meeting = ({ dispatch, total, loading, list: dataSource, page: current, fi
             );
         }
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/meeting",
@@ -216,7 +216,7 @@ const Meeting = ({ dispatch, total, loading, list: dataSource, page: current, fi
             function onValueChange(){
                 this.isShow();
             }
-            debugger;
+            
             return(
                     <div>
                         <div className={styles.ListButton}>

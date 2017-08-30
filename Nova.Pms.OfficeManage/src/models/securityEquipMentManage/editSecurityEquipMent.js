@@ -89,7 +89,7 @@ export default {
     },
     subscriptions: {
         setup({ dispatch, history }) {
-            debugger;
+            
             return history.listen(({ pathname, query }) => {
                 if (pathname === '/editSecurityEquipMent') {
                     dispatch({ type: 'getSecurityEquipMent', payload: query });

@@ -130,9 +130,9 @@ export default {
         *getData({ payload: { page = 1, filterStr = '' } }, { call, put }) {  
             const { data: regionList } = yield call(commonDataService.getRegionList);
             const { data: initialRegion } = yield call(commonDataService.getCurrentRegion);
-            debugger;
+            
             const id = initialRegion.id;
-            debugger;
+            
             const { data: staffList } = yield call(commonDataService.getStaffByRegionId, { id});
             const date = new Date();
  

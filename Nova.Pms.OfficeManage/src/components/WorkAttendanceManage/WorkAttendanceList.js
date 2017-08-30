@@ -379,7 +379,7 @@ class AddWorkAttendance extends React.Component {
         }
     }
     handleHoursValidate = (rule, value, callback) => {
-        debugger;
+        
         if (value != null && value != "" && !((/^[0-9]+.?[0-9]*$/).test(value))) {
             callback('小时格式错误');
         }
@@ -465,7 +465,7 @@ class BatchAddWorkAttendance extends React.Component {
         }
     }
     handleHoursValidate = (rule, value, callback) => {
-        debugger;
+        
         if (value != null && value != "" && !((/^[0-9]+.?[0-9]*$/).test(value))) {
             callback('小时格式错误');
         }
@@ -530,7 +530,7 @@ class AddStaff extends React.Component {
         this.form = form;
     }
     handleIdCardNoValidate = (rule, value, callback) => {
-        debugger;
+        
         if (value != null && value != "" && (!/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value))) {
             callback('身份证格式错误');
         }
@@ -642,7 +642,7 @@ class WorkAttendance extends React.Component {
     };
 
     onShowSizeChange = (current, pageSize) => {
-        debugger;
+        
         dispatch(
             routerRedux.push({
                 pathname: "/workAttendanceList",

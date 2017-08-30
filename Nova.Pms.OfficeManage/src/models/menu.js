@@ -1,9 +1,10 @@
-export default [
+const menu = [
   {
     id: '1',
+    mpid: '-1',
     icon: 'home',
     name: '首页',
-    route: '/',
+    route: '/dashboard',
   },
   {
     id: '2',
@@ -24,6 +25,7 @@ export default [
     bpid: '2',
     name: '会议类别管理',
     route: '/meetingCategoryList',
+    quick: true,
   },
   {
     id: '23',
@@ -38,6 +40,7 @@ export default [
     bpid: '2',
     name: '文档资料管理',
     route: '/documentList',
+    quick: true,
   },
   {
     id: '25',
@@ -92,6 +95,7 @@ export default [
     bpid: '5',
     name: '安防事件记录',
     route: '/securityEventsList',
+    quick: true,
   },
   {
     id: '53',
@@ -99,6 +103,7 @@ export default [
     bpid: '5',
     name: '来人来访',
     route: '/visitorRegistrationList',
+    quick: true,
   },
   {
     id: '54',
@@ -129,83 +134,96 @@ export default [
     route: '/securityScheduleList',
   },
 
+  {
+    id: '6',
+    bpid: '1',
+    name: '保洁管理',
+    icon: 'laptop',
+  },
+  {
+    id: '58',
+    mpid: '6',
+    bpid: '6',
+    name: '保洁区域',
+    route: '/cleaningAreaList',
+    quick: true,
+  },
+  {
+    id: '59',
+    mpid: '6',
+    bpid: '6',
+    name: '保洁记录',
+    route: '/cleaningRecordList',
+    quick: true,
+  },
+  {
+    id: '60',
+    mpid: '6',
+    bpid: '6',
+    name: '保洁检查',
+    route: '/cleaningInspectList',
+  },
+  {
+    id: '61',
+    mpid: '6',
+    bpid: '6',
+    name: '保洁工具管理',
+    route: '/cleaningToolList',
+  },
 
   {
-      id: '6',
-      bpid: '1',
-      name: '保洁管理',
-      icon: 'laptop',
+    id: '7',
+    bpid: '1',
+    name: '审批管理',
+    icon: 'laptop',
   },
   {
-      id: '58',
-      mpid: '6',
-      bpid: '6',
-      name: '保洁区域',
-      route: '/cleaningAreaList',
+    id: '62',
+    mpid: '7',
+    bpid: '7',
+    name: '新建审批',
+    route: '/createApproval',
+    quick: true,
   },
   {
-      id: '59',
-      mpid: '6',
-      bpid: '6',
-      name: '保洁记录',
-      route: '/cleaningRecordList',
+    id: '63',
+    mpid: '7',
+    bpid: '7',
+    name: '我发起的',
+    route: '/initiatedList',
   },
   {
-      id: '60',
-      mpid: '6',
-      bpid: '6',
-      name: '保洁检查',
-      route: '/cleaningInspectList',
+    id: '64',
+    mpid: '7',
+    bpid: '7',
+    name: '待我审批的',
+    route: '/pendingApprovalList',
+    quick: true,
   },
   {
-      id: '61',
-      mpid: '6',
-      bpid: '6',
-      name: '保洁工具管理',
-      route: '/cleaningToolList',
-  },
-
-
-  {
-      id: '7',
-      bpid: '1',
-      name: '审批管理',
-      icon: 'laptop',
+    id: '65',
+    mpid: '7',
+    bpid: '7',
+    name: '我已审批的',
+    route: '/approvedList',
   },
   {
-      id: '62',
-      mpid: '7',
-      bpid: '7',
-      name: '新建审批',
-      route: '/createApproval',
+    id: '66',
+    mpid: '7',
+    bpid: '7',
+    name: '抄送我的',
+    route: '/sendApprovalList',
   },
-  {
-      id: '63',
-      mpid: '7',
-      bpid: '7',
-      name: '我发起的',
-      route: '/initiatedList',
-  },
-  {
-      id: '64',
-      mpid: '7',
-      bpid: '7',
-      name: '待我审批的',
-      route: '/pendingApprovalList',
-  },
-  {
-      id: '65',
-      mpid: '7',
-      bpid: '7',
-      name: '我已审批的',
-      route: '/approvedList',
-  },
-  {
-      id: '66',
-      mpid: '7',
-      bpid: '7',
-      name: '抄送我的',
-      route: '/sendApprovalList',
-  },
- 
 ]
+
+const tabBar = [
+  {
+    name: '常用服务',
+    menu: ['25', '56'],
+  },
+]
+
+export default {
+  menu,
+  tabBar,
+}

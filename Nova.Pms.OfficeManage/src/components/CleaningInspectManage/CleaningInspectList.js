@@ -36,7 +36,7 @@ const Option = Select.Option;
 const AddCleaningInspectForm = Form.create()(
     (props) => {
         const { visible, onCancel, onCreate, form, selectRegion, setState,dispatch, regionList, staffList, cleaningAreaList, cleaningInspect, isAddOrEdit } = props;
-        debugger;
+        
         const { getFieldDecorator } = form;
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -216,7 +216,7 @@ const NormalAddCleaningInspectForm = Form.create(
         }, 
        
         onFieldsChange(props, changedFields) {
-            debugger;
+            
             props.onChange(changedFields);
 
         },
@@ -258,7 +258,7 @@ function CleaningInspectList({
             this.dispatch = props.dispatch;
         }
         showModal = () => {
-            debugger;
+            
             cleaningInspect.regionId = this.props.initialRegion.id;
             cleaningInspect.cleaningAreaId = null;
             cleaningInspect.leadId = null;
@@ -301,7 +301,7 @@ function CleaningInspectList({
             });
             
             cleaningAreaList = cleaningAreaList.filter(function (n) { return n != undefined });
-            debugger;
+            
             this.setState({
                 staffList: staffList,
                 cleaningAreaList: cleaningAreaList,
@@ -317,14 +317,14 @@ function CleaningInspectList({
                     remark: cleaningInspect.remark,
                 },
             });
-            debugger;
+            
         }
 
         handleCancel = () => {
             const form = this.form;
 
             form.validateFields((err, values) => {
-                debugger;
+                
                 dispatch({
                     type: 'cleaningInspectList/changeCleaningInspect',
                     payload: { cleaningInspect: values },
@@ -336,9 +336,9 @@ function CleaningInspectList({
         }
         handleCreate = () => {
             const form = this.form;
-            debugger;
+            
             form.validateFields((err, values) => {
-                debugger;
+                
                 if (err) {
                     return;
                 }
@@ -366,9 +366,9 @@ function CleaningInspectList({
             let data = { [key]: value };
 
             if (key == "cleaningAreaId") {
-                debugger;
+                
                 var lead = this.props.cleaningAreaList.find(findCleaningArea);
-                debugger;
+                
                 if (lead != null) {
                     data = { leadId: lead.staffId, [key]: value };
                 }
@@ -382,7 +382,7 @@ function CleaningInspectList({
             this.setState({
                 cleaningInspect: { ...this.state.cleaningInspect, ...cleaningInspect },
             });
-            debugger;
+            
         }
        
         render() {           
@@ -425,7 +425,7 @@ function CleaningInspectList({
         }
         showModal = (e) => {
             e.preventDefault();
-            debugger;
+            
             var cleaningInspectOption = this.props.cleaningInspect;
             var staffList = this.props.staffList.map(function (x) {
                 if (x.staffRegionId == cleaningInspectOption.regionId) {
@@ -440,8 +440,8 @@ function CleaningInspectList({
                 }
             });
             cleaningAreaList = cleaningAreaList.filter(function (n) { return n != undefined });
-            debugger;
-            debugger;
+            
+            
             this.setState({
                 staffList: staffList,
                 cleaningAreaList: cleaningAreaList,
@@ -465,25 +465,25 @@ function CleaningInspectList({
                 }
             });
             cleaningAreaList = cleaningAreaList.filter(function (n) { return n != undefined });
-            debugger;
+            
             this.setState({
                 staffList: staffList,
                 cleaningAreaList: cleaningAreaList,
                
             });
-            debugger;
+            
         }
         handleCancel = () => {
             this.setState({ visible: false });
         }
         handleCreate = () => {
             const form = this.form;
-            debugger;
+            
             form.validateFields((err, values) => {
                 if (err) {
                     return;
                 }
-                debugger;
+                
                 values.id = this.props.cleaningInspect.id;
                 dispatch({
                     type: 'cleaningInspectList/editCleaningInspect',
@@ -508,9 +508,9 @@ function CleaningInspectList({
             let data = { [key]: value };
 
             if (key == "cleaningAreaId") {
-                debugger;
+                
                 var lead = this.props.cleaningAreaList.find(findCleaningArea);
-                debugger;
+                
                 if (lead != null) {
                     data = { leadId: lead.staffId, [key]: value };
                 }
@@ -524,7 +524,7 @@ function CleaningInspectList({
             this.setState({
                 cleaningInspect: { ...this.state.cleaningInspect, ...cleaningInspect },
             });
-            debugger;
+            
         }
         render() {
             return (
@@ -562,7 +562,7 @@ function CleaningInspectList({
             this.dispatch = props.dispatch;
         }
         showModal = (e) => {
-            debugger;
+            
             e.preventDefault();
             this.setState({ visible: true });
 
@@ -647,7 +647,7 @@ function CleaningInspectList({
             }));
         }
         deleteCleaningInspect = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'cleaningInspectList/remove',
                 payload: { ids }
@@ -674,7 +674,7 @@ function CleaningInspectList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/cleaningInspectList",
@@ -1001,7 +1001,7 @@ function mapStateToProps(state) {
         seniorSearchData,
         seniorSearch
     } = state.cleaningInspectList;
-    debugger;
+    
     return {
         loading: state.loading.models.cleaningInspectList,
         list,

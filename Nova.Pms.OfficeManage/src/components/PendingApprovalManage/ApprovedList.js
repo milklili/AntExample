@@ -47,7 +47,7 @@ const EditInitiatedForm = Form.create()(
             labelCol: { span: 3 },
             wrapperCol: { span: 21 },
         };
-        debugger;
+        
         const regionOptions = regionList.map(value =>
             <Option key={value.id} value={value.id}>{value.name}</Option>
         );
@@ -206,7 +206,7 @@ const NormalEditInitiatedForm = Form.create(
         }, 
        
         onFieldsChange(props, changedFields) {
-            debugger;
+            
             props.onChange(changedFields);
 
         },
@@ -217,7 +217,7 @@ const NormalEditInitiatedForm = Form.create(
 const CommentApprovalForm = Form.create()(
     (props) => {
         const { visible, onCancel, onCreate, form,personStatus } = props;
-        debugger;
+        
         const { getFieldDecorator } = form;
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -258,9 +258,9 @@ const CommentApprovalForm = Form.create()(
 const NormalCommentApprovalForm = Form.create(
     {
         mapPropsToFields(props) {
-            debugger;
+            
             const fields = {};
-            debugger;
+            
             if (props.personStatus){
                 Object.keys(props.personStatus).forEach(key => {
                     fields[key] = {
@@ -274,7 +274,7 @@ const NormalCommentApprovalForm = Form.create(
             };
         },
         //onFieldsChange(props, changedFields) {
-        //    debugger;
+        //    
         //    props.onChange(changedFields);
 
         //},
@@ -342,27 +342,27 @@ function ApprovedList({
                 }
             });
             sendPersonId = sendPersonId.filter(function (n) { return n != undefined });
-            debugger;
+            
             var approval = { ...this.state.approval, approvalPersonId,sendPersonId };
-            debugger;
+            
             this.setState({
                 approval: { ...this.state.approval, ...approval },
             });
-            debugger;
+            
             var attachments = this.props.approval.attachments.map(function (x) {
                 if (x.fileType == 1) {
                     return x;
                 }
             });
             attachments = attachments.filter(function (n) { return n != undefined });
-            debugger;
+            
             var pictures = this.props.approval.attachments.map(function (x) {
                 if (x.fileType == 0) {
                     return x;
                 }
             });
             pictures = pictures.filter(function (n) { return n != undefined });
-            debugger;
+            
             this.setState({
                 personStatus: this.props.approval.personStatus,
                 staffList: staffList,
@@ -388,25 +388,25 @@ function ApprovedList({
                 }
             });
             cleaningAreaList = cleaningAreaList.filter(function (n) { return n != undefined });
-            debugger;
+            
             this.setState({
                 staffList: staffList,
                 cleaningAreaList: cleaningAreaList,
                
             });
-            debugger;
+            
         }
 
         onSendIdChange = (value) => {
             let { personStatus } = this.state;
-            debugger;
+            
            var length = value.length;
             //let personStatusList = [];
            let data = { approvalOperationType: 0, approvalPersonType: 2, personId: value[length-1], remark: "" };
-            debugger;
+            
             personStatus.push(data);
             this.setState({ personStatus });
-            debugger;
+            
             //var approval = { ...this.state.approval, ...data };
             //this.setState({
             //    approval: { ...this.state.approval, ...approval },
@@ -417,17 +417,17 @@ function ApprovedList({
             //let personStatusList = [];
             var length = value.length;
             let data = { approvalOperationType: 0, approvalPersonType: 1, personId: value[length-1], remark: "" };
-            debugger;
+            
             personStatus.push(data);
             this.setState({ personStatus });
-            debugger;
+            
             //var approval = { ...this.state.approval, ...data };
             //this.setState({
             //    approval: { ...this.state.approval, ...approval },
             //});
         };
         onApprovalIdDeselect = (value) => {
-            debugger;
+            
             let { personStatus } = this.state;
             //let personStatusList = [];
 
@@ -437,7 +437,7 @@ function ApprovedList({
                 personStatus.splice(index, 1);
             }
             this.setState({ personStatus });
-            debugger;
+            
             //var approval = { ...this.state.approval, ...data };
             //this.setState({
             //    approval: { ...this.state.approval, ...approval },
@@ -445,7 +445,7 @@ function ApprovedList({
         };
 
         onSendIdDeselect = (value) => {
-            debugger;
+            
             let { personStatus } = this.state;
             //let personStatusList = [];
 
@@ -455,7 +455,7 @@ function ApprovedList({
                 personStatus.splice(index, 1);
             }
             this.setState({ personStatus });
-            debugger;
+            
             //var approval = { ...this.state.approval, ...data };
             //this.setState({
             //    approval: { ...this.state.approval, ...approval },
@@ -472,9 +472,9 @@ function ApprovedList({
             //onChange: this.uploadAttachmentsOnChange,
             //this.uploadAttachmentsOnChange,
             fileList: this.props.approval.attachments.map(attachment => {
-                debugger;
+                
                 if (attachment.fileType == 1) {
-                    debugger;
+                    
                     return {
                         uid: attachment.id,
                         name: attachment.fileName,
@@ -495,7 +495,7 @@ function ApprovedList({
             },
             //onChange: this.uploadPicturesOnChange,
             fileList: this.props.approval.attachments.map(attachment => {
-                debugger;
+                
                 if (attachment.fileType == 0) {
                     return {
                         uid: attachment.id,
@@ -521,7 +521,7 @@ function ApprovedList({
         }
        
         handleFormChange = (changedFields) => {
-            debugger;
+            
             const key = Object.keys(changedFields)[0];
             const value = changedFields[key].value;
 
@@ -572,7 +572,7 @@ function ApprovedList({
 
         constructor(props) {
             super(props);
-            debugger;
+            
             this.state = {
                 visible: false,
                 personStatus: [],
@@ -600,7 +600,7 @@ function ApprovedList({
         }
         handleCreate = () => {
             const form = this.form;
-            debugger;
+            
             form.validateFields((err, values) => {
                 if (err) {
                     return;
@@ -611,7 +611,7 @@ function ApprovedList({
                 values.personId = this.props.approval.approvalPersonStatus.personId;
                 
                 //values.attachments = this.state.attachments.concat(this.state.pictures);
-                debugger;
+                
                 this.props.dispatch({
                     type: 'approvedList/addApprovedComment',
                     payload: { personStatus: values },
@@ -626,7 +626,7 @@ function ApprovedList({
         }
 
         //handleFormChange = (changedFields) => {
-        //    debugger;
+        //    
         //    const key = Object.keys(changedFields)[0];
         //    const value = changedFields[key].value;
 
@@ -663,7 +663,7 @@ function ApprovedList({
 
         constructor(props) {
             super(props);
-            debugger;
+            
             this.state = {
                 visible: false,
                 personStatus: [],
@@ -672,7 +672,7 @@ function ApprovedList({
 
         }
         showModal = (e) => {
-            debugger;
+            
             e.preventDefault();
             this.setState({
                 visible: true,
@@ -688,12 +688,12 @@ function ApprovedList({
         }
         handleCreate = () => {
             const form = this.form;
-            debugger;
+            
             form.validateFields((err, values) => {
                 if (err) {
                     return;
                 }
-                debugger;
+                
                 //values.id = this.props.approval.id;
                 values.ids = this.props.approval.map(x => x.approvalPersonStatus.id);
                 //values.ids = this.props.approval;
@@ -705,7 +705,7 @@ function ApprovedList({
                     values.approvalOperationType = 2;
                 };
                 
-                debugger;
+                
                 this.props.dispatch({
                     type: 'approvedList/batchAddComment',
                     payload: { personStatus: values },
@@ -720,7 +720,7 @@ function ApprovedList({
         }
 
         //handleFormChange = (changedFields) => {
-        //    debugger;
+        //    
         //    const key = Object.keys(changedFields)[0];
         //    const value = changedFields[key].value;
 
@@ -809,14 +809,14 @@ function ApprovedList({
             }));
         }
         deleteApproval = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'approvedList/deleteApproval',
                 payload: { ids }
             });
         }
         revokedApproval = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'approvedList/revokedApproval',
                 payload: { ids }
@@ -844,7 +844,7 @@ function ApprovedList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/approvedList",
@@ -1155,7 +1155,7 @@ function mapStateToProps(state) {
         seniorSearchData,
         seniorSearch
     } = state.approvedList;
-    debugger;
+    
     return {
         loading: state.loading.models.approvedList,
         list,

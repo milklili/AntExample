@@ -9,7 +9,7 @@ import * as Layout from './Layout/index'
 
 // import layer from './layer'
 
-export {
+export default {
   Layout,
   // DataTable,
   // DropOption,

@@ -47,7 +47,7 @@ const EditInitiatedForm = Form.create()(
             labelCol: { span: 3 },
             wrapperCol: { span: 21 },
         };
-        debugger;
+        
         const regionOptions = regionList.map(value =>
             <Option key={value.id} value={value.id}>{value.name}</Option>
         );
@@ -203,7 +203,7 @@ const NormalEditInitiatedForm = Form.create(
         }, 
        
         onFieldsChange(props, changedFields) {
-            debugger;
+            
             props.onChange(changedFields);
 
         },
@@ -214,7 +214,7 @@ const NormalEditInitiatedForm = Form.create(
 const CommentApprovalForm = Form.create()(
     (props) => {
         const { visible, onCancel, onCreate,form } = props;
-        debugger;
+        
         const { getFieldDecorator } = form;
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -255,9 +255,9 @@ const CommentApprovalForm = Form.create()(
 const NormalCommentApprovalForm = Form.create(
     {
         mapPropsToFields(props) {
-            debugger;
+            
             const fields = {};
-            debugger;
+            
             Object.keys(props.personStatus).forEach(key => {
                 fields[key] = {
                     value: props.personStatus[key]
@@ -268,7 +268,7 @@ const NormalCommentApprovalForm = Form.create(
             };
         },
         //onFieldsChange(props, changedFields) {
-        //    debugger;
+        //    
         //    props.onChange(changedFields);
 
         //},
@@ -336,27 +336,27 @@ function InitiatedList({
                 }
             });
             sendPersonId = sendPersonId.filter(function (n) { return n != undefined });
-            debugger;
+            
             var approval = { ...this.state.approval, approvalPersonId,sendPersonId };
-            debugger;
+            
             this.setState({
                 approval: { ...this.state.approval, ...approval },
             });
-            debugger;
+            
             var attachments = this.props.approval.attachments.map(function (x) {
                 if (x.fileType == 1) {
                     return x;
                 }
             });
             attachments = attachments.filter(function (n) { return n != undefined });
-            debugger;
+            
             var pictures = this.props.approval.attachments.map(function (x) {
                 if (x.fileType == 0) {
                     return x;
                 }
             });
             pictures = pictures.filter(function (n) { return n != undefined });
-            debugger;
+            
             this.setState({
                 personStatus: this.props.approval.personStatus,
                 staffList: staffList,
@@ -375,7 +375,7 @@ function InitiatedList({
                 }
             });
             staffList = staffList.filter(function (n) { return n != undefined });
-            debugger;
+            
             let { personStatus } = this.state;
 
             var length = personStatus.length;
@@ -387,19 +387,19 @@ function InitiatedList({
                 staffList: staffList,
                
             });
-            debugger;
+            
         }
 
         onSendIdChange = (value) => {
             let { personStatus } = this.state;
-            debugger;
+            
            var length = value.length;
             //let personStatusList = [];
            let data = { approvalOperationType: 0, approvalPersonType: 2, personId: value[length-1], remark: "" };
-            debugger;
+            
             personStatus.push(data);
             this.setState({ personStatus });
-            debugger;
+            
             //var approval = { ...this.state.approval, ...data };
             //this.setState({
             //    approval: { ...this.state.approval, ...approval },
@@ -410,17 +410,17 @@ function InitiatedList({
             //let personStatusList = [];
             //var length = value.length;
             let data = { approvalOperationType: 0, approvalPersonType: 1, personId: value, remark: "" };
-            debugger;
+            
             personStatus.push(data);
             this.setState({ personStatus });
-            debugger;
+            
             //var approval = { ...this.state.approval, ...data };
             //this.setState({
             //    approval: { ...this.state.approval, ...approval },
             //});
         };
         onApprovalIdDeselect = (value) => {
-            debugger;
+            
             let { personStatus } = this.state;
             //let personStatusList = [];
 
@@ -430,7 +430,7 @@ function InitiatedList({
                 personStatus.splice(index, 1);
             }
             this.setState({ personStatus });
-            debugger;
+            
             //var approval = { ...this.state.approval, ...data };
             //this.setState({
             //    approval: { ...this.state.approval, ...approval },
@@ -438,7 +438,7 @@ function InitiatedList({
         };
 
         onSendIdDeselect = (value) => {
-            debugger;
+            
             let { personStatus } = this.state;
             //let personStatusList = [];
 
@@ -448,7 +448,7 @@ function InitiatedList({
                 personStatus.splice(index, 1);
             }
             this.setState({ personStatus });
-            debugger;
+            
             //var approval = { ...this.state.approval, ...data };
             //this.setState({
             //    approval: { ...this.state.approval, ...approval },
@@ -457,14 +457,14 @@ function InitiatedList({
 
 
         uploadAttachmentsOnChange = info => {
-            debugger;
+            
             let { attachments } = this.state;
             let fileList = info.fileList;
-            debugger;
+            
             // filter successfully uploaded files according to response from server
             fileList.filter(file => {
                 if (file.response) {
-                    debugger;
+                    
                     message.success(`${info.file.name} 文件上传成功.`);
                     let maxId = attachments.length + 1;
                     for (let file of file.response) {
@@ -474,7 +474,7 @@ function InitiatedList({
                         maxId++;
                     }
                     fileList = [];
-                    debugger;
+                    
                     attachments.forEach(function (currentfile) {
                         var file = {};
                         file.uid = currentfile.id;
@@ -495,13 +495,13 @@ function InitiatedList({
             } else if (info.file.status === "error") {
                 message.error(`${info.file.name} 文件上传失败.`);
             }
-            debugger;
+            
             this.setState({ attachmentsFileList: fileList, attachments });
         };
         uploadPicturesOnChange = info => {
             let { pictures } = this.state;
             let fileList = info.fileList;
-            debugger;
+            
             // filter successfully uploaded files according to response from server
             fileList.filter(file => {
                 if (file.response) {
@@ -540,7 +540,7 @@ function InitiatedList({
         beforePicturesOnChange = file => {
             let { pictures } = this.state;
             let fileList = file.fileList;
-            debugger;
+            
             const isJPG = ((file.type.toLowerCase() === 'image/jpeg')
                 || (file.type.toLowerCase() === 'image/bmp')
                 || (file.type.toLowerCase() === 'image/png')
@@ -591,9 +591,9 @@ function InitiatedList({
             beforeUpload: this.beforeAttachmentsOnChange,
 
             defaultFileList: this.props.approval.attachments.map(attachment => {
-                debugger;
+                
                 if (attachment.fileType == 1) {
-                    debugger;
+                    
                     return {
                         uid: attachment.id,
                         name: attachment.fileName,
@@ -615,7 +615,7 @@ function InitiatedList({
             onChange: this.uploadPicturesOnChange,
             beforeUpload: this.beforePicturesOnChange,
             defaultFileList: this.props.approval.attachments.map(attachment => {
-                debugger;
+                
                 if (attachment.fileType == 0) {
                     return {
                         uid: attachment.id,
@@ -655,7 +655,7 @@ function InitiatedList({
         }
         handleCreate = () => {
             const form = this.form;
-            debugger;
+            
             form.validateFields((err, values) => {
                 if (err) {
                     return;
@@ -663,7 +663,7 @@ function InitiatedList({
                 values.id = this.props.approval.id;
                 values.personStatus = this.state.personStatus;
                 values.attachments = this.state.attachments.concat(this.state.pictures);
-                debugger;
+                
                 this.props.dispatch({
                     type: 'initiatedList/editApproval',
                     payload: { approval: values },
@@ -678,7 +678,7 @@ function InitiatedList({
         }
        
         handleFormChange = (changedFields) => {
-            debugger;
+            
             const key = Object.keys(changedFields)[0];
             const value = changedFields[key].value;
 
@@ -729,7 +729,7 @@ function InitiatedList({
 
         constructor(props) {
             super(props);
-            debugger;
+            
             this.state = {
                 visible: false,
                 personStatus: [],
@@ -738,7 +738,7 @@ function InitiatedList({
 
         }
         showModal = (e) => {
-            debugger;
+            
             e.preventDefault();
             this.setState({
                 visible: true,
@@ -754,7 +754,7 @@ function InitiatedList({
         }
         handleCreate = () => {
             const form = this.form;
-            debugger;
+            
             form.validateFields((err, values) => {
                 if (err) {
                     return;
@@ -762,7 +762,7 @@ function InitiatedList({
                 //values.id = this.props.approval.id;
                 values.approvalId = this.props.approval.id;
                 //values.attachments = this.state.attachments.concat(this.state.pictures);
-                debugger;
+                
                 this.props.dispatch({
                     type: 'initiatedList/addComment',
                     payload: { personStatus: values },
@@ -777,7 +777,7 @@ function InitiatedList({
         }
 
         //handleFormChange = (changedFields) => {
-        //    debugger;
+        //    
         //    const key = Object.keys(changedFields)[0];
         //    const value = changedFields[key].value;
 
@@ -845,7 +845,7 @@ function InitiatedList({
 
         
         showApproval = (id) => {
-            debugger;
+            
             dispatch(routerRedux.push({
                 pathname: '/showApproval',
                 query: { id },
@@ -858,14 +858,14 @@ function InitiatedList({
             }));
         }
         deleteApproval = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'initiatedList/deleteApproval',
                 payload: { ids }
             });
         }
         revokedApproval = (ids) => {
-            debugger;
+            
             dispatch({
                 type: 'initiatedList/revokedApproval',
                 payload: { ids }
@@ -893,7 +893,7 @@ function InitiatedList({
             this.setState({ selectedRows });
         };
         onShowSizeChange = (current, pageSize) => {
-            debugger;
+            
             dispatch(
                 routerRedux.push({
                     pathname: "/initiatedList",
