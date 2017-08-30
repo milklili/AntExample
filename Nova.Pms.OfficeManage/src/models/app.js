@@ -24,7 +24,10 @@ export default {
         router: '/dashboard',
       },
     ],
-    tabBar: [],
+    tabBar: JSON.parse(localStorage.getItem(`${prefix}tabBar`)) || [{
+      name: '常用服务',
+      menu: [],
+    }],
     notice: {
       content: '我是一条通知信息！',
       visible: false,
@@ -97,7 +100,7 @@ export default {
         type: 'updateState',
         payload: {
           menu,
-          tabBar,
+          // tabBar,
           profile,
         },
       })

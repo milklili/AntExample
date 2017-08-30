@@ -80,7 +80,7 @@ const Header = ({
       <div className={classnames(styles.header, styles.dark)}>
         <div className={classnames(styles.logo, styles.item)}>
           <img alt={'logo'} src={config.logo} />
-          <span>{config.name}</span>
+          {/* <span>{config.name}</span> */}
         </div>
         <div className={styles.item}>
           <Link to={indexPage && indexPage.route} onClick={handleMenuItemClick.bind(null, indexPage, false)}>
