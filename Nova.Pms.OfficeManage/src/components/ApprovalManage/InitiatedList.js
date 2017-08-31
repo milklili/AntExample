@@ -294,7 +294,6 @@ function InitiatedList({
     cleaningAreaList,
     approval,
 }) {
-
     class EditInitiated extends React.Component {
 
         constructor(props) {
@@ -590,7 +589,7 @@ function InitiatedList({
             //this.uploadAttachmentsOnChange,
             beforeUpload: this.beforeAttachmentsOnChange,
 
-            defaultFileList: this.props.approval.attachments.map(attachment => {
+            defaultFileList: approval.attachments.map(attachment => {
                 
                 if (attachment.fileType == 1) {
                     
@@ -614,7 +613,7 @@ function InitiatedList({
             },
             onChange: this.uploadPicturesOnChange,
             beforeUpload: this.beforePicturesOnChange,
-            defaultFileList: this.props.approval.attachments.map(attachment => {
+            defaultFileList: approval.attachments.map(attachment => {
                 
                 if (attachment.fileType == 0) {
                     return {
@@ -629,7 +628,6 @@ function InitiatedList({
 
         };
         
-
         handleCancel = () => {
             this.setState ({
                 visible: false,
@@ -663,7 +661,6 @@ function InitiatedList({
                 values.id = this.props.approval.id;
                 values.personStatus = this.state.personStatus;
                 values.attachments = this.state.attachments.concat(this.state.pictures);
-                
                 this.props.dispatch({
                     type: 'initiatedList/editApproval',
                     payload: { approval: values },
@@ -671,7 +668,6 @@ function InitiatedList({
                 form.resetFields();
                 this.setState({ visible: false });
             });
-
         }
         saveFormRef = (form) => {
             this.form = form;
@@ -723,7 +719,6 @@ function InitiatedList({
             );
         }
     };
-
 
     class CommentApproval extends React.Component {
 
