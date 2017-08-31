@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import { PAGE_SIZE } from '../constants';
 
 export function create(approval) {
-    return request('/api/officeManage/Approval', {
+    return request('/api/officeManage/approval', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -12,7 +12,7 @@ export function create(approval) {
     });
 }
 export function edit(approval) {
-    return request('/api/officeManage/Approval', {
+    return request('/api/officeManage/approval', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -21,7 +21,7 @@ export function edit(approval) {
     });
 }
 export function comment(personStatus) {
-    return request('/api/officeManage/Approval', {
+    return request('/api/officeManage/approval/addComment', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -30,7 +30,7 @@ export function comment(personStatus) {
     });
 }
 export function remove({ ids }) {
-    return request(`/api/officeManage/Approval`, {
+    return request(`/api/officeManage/approval`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -39,23 +39,23 @@ export function remove({ ids }) {
     });
 }
 export function revoked({ ids }) {
-    return request(`/api/officeManage/Approval`, {
+    return request(`/api/officeManage/approval/revokedApproval`, {
         headers: {
             'Content-Type': 'application/json'
         },
-        method: 'PUT',
+        method: 'POST',
         body: JSON.stringify(ids),
     });
 }
 
 export function getAll(pageInfo) {
     var params = queryString.stringify({...pageInfo});
-    return request('/api/officeManage/Approval?'+params, {
+    return request('/api/officeManage/approval?'+params, {
         method: 'GET'
     });
 }
 export function cleaningAreaList() {
-    return request(`/api/officeManage/CleaningArea/cleaningAreaList`);
+    return request(`/api/officeManage/cleaningArea/cleaningAreaList`);
 }
 export function get({ id }) {
     return request(`/api/officeManage/Approval/${id}`);

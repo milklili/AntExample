@@ -583,7 +583,7 @@ function PendingApprovalList({
             },
            // onChange: this.uploadAttachmentsOnChange,
             //this.uploadAttachmentsOnChange,
-            fileList: this.props.approval.attachments.map(attachment => {
+            fileList: approval.attachments.map(attachment => {
                 
                 if (attachment.fileType == 1) {
                     
@@ -606,7 +606,7 @@ function PendingApprovalList({
                 authorization: "authorization-text"
             },
             //onChange: this.uploadPicturesOnChange,
-            fileList: this.props.approval.attachments.map(attachment => {
+            fileList: approval.attachments.map(attachment => {
                 
                 if (attachment.fileType == 0) {
                     return {

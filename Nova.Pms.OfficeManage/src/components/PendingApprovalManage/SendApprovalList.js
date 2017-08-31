@@ -380,7 +380,7 @@ function SendApprovalList({
             },
             //onChange: this.uploadAttachmentsOnChange,
             //this.uploadAttachmentsOnChange,
-            fileList: this.props.approval.attachments.map(attachment => {
+            fileList: approval.attachments.map(attachment => {
                 
                 if (attachment.fileType == 0) {
                     
@@ -403,7 +403,7 @@ function SendApprovalList({
                 authorization: "authorization-text"
             },
             //onChange: this.uploadPicturesOnChange,
-            fileList: this.props.approval.attachments.map(attachment => {
+            fileList: approval.attachments.map(attachment => {
                 
                 if (attachment.fileType == 1) {
                     return {
