@@ -9,6 +9,7 @@ import styles from './index.less'
 import NavBar from './NavBar'
 import NoticeBar from './NoticeBar'
 import NavModal from './NavModal'
+import Logo from '../../../assets/logo.png'
 
 // const SubMenu = Menu.SubMenu
 
@@ -79,7 +80,7 @@ const Header = ({
     <div className={styles.headerWrap}>
       <div className={classnames(styles.header, styles.dark)}>
         <div className={classnames(styles.logo, styles.item)}>
-          <img alt={'logo'} src={config.logo} />
+          <img alt={'logo'} src={Logo} />
           {/* <span>{config.name}</span> */}
         </div>
         <div className={styles.item}>
