@@ -1,5 +1,6 @@
-﻿import * as contractListService from '../services/contractList';
+﻿import * as contractListService from '../../services/contractsManage';
 import { message } from 'antd';
+import { PAGE_SIZE } from '../../constants';
 
 export default {
     namespace: 'contractList',
@@ -15,31 +16,25 @@ export default {
         },
     },
     effects: {
-        *getData({ payload: { page = 1, filterStr = ''} }, { call, put }) {
-            const {data, headers} = yield call(contractListService.getData, { page, filterStr });
-            if (data.state == "SUCCESS") {
+        *getData({ payload: { page = 1, filterStr = '', pageSize = PAGE_SIZE} }, { call, put }) {
+            const {data, headers} = yield call(contractListService.getAll, { page: page, filterStr: filterStr, pageSize: pageSize });
                 yield put({
                     type: 'updateState',
                     payload: {
                         data: data.data,
                         total: parseInt(data.total, 10),
                         page: parseInt(page, 10),
+                        pageSize: parseInt(pageSize, 10),
                         filterStr: filterStr
                     }
                 });
-            }
         },
+        *remove({ payload: ids }, { call, put, select }) {
+            const { data } = yield call(contractListService.remove, ids);
+            message.success(data.message, 3);
 
-        *remove({ payload: id }, { call, put }) {
-            const {data} = yield call(contractListService.remove, id);
-            if (data.state == "SUCCESS") {
-                message.success(data.message, 3);
-                yield put({ type: 'reload' });
-            } else {
-                message.error(data.message, 3);
-            }
+            yield put({ type: 'reload' });
         },
-
         *reload(action, { put, select }) {
             const page = yield select(state => state.contractList.page);
             const filterStr = yield select(state => state.contractList.filterStr);

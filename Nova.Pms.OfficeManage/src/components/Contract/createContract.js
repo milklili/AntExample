@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Table, Pagination, Popconfirm, Modal, Button, Form, Input, Menu, Dropdown, Icon, DatePicker, Upload, message, Row, Col, Select } from 'antd';
 import { routerRedux } from 'dva/router';
 import moment from 'moment';
-import styles from './ContractList.css';
+import styles from './contractList.css';
 
 const Option = Select.Option;
 const FormItem = Form.Item;

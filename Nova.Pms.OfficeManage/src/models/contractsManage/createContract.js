@@ -1,4 +1,4 @@
-﻿import * as createContractService from '../services/createContract';
+﻿import * as createContractService from '../../services/contractsManage';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -148,12 +148,8 @@ export default {
             let contract = yield select(state => state.createContract.contract);
             const val = Object.assign(contract, values);
             const {data} = yield call(createContractService.create, { val });
-            if (data.state == "SUCCESS") {
                 message.success(data.message, 3);
                 yield put(routerRedux.push('/contractList'));
-            } else {
-                message.error(data.message, 3);
-            }
         },
         *addAttachment({ payload: {file, model} }, { call, put }) {
             yield put({ type: 'addAttachmentRedux', payload: { files: file, model: model } });

@@ -14,7 +14,7 @@ export default {
   
   "proxy": {
     "/api": {
-      "target": "http://localhost:14770/api/",
+      "target": "http://localhost:3535/api/",
       "changeOrigin": true,
       "pathRewrite": { "^/api" : "" }
     },

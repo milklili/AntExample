@@ -1,4 +1,4 @@
-﻿import * as editContractService from '../services/editContract';
+﻿import * as editContractService from '../../services/contractsManage';
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 
@@ -65,9 +65,8 @@ export default {
     },
     effects: {
         *getDataById({ payload: id }, { call, put }) {
-            const {data:contractData} = yield call(editContractService.getContractDataById, { id });   
+            const {data:contractData} = yield call(editContractService.get, { id });   
             const {data: cityData} = yield call(editContractService.getCityData);
-            if (contractData.state == "SUCCESS") {
                 yield put({
                     type: 'getData',
                     payload: {
@@ -77,7 +76,6 @@ export default {
                         contract: contractData.contract,
                     }
                 });
-            }
         },
         *remove({ payload: id }, { call, put }) {
             yield put({ type: 'removeuser', payload: { id: id } });
@@ -102,12 +100,8 @@ export default {
             let contract = yield select(state => state.editContract.contract);
             const val = Object.assign(contract, values);
             const {data} = yield call(editContractService.edit, { val });
-            if (data.state == "SUCCESS") {
                 message.success(data.message, 3);
                 yield put(routerRedux.push('/contractList'));
-            } else {
-                message.error(data.message, 3);
-            }
         },
     },
     subscriptions: {

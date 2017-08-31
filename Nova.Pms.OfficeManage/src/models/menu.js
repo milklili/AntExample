@@ -70,13 +70,13 @@ const menu = [
     route: '/workAttendanceList',
     quick: true,
   },
-  // {
-  //   id: '4',
-  //   bpid: '1',
-  //   name: '合同管理',
-  //   icon: 'laptop',
-  //   route: '/contractList',
-  // },
+  {
+    id: '4',
+    bpid: '1',
+    name: '合同管理',
+    icon: 'laptop',
+    route: '/contractList',
+  },
   {
     id: '5',
     bpid: '1',
