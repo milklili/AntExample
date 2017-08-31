@@ -8,13 +8,13 @@ const svgSpriteDirs = [
 export default {
   entry: 'src/index.js',
   svgSpriteLoaderDirs: svgSpriteDirs,
-  devtool: 'source-map',
+  // devtool: 'source-map',
   "theme": "./theme.config.js",
   // 接口代理示例
   
   "proxy": {
     "/api": {
-      "target": "http://localhost:3535/api/",
+      "target": "http://10.10.120.137:8091/api/",
       "changeOrigin": true,
       "pathRewrite": { "^/api" : "" }
     },

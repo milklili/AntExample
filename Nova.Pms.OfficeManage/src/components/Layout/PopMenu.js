@@ -20,6 +20,11 @@ const handleMouseEnter = e => {
     clearTimeout(timer)
   }
   timer = setTimeout(() => {
+    // 如有需要重新设置
+    // if (ele.dataset.ownmenu !== `${config.prefix}-menu-quick`) {
+    // }
+    const nodeDiff = child.childNodes.length - parent.childNodes.length
+    parent.style.height = nodeDiff > 0 ? `${child.childNodes.length * 40}px` : '100%'
     if (
       parent.dataset.selectid && parent.dataset.selectid !== ele.dataset.ownmenu
     ) {
