@@ -1,6 +1,6 @@
 module.exports = (webpackConfig) => {
   // FilenameHash
-  webpackConfig.output.chunkFilename = '[name].[hash].js' // http://webpack.github.io/docs/configuration.html#output-chunkfilename
+  webpackConfig.output.chunkFilename = '[name].[hash:5].js' // http://webpack.github.io/docs/configuration.html#output-chunkfilename
 
   // ClassnameHash
   const cssLoaderOption = {
