@@ -9,6 +9,7 @@ export default {
   entry: 'src/index.js',
   svgSpriteLoaderDirs: svgSpriteDirs,
   // devtool: 'source-map',
+  publicPath: '/',
   "theme": "./theme.config.js",
   // 接口代理示例
   

@@ -6,6 +6,7 @@ import { classnames, arrayToTree, config } from 'utils'
 import styles from './PopMenu.less'
 
 let timer
+let menuRoot
 
 const clear = () => {
   timer && clearTimeout(timer)
@@ -16,15 +17,11 @@ const handleMouseEnter = e => {
   const ele = e.currentTarget
   const child = ele.querySelector(`#${ele.dataset.ownmenu}`)
   const parent = ele.parentNode
+  !menuRoot && (menuRoot = document.querySelector(`#${config.prefix}-menu-root`))
   if (timer) {
     clearTimeout(timer)
   }
   timer = setTimeout(() => {
-    // 如有需要重新设置
-    // if (ele.dataset.ownmenu !== `${config.prefix}-menu-quick`) {
-    // }
-    const nodeDiff = child.childNodes.length - parent.childNodes.length
-    parent.style.height = nodeDiff > 0 ? `${child.childNodes.length * 40}px` : '100%'
     if (
       parent.dataset.selectid && parent.dataset.selectid !== ele.dataset.ownmenu
     ) {
@@ -34,6 +31,13 @@ const handleMouseEnter = e => {
       preParent.removeAttribute('data-checked')
     }
     if (child) {
+      if (ele.dataset.ownmenu !== `${config.prefix}-menu-quick`) {
+        const nodeDiff = child.childNodes.length - menuRoot.childNodes.length
+        menuRoot.style.height = nodeDiff > 0 ? `${child.childNodes.length * 40}px` : '100%'
+      } else {
+        // 为了获得更好的显示效果，可能需要更复杂的高度计算
+        menuRoot.style.height = '100%'
+      }
       ele.setAttribute('data-checked', '')
       parent.dataset.selectid = ele.dataset.ownmenu
       child.style.display = 'flex'
@@ -172,7 +176,7 @@ const PopMenu = ({ menu, handleMenuItemClick }) => {
 
   return (
     <div className={styles.allMenu} onClick={clear} onMouseLeave={clear}>
-      <ul className={styles.menu} data-selectid={`${config.prefix}-menu-quick`}>
+      <ul id={`${config.prefix}-menu-root`} className={styles.menu} data-selectid={`${config.prefix}-menu-quick`}>
         {quickMenu.length && quickMenuEle }
         {menuItems}
       </ul>
