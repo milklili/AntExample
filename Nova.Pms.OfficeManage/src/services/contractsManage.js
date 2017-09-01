@@ -24,23 +24,23 @@ export function create(values) {
     });
 }
 
-export function edit({ values }) {
+export function edit({ val }) {
     return request('/api/saas/Contracts', {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'PUT',
-        body: JSON.stringify(values.val),
+        body: JSON.stringify(val),
     });
 }
 
-export function remove({ ids }) {
+export function remove({ id }) {
     return request(`/api/saas/Contracts`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'DELETE',
-        body: JSON.stringify(ids),
+        body: JSON.stringify(id),
     });
 }
 

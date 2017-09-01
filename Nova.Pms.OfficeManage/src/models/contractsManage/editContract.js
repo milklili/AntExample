@@ -64,7 +64,7 @@ export default {
         },
     },
     effects: {
-        *getDataById({ payload: id }, { call, put }) {
+        *getDataById({ payload: {id} }, { call, put }) {
             const {data:contractData} = yield call(editContractService.get, { id });   
             const {data: cityData} = yield call(editContractService.getCityData);
                 yield put({
@@ -73,7 +73,7 @@ export default {
                         cityData: cityData,
                         streetRegisterData: {},
                         streetWarkingData: {},
-                        contract: contractData.contract,
+                        contract: contractData,
                     }
                 });
         },

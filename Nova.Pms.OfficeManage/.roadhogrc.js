@@ -13,6 +13,11 @@ export default {
   // 接口代理示例
   
   "proxy": {
+	  "/api/saas": {
+      "target": "http://localhost:8425/api/saas",
+      "changeOrigin": true,
+      "pathRewrite": { "^/api/saas" : "" }
+    },
     "/api": {
       "target": "http://10.10.120.137:8091/api/",
       "changeOrigin": true,

@@ -9,7 +9,7 @@ function ContractList({ dispatch, list: dataSource, loading, total, page: curren
     function deleteHandler(id) {
         dispatch({
             type: 'contractList/remove',
-            payload: id,
+            payload: {id},
         });
     }
 
