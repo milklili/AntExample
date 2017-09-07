@@ -148,7 +148,8 @@ const App = ({ children, dispatch, app, loading, location }) => {
       payload: { selectedKeys: [selectedId] },
     })
     dispatch({ type: 'app/updateSidebarRootId', payload: { sidebarRootId: rootId } })
-    dispatch({ type: 'app/setMenuPopover', payload: { menuPopoverVisible: false } })
+    // 因为有多个页签，改用原生DOM API来控制显示
+    // dispatch({ type: 'app/setMenuPopover', payload: { menuPopoverVisible: false } })
   }
 
   // header组件相关
@@ -288,7 +289,7 @@ const App = ({ children, dispatch, app, loading, location }) => {
   return (
     <div>
       <Helmet>
-        <title>ANTD ADMIN</title>
+        <title>NOVA ADMIN</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href={logo} type="image/x-icon" />
         {iconFontJS && <script src={iconFontJS} />}

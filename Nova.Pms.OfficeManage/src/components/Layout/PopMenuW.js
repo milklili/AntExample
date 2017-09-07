@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Icon } from 'antd'
-import { Link } from 'dva/router'
 import { classnames, arrayToTree, config } from 'utils'
 import styles from './PopMenu.less'
 
@@ -100,18 +99,18 @@ const PopMenu = ({ menu, handleMenuItemClick }) => {
       }
       return (
         <li
-          key={item.id}
+          key={item.name}
           data-ownmenu={`${config.prefix}-menu-${item.id}`}
           onMouseEnter={handleMouseEnter}
           className={classnames(styles.menuItem, styles.menuRouter)}
         >
-          <Link
-            to={item.route}
+          <a
+            href={item.route}
             onClick={handleMenuItemClick.bind(null, item, false)}
           >
             {item.icon && <Icon type={item.icon} style={{ marginRight: 4 }} />}
             {item.name}
-          </Link>
+          </a>
         </li>
       )
     })
@@ -127,10 +126,9 @@ const PopMenu = ({ menu, handleMenuItemClick }) => {
     >
       <div className={styles.subTitle}>
         <span>
-          <Icon type="bars" style={{ marginRight: 4 }} />
           总览
         </span>
-        <Icon type="right" />
+        <Icon type="bars" />
       </div>
       <ul id={`${config.prefix}-menu-quick`} className={styles.subMenu} style={{ display: 'flex' }}>
         {qm.map(item => (
@@ -141,9 +139,9 @@ const PopMenu = ({ menu, handleMenuItemClick }) => {
             <h3 style={{ paddingBottom: '10px', color: '#eee' }}>{item.name}</h3>
             {item.children
               ? item.children.map(c => (
-                <Link
-                  to={c.route}
-                  key={`quick-menu-${c.route}`}
+                <a
+                  href={c.route}
+                  key={c.route}
                   onClick={handleMenuItemClick.bind(
                     null,
                     c,
@@ -156,16 +154,16 @@ const PopMenu = ({ menu, handleMenuItemClick }) => {
                     style={{ marginRight: 4 }}
                   />} */}
                   {c.name}
-                </Link>
+                </a>
               ))
-              : <Link
-                to={item.route}
+              : <a
+                href={item.route}
                 onClick={handleMenuItemClick.bind(null, item, false)}
               >
                 {/* {item.icon &&
                 <Icon type={item.icon} style={{ marginRight: 4 }} />} */}
                 {item.name}
-              </Link>}
+              </a>}
 
           </li>
         ))}
@@ -175,7 +173,6 @@ const PopMenu = ({ menu, handleMenuItemClick }) => {
   const menuItems = getMenus(menuTree)
 
   const quickMenuEle = getQuickMenus(quickMenu)
-
   return (
     <div className={styles.allMenu} onClick={clear} onMouseLeave={clear}>
       <ul id={`${config.prefix}-menu-root`}

@@ -5,7 +5,7 @@ import config from '../utils/config'
 // import { query, logout } from '../services/app'
 // import * as menusService from '../services/menus'
 
-import originMenu from './menu'
+import originMenu from './oa-menu'
 
 const { prefix } = config
 
@@ -91,7 +91,7 @@ export default {
       //   window.location = `${location.origin}/login`
       // }
 
-      const { menu, tabBar } = originMenu
+      const { menu } = originMenu
       const profile = {
         name: 'test',
         id: 1,

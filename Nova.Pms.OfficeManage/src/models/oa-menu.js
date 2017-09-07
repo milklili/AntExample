@@ -10,7 +10,7 @@ const menu = [
     id: '2',
     bpid: '1',
     name: '办公管理',
-    icon: 'notification',
+    icon: 'desktop',
   },
   {
     id: '21',
@@ -60,7 +60,7 @@ const menu = [
     id: '3',
     bpid: '1',
     name: '人事管理',
-    icon: 'laptop',
+    icon: 'team',
   },
   {
     id: '31',
@@ -74,14 +74,14 @@ const menu = [
     id: '4',
     bpid: '1',
     name: '合同管理',
-    icon: 'laptop',
+    icon: 'file',
     route: '/contractList',
   },
   {
     id: '5',
     bpid: '1',
     name: '保安消防',
-    icon: 'laptop',
+    icon: 'notification',
   },
   {
     id: '51',
@@ -140,7 +140,7 @@ const menu = [
     id: '6',
     bpid: '1',
     name: '保洁管理',
-    icon: 'laptop',
+    icon: 'smile-o',
   },
   {
     id: '58',
@@ -177,7 +177,7 @@ const menu = [
     id: '7',
     bpid: '1',
     name: '审批管理',
-    icon: 'laptop',
+    icon: 'like-o',
   },
   {
     id: '62',
