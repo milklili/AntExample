@@ -5,6 +5,7 @@ const overWrite = process.env.NODE_ENV !== 'development'
 module.exports = () => {
   const themePath = path.join(__dirname, './src/themes/default.less')
   const lessObj = lessToJs(fs.readFileSync(themePath, 'utf8'))
-  overWrite && (lessObj["@icon-url"] = '/Nova.Pms.Spa/Home/antd/iconfont' )
+  overWrite && (lessObj["@icon-url"] = '\"/Nova.Pms.Spa/Home/antd/iconfont\"' )
+  console.log(lessObj["@icon-url"])
   return lessObj
 }

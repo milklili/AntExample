@@ -1,12 +1,20 @@
-// var webpack = require('webpack');
+const webpack = require('webpack');
 module.exports = (webpackConfig) => {
   // var definePlugin = new webpack.DefinePlugin({
   //   __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'false')),
   //   __PRERELEASE__: JSON.stringify(JSON.parse(process.env.BUILD_PRERELEASE || 'true'))
   // });
   // webpackConfig.plugins.push(definePlugin)
+
+  const vendor = new webpack.optimize.CommonsChunkPlugin({
+    names: ['vendor', 'manifest'],
+  })
+
+  webpackConfig.plugins.push(vendor)
+
+  webpackConfig.entry.vendor = ['react', 'react-dom', 'moment', 'redux', 'react-router', 'classnames']
   // FilenameHash
-  webpackConfig.output.chunkFilename = '[name].[hash:5].js' // http://webpack.github.io/docs/configuration.html#output-chunkfilename
+  webpackConfig.output.chunkFilename = '[name].[chunkhash:5].js' // http://webpack.github.io/docs/configuration.html#output-chunkfilename
 
   // ClassnameHash
   const cssLoaderOption = {
