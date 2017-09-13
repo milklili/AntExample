@@ -1,4 +1,10 @@
+// var webpack = require('webpack');
 module.exports = (webpackConfig) => {
+  // var definePlugin = new webpack.DefinePlugin({
+  //   __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'false')),
+  //   __PRERELEASE__: JSON.stringify(JSON.parse(process.env.BUILD_PRERELEASE || 'true'))
+  // });
+  // webpackConfig.plugins.push(definePlugin)
   // FilenameHash
   webpackConfig.output.chunkFilename = '[name].[hash:5].js' // http://webpack.github.io/docs/configuration.html#output-chunkfilename
 

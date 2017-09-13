@@ -1,0 +1,51 @@
+.logoWrap {
+  position: relative;
+  overflow: hidden;
+  min-height: e("calc(100vh - 183px)");
+  box-shadow: 0 0px 12px 0px rgba(46, 166, 220, 0.51);
+  background-color: #3baaea;
+  border-radius: 5px;
+}
+
+.title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20%;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 10px;
+}
+
+
+.pointWrapper {
+  position: absolute;
+}
+
+.point {
+  border-radius: 100%;
+}
+
+.rightSide {
+  width: 400px;
+  height: 360px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  & *{
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .logoWrap {
+    min-height: e("calc(100vh - 159px)");
+  }
+  .title {
+    letter-spacing: 5px;
+  }
+}

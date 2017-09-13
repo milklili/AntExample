@@ -46,7 +46,19 @@
     white-space: nowrap;
     cursor: pointer;
     & a{
+      position: relative;
       color: inherit;
+      &[data-active]:after {
+        content: ' ';
+        position: absolute;
+        bottom: 5px;
+        left: e("calc(50% - 3px)");
+        display: block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: @menu-color-dark;
+      }
     }
     &:hover {
       color: @menu-color-dark;
@@ -68,21 +80,22 @@
     overflow-x: auto;
     .menuItem{
       position: relative;
-      &.active:after {
-        content: ' ';
-        position: absolute;
-        bottom: 5px;
-        left: e("calc(50% + 7px)");
-        display: block;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background-color: white;
-      }
-      &:hover:after{
-        background-color: @menu-color-dark;
-      }
     }
+  }
+
+  .active:after {
+    content: ' ';
+    position: absolute;
+    bottom: 5px;
+    left: e("calc(50% + 12px)");
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: white;
+  }
+  .active:hover:after{
+    background-color: @menu-color-dark;
   }
 
   .logoutMemu {

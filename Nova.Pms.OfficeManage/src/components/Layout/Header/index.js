@@ -10,11 +10,12 @@ import styles from './index.less'
 import NavBar from './NavBar'
 import NoticeBar from './NoticeBar'
 import NavModal from './NavModal'
-import Logo from '../../../assets/logo.png'
+// import Logo from '../../../assets/logo.png'
 
-import PM from './payment-menu'
-import CM from './customer-menu'
-import COM from './contract-menu'
+// import PM from './payment-menu'
+// import CM from './customer-menu'
+// import COM from './contract-menu'
+import menuData from './menu-data'
 
 // const SubMenu = Menu.SubMenu
 
@@ -23,13 +24,17 @@ const handlerMouseEnter = (suffix, e) => {
   const menuWrap = e.currentTarget.querySelector(
     `#${config.popMenu}-${suffix}`
   )
+  const firstChild = e.currentTarget.firstChild
   menuWrap.style.display = 'block'
+  firstChild.setAttribute('data-active', '')
 }
 const handlerMouseLeave = (suffix, e) => {
   const menuWrap = e.currentTarget.querySelector(
     `#${config.popMenu}-${suffix}`
   )
+  const firstChild = e.currentTarget.firstChild
   menuWrap.style.display = 'none'
+  firstChild.removeAttribute('data-active')
 
   // 取消误触消失
 
@@ -92,23 +97,27 @@ const Header = ({
     handleMenuItemClick,
   }
 
-  const payMenuProps = {
-    menu: PM,
-    handleMenuItemClick () {
-      // to do
-    },
-  }
-  const ctmMenuProps = {
-    menu: CM,
-    handleMenuItemClick () {
-      // to do
-    },
-  }
-  const cotMenuProps = {
-    menu: COM,
-    handleMenuItemClick () {
-      // to do
-    },
+  // const payMenuProps = {
+  //   menu: PM,
+  //   handleMenuItemClick () {
+  //     // to do
+  //   },
+  // }
+  // const ctmMenuProps = {
+  //   menu: CM,
+  //   handleMenuItemClick () {
+  //     // to do
+  //   },
+  // }
+  // const cotMenuProps = {
+  //   menu: COM,
+  //   handleMenuItemClick () {
+  //     // to do
+  //   },
+  // }
+
+  const menuClick = e => {
+    console.log(e)
   }
 
   const PopMenuTemplate = ({ popMenu, name, idSubfix }) => {
@@ -121,7 +130,7 @@ const Header = ({
       >
         <a>
           {name}
-          <Icon type="caret-down" style={{ marginLeft: 2 }} />
+          {/* <Icon type="caret-down" style={{ marginLeft: 2, fontSize: '6px' }} /> */}
         </a>
         <div
           id={`${config.popMenu}-${idSubfix}`}
@@ -149,7 +158,7 @@ const Header = ({
     <div className={styles.headerWrap}>
       <div className={classnames(styles.header, styles.dark)}>
         <div className={classnames(styles.logo, styles.item)}>
-          <img alt={'logo'} src={Logo} />
+          <img alt={'logo'} src={config.logo} />
           {/* <span>{config.name}</span> */}
         </div>
         <div className={styles.item}>
@@ -161,9 +170,15 @@ const Header = ({
           </Link>
         </div>
         <PopMenuTemplate popMenu={<PopMenu {...oaMenuProps} />} name="OA系统" idSubfix="oa" />
-        <PopMenuTemplate popMenu={<PopMenuW {...payMenuProps} />} name="收费管理" idSubfix="payment" />
+        {/* <PopMenuTemplate popMenu={<PopMenuW {...payMenuProps} />} name="收费管理" idSubfix="payment" />
         <PopMenuTemplate popMenu={<PopMenuW {...ctmMenuProps} />} name="客户服务" idSubfix="customer" />
-        <PopMenuTemplate popMenu={<PopMenuW {...cotMenuProps} />} name="房屋合同" idSubfix="contract" />
+        <PopMenuTemplate popMenu={<PopMenuW {...cotMenuProps} />} name="房屋合同" idSubfix="contract" /> */}
+        {menuData.length > 0 && menuData.map((item, index) => (
+          <PopMenuTemplate
+            popMenu={<PopMenuW menu={item.menu} handleMenuItemClick={menuClick} />}
+            name={item.text} idSubfix={`${index}`} key={item.text} />
+        ))}
+
         <ul className={styles.customMenu}>
           {tabBar.length &&
             tabBar.map(item => (

@@ -9,7 +9,7 @@ export default {
   entry: 'src/index.js',
   svgSpriteLoaderDirs: svgSpriteDirs,
   // devtool: 'source-map',
-  publicPath: '/',
+  publicPath: '/Nova.Pms.Spa/Home/',
   "theme": "./theme.config.js",
   // 接口代理示例
   

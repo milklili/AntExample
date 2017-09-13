@@ -1,15 +1,16 @@
 const APIV1 = '/api/v1'
 const APIV2 = '/api/v2'
-
+const evn = process.env.NODE_ENV
+const prefix = evn !== 'development' ? '/Nova.Pms.Spa/Home' : ''
 module.exports = {
   name: 'Nova PMS',
   prefix: 'NovaPMS',
   footerText: 'Ant Design Admin  © 2017 Nova',
   headerMenuText: '常用服务',
   popMenu: 'nova-admin-menu',
-  logo: '/logo.png',
-  iconFontCSS: '/iconfont.css',
-  iconFontJS: '/iconfont.js',
+  logo: `${prefix}/logo.png`,
+  iconFontCSS: `${prefix}/iconfont.css`,
+  iconFontJS: `${prefix}/iconfont.js`,
   // YQL: ['http://www.zuimeitianqi.com'],
   CORS: [],
   openPages: ['/login'],
