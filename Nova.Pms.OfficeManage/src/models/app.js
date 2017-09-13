@@ -3,9 +3,9 @@ import { parse } from 'qs'
 import config from '../utils/config'
 // import { EnumRoleType } from '../utils/enums'
 // import { query, logout } from '../services/app'
-// import * as menusService from '../services/menus'
+import menusService from '../services/menus'
 
-import originMenu from './oa-menu'
+import menuOA from './oa-menu'
 
 const { prefix } = config
 
@@ -24,6 +24,7 @@ export default {
         router: '/dashboard',
       },
     ],
+    menuWuYe: [],
     tabBar: JSON.parse(localStorage.getItem(`${prefix}tabBar`)) || [{
       name: '常用服务',
       menu: [],
@@ -90,8 +91,8 @@ export default {
       //   // let from = location.pathname
       //   window.location = `${location.origin}/login`
       // }
-
-      const { menu } = originMenu
+      const { menu } = menuOA
+      const { data } = yield call(menusService)
       const profile = {
         name: 'test',
         id: 1,
@@ -102,6 +103,7 @@ export default {
           menu,
           // tabBar,
           profile,
+          menuWuYe: data,
         },
       })
     },

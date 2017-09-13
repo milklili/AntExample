@@ -2,6 +2,7 @@ import classnames from 'classnames'
 import lodash from 'lodash'
 import config from './config'
 import request from './request'
+import axios from './axios'
 import { color } from './theme'
 
 // 连字符转驼峰
@@ -106,6 +107,7 @@ const arrayToTree = (array, id = 'id', pid = 'pid', rootId = '-1', children = 'c
 module.exports = {
   config,
   request,
+  axios,
   color,
   classnames,
   queryURL,

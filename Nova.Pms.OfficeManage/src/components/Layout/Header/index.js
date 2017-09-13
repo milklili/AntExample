@@ -15,7 +15,7 @@ import NavModal from './NavModal'
 // import PM from './payment-menu'
 // import CM from './customer-menu'
 // import COM from './contract-menu'
-import menuData from './menu-data'
+// import menuData from './menu-data'
 
 // const SubMenu = Menu.SubMenu
 
@@ -63,6 +63,7 @@ const Header = ({
   logout,
   handleMenuItemClick,
   menu,
+  menuWuYe,
   tabBar,
   navBar,
   editNavBar,
@@ -116,8 +117,8 @@ const Header = ({
   //   },
   // }
 
-  const menuClick = e => {
-    console.log(e)
+  const menuClick = () => {
+    // to do
   }
 
   const PopMenuTemplate = ({ popMenu, name, idSubfix }) => {
@@ -173,7 +174,7 @@ const Header = ({
         {/* <PopMenuTemplate popMenu={<PopMenuW {...payMenuProps} />} name="收费管理" idSubfix="payment" />
         <PopMenuTemplate popMenu={<PopMenuW {...ctmMenuProps} />} name="客户服务" idSubfix="customer" />
         <PopMenuTemplate popMenu={<PopMenuW {...cotMenuProps} />} name="房屋合同" idSubfix="contract" /> */}
-        {menuData.length > 0 && menuData.map((item, index) => (
+        {menuWuYe.length > 0 && menuWuYe.map((item, index) => (
           <PopMenuTemplate
             popMenu={<PopMenuW menu={item.menu} handleMenuItemClick={menuClick} />}
             name={item.text} idSubfix={`${index}`} key={item.text} />
@@ -220,6 +221,7 @@ const Header = ({
 
 Header.propTypes = {
   menu: PropTypes.array,
+  menuWuYe: PropTypes.array,
   tabBar: PropTypes.array,
   navBar: PropTypes.object,
   profile: PropTypes.object,

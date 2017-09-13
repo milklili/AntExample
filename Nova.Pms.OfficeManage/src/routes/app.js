@@ -20,6 +20,7 @@ let lastHref
 const App = ({ children, dispatch, app, loading, location }) => {
   const {
     menu,
+    menuWuYe,
     sidebarRootId,
     tabBar,
     navBarKey,
@@ -156,6 +157,7 @@ const App = ({ children, dispatch, app, loading, location }) => {
 
   const headerProps = {
     menu,
+    menuWuYe,
     tabBar,
     handleMenuItemClick,
     navBar: { ...navBar, menu: checkedMenu },
