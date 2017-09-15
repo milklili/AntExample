@@ -13,11 +13,19 @@ const clear = () => {
   timer = null
 }
 
+const findRoot = child => {
+  let parent = child.parentNode
+  if (!parent.dataset.menuRoot) {
+    findRoot(parent)
+  }
+  return parent
+}
+
 const handleMouseEnter = e => {
   const ele = e.currentTarget
   const child = ele.querySelector(`#${ele.dataset.ownmenu}`)
   const parent = ele.parentNode
-  !menuRoot && (menuRoot = document.querySelector(`#${config.prefix}-menu-root`))
+  menuRoot = findRoot(ele)
   if (timer) {
     clearTimeout(timer)
   }
@@ -178,7 +186,8 @@ const PopMenu = ({ menu, handleMenuItemClick }) => {
 
   return (
     <div className={styles.allMenu} onClick={clear} onMouseLeave={clear}>
-      <ul id={`${config.prefix}-menu-root`}
+      <ul
+        data-menu-root="1"
         className={styles.menu}
         data-selectid={quickMenu.length ? `${config.prefix}-menu-quick` : 'null'}>
         {quickMenu.length > 0 && quickMenuEle }

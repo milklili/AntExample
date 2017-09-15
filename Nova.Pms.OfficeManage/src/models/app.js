@@ -16,14 +16,7 @@ export default {
     permissions: {
       visit: [],
     },
-    menu: [
-      {
-        id: 1,
-        icon: 'laptop',
-        name: 'Dashboard',
-        router: '/dashboard',
-      },
-    ],
+    menu: [],
     menuWuYe: [],
     tabBar: JSON.parse(localStorage.getItem(`${prefix}tabBar`)) || [{
       name: '常用服务',
@@ -92,7 +85,7 @@ export default {
       //   window.location = `${location.origin}/login`
       // }
       const { menu } = menuOA
-      const { data } = yield call(menusService)
+      const { list } = yield call(menusService)
       const profile = {
         name: 'test',
         id: 1,
@@ -103,7 +96,7 @@ export default {
           menu,
           // tabBar,
           profile,
-          menuWuYe: data,
+          menuWuYe: list,
         },
       })
     },

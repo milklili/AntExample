@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Menu, Icon, Popover, Dropdown } from 'antd'
+import { Menu, Icon, Dropdown } from 'antd'
 import { Link } from 'dva/router'
 import { classnames, config } from 'utils'
 import PopMenu from '../PopMenu'
@@ -15,42 +15,36 @@ import NavModal from './NavModal'
 // import PM from './payment-menu'
 // import CM from './customer-menu'
 // import COM from './contract-menu'
-// import menuData from './menu-data'
+// import menuWuYe from './menu-data'
 
 // const SubMenu = Menu.SubMenu
 
-// let timer
+let timer, lastSelect, parentNode
 const handlerMouseEnter = (suffix, e) => {
-  const menuWrap = e.currentTarget.querySelector(
+  !parentNode && (parentNode = e.currentTarget.parentNode)
+  const current = parentNode.querySelector(
     `#${config.popMenu}-${suffix}`
   )
   const firstChild = e.currentTarget.firstChild
-  menuWrap.style.display = 'block'
-  firstChild.setAttribute('data-active', '')
+  const setVisible = () => {
+    lastSelect && (lastSelect.style.display = 'none', lastSelect.previousSibling.removeAttribute('data-active'))
+    current.style.display = 'block'
+    firstChild.setAttribute('data-active', '')
+    lastSelect = current
+  }
+  if (!lastSelect) {
+    return setVisible()
+  }
+  if (timer) {
+    clearTimeout(timer)
+  }
+  timer = setTimeout(setVisible, 200)
 }
-const handlerMouseLeave = (suffix, e) => {
-  const menuWrap = e.currentTarget.querySelector(
-    `#${config.popMenu}-${suffix}`
-  )
-  const firstChild = e.currentTarget.firstChild
-  menuWrap.style.display = 'none'
+const handlerMouseLeave = () => {
+  const firstChild = lastSelect.previousSibling
+  lastSelect.style.display = 'none'
   firstChild.removeAttribute('data-active')
-
-  // 取消误触消失
-
-  // if (timer) {
-
-  //   clearTimeout(timer)
-
-  // } else {
-
-  //   timer = setTimeout(() => {
-
-  //     timer = null
-
-  //   }, 100)
-
-  // }
+  lastSelect = null
 }
 
 const handlerClick = e => {
@@ -126,7 +120,6 @@ const Header = ({
       <div
         className={styles.item}
         onMouseEnter={handlerMouseEnter.bind(null, idSubfix)}
-        onMouseLeave={handlerMouseLeave.bind(null, idSubfix)}
         style={{ cursor: 'inherit' }}
       >
         <a>
@@ -145,12 +138,22 @@ const Header = ({
     )
   }
 
-  const indexPage = menu.find(m => m.route === '/dashboard' || m.route === '/')
+  // const indexPage = menu.find(m => m.route === '/dashboard' || m.route === '/')
   const logoutMenu = (
     <Menu className={styles.dropdown}>
       <Menu.Item key="logout">
-        <a onClick={logout}>
-          Sign out
+        <a href="/Users/Account/LogOff">
+          <Icon type="exclamation-circle-o" style={{ marginRight: 5 }} /><span>{`退 出`}</span>
+        </a>
+      </Menu.Item>
+      <Menu.Item key="profile">
+        <a href="/Users/Account/MyProfile">
+          <Icon type="user" style={{ marginRight: 5 }} /><span>我的资料</span>
+        </a>
+      </Menu.Item>
+      <Menu.Item key="about">
+        <a id="aboutSystem">
+          <Icon type="bulb" style={{ marginRight: 5 }} /> <span>关于系统</span>
         </a>
       </Menu.Item>
     </Menu>
@@ -163,23 +166,26 @@ const Header = ({
           {/* <span>{config.name}</span> */}
         </div>
         <div className={styles.item}>
-          <Link
+          {/* <Link
             to={indexPage && indexPage.route}
             onClick={handleMenuItemClick.bind(null, indexPage, false)}
           >
             {indexPage && indexPage.name}
-          </Link>
+          </Link> */}
+          <a
+            href="/"
+          >
+            首页
+          </a>
         </div>
-        <PopMenuTemplate popMenu={<PopMenu {...oaMenuProps} />} name="OA系统" idSubfix="oa" />
-        {/* <PopMenuTemplate popMenu={<PopMenuW {...payMenuProps} />} name="收费管理" idSubfix="payment" />
-        <PopMenuTemplate popMenu={<PopMenuW {...ctmMenuProps} />} name="客户服务" idSubfix="customer" />
-        <PopMenuTemplate popMenu={<PopMenuW {...cotMenuProps} />} name="房屋合同" idSubfix="contract" /> */}
-        {menuWuYe.length > 0 && menuWuYe.map((item, index) => (
-          <PopMenuTemplate
-            popMenu={<PopMenuW menu={item.menu} handleMenuItemClick={menuClick} />}
-            name={item.text} idSubfix={`${index}`} key={item.text} />
-        ))}
-
+        <div style={{ display: 'flex' }} onMouseLeave={handlerMouseLeave} >
+          <PopMenuTemplate popMenu={<PopMenu {...oaMenuProps} />} name="OA系统" idSubfix="oa" />
+          {menuWuYe.length > 0 && menuWuYe.map((item, index) => (
+            <PopMenuTemplate
+              popMenu={<PopMenuW menu={item.menu} handleMenuItemClick={menuClick} />}
+              name={item.text} idSubfix={`${index}`} key={item.text} />
+          ))}
+        </div>
         <ul className={styles.customMenu}>
           {tabBar.length &&
             tabBar.map(item => (

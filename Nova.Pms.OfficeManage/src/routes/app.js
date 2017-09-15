@@ -223,12 +223,11 @@ const App = ({ children, dispatch, app, loading, location }) => {
     },
     handleSetNavBar (key) {
       const condation = key && key !== navBarKey
-      if (condation) {
-        dispatch({
-          type: 'app/updateNavBarKey',
-          payload: { navBarKey: key },
-        })
-      }
+      const nk = condation ? key : ''
+      dispatch({
+        type: 'app/updateNavBarKey',
+        payload: { navBarKey: nk },
+      })
       dispatch({
         type: 'app/setNavbarVisible',
         payload: { navBarVisible: condation || !navBarVisible },

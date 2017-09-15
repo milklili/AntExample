@@ -25,7 +25,7 @@ const handleMouseEnter = e => {
   const child = ele.querySelector(`#${ele.dataset.ownmenu}`)
   const parent = ele.parentNode
   // !menuRoot && (menuRoot = document.querySelector(`#${config.prefix}-menu-root`))
-  !menuRoot && (menuRoot = findRoot(ele))
+  menuRoot = findRoot(ele)
   // console.log(menuRoot.childNodes.length)
   if (timer) {
     clearTimeout(timer)
