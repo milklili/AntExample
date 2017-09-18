@@ -45,6 +45,8 @@ const handlerMouseLeave = () => {
   lastSelect.style.display = 'none'
   firstChild.removeAttribute('data-active')
   lastSelect = null
+  timer && clearTimeout(timer)
+  timer = null
 }
 
 const handlerClick = e => {
