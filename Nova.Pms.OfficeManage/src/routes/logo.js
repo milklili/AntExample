@@ -84,7 +84,7 @@ class LogoGather extends React.Component {
               width: r,
               height: r,
               opacity: b,
-              backgroundColor: `rgb(${Math.round(Math.random() * 95 + 160)},255,255)`,
+              backgroundColor: `rgb(255,255,${Math.round(Math.random() * 95 + 160)})`,
             }}
             animation={{
               y: (Math.random() * 2 - 1) * 10 || 5,

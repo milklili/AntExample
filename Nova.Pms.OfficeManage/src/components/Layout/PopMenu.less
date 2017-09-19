@@ -4,8 +4,8 @@
 .allMenu {
   width: 100%;
   padding: 20px;
-  // background-color: darken(@dark-theme-header, 5%);
-  background-color: @dark-theme-header;
+  // background-color: darken(@dark-menu-panel, 5%);
+  background-color: @dark-menu-panel;
   .menu {
     display: inline-block;
     position: relative;
@@ -15,18 +15,18 @@
       width: 200px;
       padding: 0 10px;
       margin: 0 20px 10px 0;
-      // border: 1px solid lighten(@dark-theme-header, 5%);
+      // border: 1px solid lighten(@dark-menu-panel, 5%);
       cursor: pointer;
-      color: #eee;
+      color: #333;
       transition: @transition-ease-out;
       a {
-        color: #eee;
+        color: #333;
         display: inline-block;
         width: 100%;
       }
     }
     .menuFold{
-      background-color: darken(@dark-theme-header, 2%);
+      background-color: darken(@dark-menu-panel, 2%);
       &[data-checked]{
         color: @menu-color-dark;
       }
@@ -37,7 +37,7 @@
       align-items: center;
     }
     .menuRouter {
-      background-color: lighten(@dark-theme-header, 2%);
+      background-color: lighten(@dark-menu-panel, 2%);
       &:hover a{
         color: @menu-color-dark;
       }
@@ -50,21 +50,25 @@
       height: 100%;
       padding: 0 20px;
       flex-flow: column wrap;
-      border-left: 1px solid lighten(@dark-theme-header, 4%);
+      border-left: 1px solid darken(@dark-menu-panel, 4%);
       display: none;
 
       .quickItem {
         width: 160px;
         padding-bottom: 10px;
         margin: 0 20px 20px 0;
-        border-bottom: 1px solid lighten(@dark-theme-header, 4%);
+        border-bottom: 1px solid darken(@dark-menu-panel, 4%);
         &:last-child {
           border-bottom: none;
+        }
+        .title {
+          padding-bottom: 10px;
+          color: #666;
         }
         a {
           display: block;
           line-height: 20px;
-          color: #bbb;
+          color: #333;
           transition: @transition-ease-out;
         }
 

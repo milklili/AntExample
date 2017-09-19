@@ -57,11 +57,11 @@
         width: 6px;
         height: 6px;
         border-radius: 50%;
-        background-color: @menu-color-dark;
+        background-color: white;
       }
     }
     &:hover {
-      color: @menu-color-dark;
+      color: white;
     }
   }
   .logo {
@@ -114,7 +114,7 @@
 
   &.dark {
     background-color: @dark-theme-header;
-    color: #eee;
+    color: white;
     border-bottom: none; 
     .button:hover {
       color: @menu-color-dark;
@@ -128,6 +128,8 @@
   top: 47px;
   width: 100%;
   z-index: 9;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 4px 4px 40px 0 rgba(0,0,0,.1);
 }
 
 .dropdown {

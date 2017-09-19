@@ -146,7 +146,7 @@ const PopMenu = ({ menu, handleMenuItemClick }) => {
             key={`quick-menu-${item.id}`}
             className={styles.quickItem}
           >
-            <h3 style={{ paddingBottom: '10px', color: '#eee' }}>{item.name}</h3>
+            <h3 className={styles.title}>{item.name}</h3>
             {item.children
               ? item.children.map(c => (
                 <Link

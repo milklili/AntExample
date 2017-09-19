@@ -16,33 +16,50 @@ import NavModal from './NavModal'
 import menuWuYe from './menu-data'
 
 let timer, lastSelect, parentNode
-const handlerMouseEnter = (suffix, e) => {
+// const handlerMouseEnter = (suffix, e) => {
+//   !parentNode && (parentNode = e.currentTarget.parentNode)
+//   const current = parentNode.querySelector(
+//     `#${config.popMenu}-${suffix}`
+//   )
+//   const firstChild = e.currentTarget.firstChild
+//   const setVisible = () => {
+//     lastSelect && (lastSelect.style.display = 'none', lastSelect.previousSibling.removeAttribute('data-active'))
+//     current.style.display = 'block'
+//     firstChild.setAttribute('data-active', '')
+//     lastSelect = current
+//   }
+//   if (!lastSelect) {
+//     return setVisible()
+//   }
+//   if (timer) {
+//     clearTimeout(timer)
+//   }
+//   timer = setTimeout(setVisible, 200)
+// }
+const handlerMouseClick = (suffix, e) => {
   !parentNode && (parentNode = e.currentTarget.parentNode)
   const current = parentNode.querySelector(
     `#${config.popMenu}-${suffix}`
   )
   const firstChild = e.currentTarget.firstChild
-  const setVisible = () => {
+  if (lastSelect === current) {
+    lastSelect.style.display = 'none'
+    firstChild.removeAttribute('data-active')
+    lastSelect = null
+  } else {
     lastSelect && (lastSelect.style.display = 'none', lastSelect.previousSibling.removeAttribute('data-active'))
     current.style.display = 'block'
     firstChild.setAttribute('data-active', '')
     lastSelect = current
   }
-  if (!lastSelect) {
-    return setVisible()
-  }
-  if (timer) {
-    clearTimeout(timer)
-  }
-  timer = setTimeout(setVisible, 200)
 }
 const handlerMouseLeave = () => {
   const firstChild = lastSelect.previousSibling
   lastSelect.style.display = 'none'
   firstChild.removeAttribute('data-active')
   lastSelect = null
-  timer && clearTimeout(timer)
-  timer = null
+  // timer && clearTimeout(timer)
+  // timer = null
 }
 
 const handlerClick = e => {
@@ -117,7 +134,7 @@ const Header = ({
     return (
       <div
         className={styles.item}
-        onMouseEnter={handlerMouseEnter.bind(null, idSubfix)}
+        onClick={handlerMouseClick.bind(null, idSubfix)}
         style={{ cursor: 'inherit' }}
       >
         <a>
