@@ -35,10 +35,10 @@ const Bread = ({ menu }) => {
         name: '首页',
       }
     )
-    pathArray.push({
-      id: 404,
-      name: 'Not Found',
-    })
+    // pathArray.push({
+    //   id: 404,
+    //   name: 'Not Found',
+    // })
   } else {
     getPathArray(current)
   }

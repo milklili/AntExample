@@ -1,15 +1,11 @@
-import React from 'react';
-import { connect } from 'dva';
-import { Breadcrumb } from 'antd';
-import { Link } from 'dva/router';
-import styles from './approvalManage.css';
-import MainLayout from '../../components/MainLayout/MainLayout';
-import ApprovalManageComponent from '../../components/ApprovalManage/CreateApproval';
+import React from 'react'
+import { connect } from 'dva'
+import styles from './approvalManage.css'
+import ApprovalManageComponent
+  from '../../components/ApprovalManage/CreateApproval'
 
-function CreateApproval() {
-    return (
-        <ApprovalManageComponent />
-    );
+function CreateApproval () {
+  return <ApprovalManageComponent />
 }
 
-export default connect()(CreateApproval);
+export default connect()(CreateApproval)

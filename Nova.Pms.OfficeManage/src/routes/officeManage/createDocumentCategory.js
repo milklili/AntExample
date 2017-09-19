@@ -1,31 +1,17 @@
 ﻿import React from 'react'
 import { connect } from 'dva'
-import { Button, Form, Input, Row, Col, Alert } from 'antd'
+import { Button, Form, Input, Row, Col } from 'antd'
 import { routerRedux } from 'dva/router'
-// import styles from './officeManage.css'
 
 class NormalDocumentCategoryForm extends React.Component {
-  state = {
-    unfilled: 0,
-  };
-  closeUnfilledInfo = () => {
-    const unfilled = 0
-    this.setState({ unfilled })
-  };
-
   handleSubmit = e => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const unfilled = 0
-        this.setState({ unfilled })
         this.props.dispatch({
           type: 'createDocumentCategory/addDocumentCategory',
           payload: values,
         })
-      } else {
-        const unfilled = Object.values(err).length
-        this.setState({ unfilled })
       }
     })
   };
@@ -70,25 +56,9 @@ class NormalDocumentCategoryForm extends React.Component {
         },
       },
     }
-    const { unfilled } = this.state
-
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
-          {unfilled > 0 &&
-            <Row gutter={8}>
-              <Col span={20}>
-                <FormItem {...tailFormItemLayout}>
-                  <Alert
-                    message={`有${unfilled}处未填写，请修正后保存`}
-                    type="error"
-                    showIcon
-                    closeText="x"
-                    onClose={this.closeUnfilledInfo}
-                  />
-                </FormItem>
-              </Col>
-            </Row>}
           <Row gutter={8}>
             <Col span={20}>
               <FormItem {...formItemLayout} label="文档类别名称">
@@ -132,27 +102,6 @@ class NormalDocumentCategoryForm extends React.Component {
 }
 
 const DocumentCategoryForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.documentCategory).forEach(key => {
-      fields[key] = {
-        value: props.documentCategory[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
-  onFieldsChange (props, changedFields) {
-    const key = Object.keys(changedFields)[0]
-    props.dispatch({
-      type: 'createDocumentCategory/changeField',
-      payload: {
-        key,
-        value: changedFields[key].value,
-      },
-    })
-  },
 })(NormalDocumentCategoryForm)
 
 function mapStateToProps (state) {

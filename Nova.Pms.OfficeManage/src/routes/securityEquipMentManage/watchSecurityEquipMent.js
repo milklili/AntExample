@@ -1,15 +1,10 @@
-﻿import React from 'react';
-import { connect } from 'dva';
-// import { Breadcrumb } from 'antd';
-// import { Link } from 'dva/router';
-// import styles from './SecurityEquipMentManage.css';
-// import MainLayout from '../../components/MainLayout/MainLayout';
-import WatchSecurityEquipMentComponent from '../../components/SecurityEquipMentManageBack/watchSecurityEquipMent';
+﻿import React from 'react'
+import { connect } from 'dva'
+import WatchSecurityEquipMentComponent
+  from '../../components/SecurityEquipMentManageBack/watchSecurityEquipMent'
 
-function WatchSecurityEquipMent() {
-    return (
-        <WatchSecurityEquipMentComponent />
-    );
+function WatchSecurityEquipMent () {
+  return <WatchSecurityEquipMentComponent />
 }
 
-export default connect()(WatchSecurityEquipMent);
+export default connect()(WatchSecurityEquipMent)

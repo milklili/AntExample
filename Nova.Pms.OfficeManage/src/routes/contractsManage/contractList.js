@@ -1,14 +1,9 @@
-﻿import React from 'react';
-import { connect } from 'dva';
-// import { Breadcrumb } from 'antd';
-// import styles from './contract.css';
-// import MainLayout from '../components/MainLayout/MainLayout';
-import ContractListComponent from '../../components/Contract/contractList';
+﻿import React from 'react'
+import { connect } from 'dva'
+import ContractListComponent from '../../components/Contract/contractList'
 
-function ContractList() {
-  return (
-      <ContractListComponent />
-  );
+function ContractList () {
+  return <ContractListComponent />
 }
 
-export default connect()(ContractList);
+export default connect()(ContractList)

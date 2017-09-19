@@ -33,11 +33,29 @@ body {
 
   .ant-table {
     .ant-table-thead > tr > th {
-      text-align: center;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     .ant-table-tbody > tr > td {
-      text-align: center;
+      padding: 6px 8px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .ant-table-placeholder{
+      padding: 6px 8px;
+      &.ant-table-placeholder-fixed-columns {
+        padding: 6px 8px;
+      }
+    }
+
+    .ant-table-scroll {
+      .ant-table-placeholder {
+        padding-bottom: 12px;
+      }
     }
 
     &.ant-table-small {

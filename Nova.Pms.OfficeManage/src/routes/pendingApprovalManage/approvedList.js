@@ -1,16 +1,11 @@
-import React from 'react';
-import { connect } from 'dva';
-import { Breadcrumb } from 'antd';
-import { Link } from 'dva/router';
-import styles from './pendingApprovalManage.css';
-import MainLayout from '../../components/MainLayout/MainLayout';
-import ApprovedListManageComponent from '../../components/PendingApprovalManage/ApprovedList';
+import React from 'react'
+import { connect } from 'dva'
+import styles from './pendingApprovalManage.css'
+import ApprovedListManageComponent
+  from '../../components/PendingApprovalManage/ApprovedList'
 
-function ApprovedList() {
-   
-    return (
-         <ApprovedListManageComponent />
-    );
+function ApprovedList () {
+  return <ApprovedListManageComponent />
 }
 
-export default connect()(ApprovedList);
+export default connect()(ApprovedList)

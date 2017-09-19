@@ -1,15 +1,10 @@
-﻿import React from 'react';
-import { connect } from 'dva';
-// import { Breadcrumb } from 'antd';
-// import { Link } from 'dva/router';
-// import styles from './SecurityEquipMentManage.css';
-// import MainLayout from '../../components/MainLayout/MainLayout';
-import CreateSecurityEquipMentComponent from '../../components/SecurityEquipMentManageBack/createSecurityEquipMent';
+﻿import React from 'react'
+import { connect } from 'dva'
+import CreateSecurityEquipMentComponent
+  from '../../components/SecurityEquipMentManageBack/createSecurityEquipMent'
 
-function CreateSecurityEquipMent() {
-    return (
-        <CreateSecurityEquipMentComponent />
-    );
+function CreateSecurityEquipMent () {
+  return <CreateSecurityEquipMentComponent />
 }
 
-export default connect()(CreateSecurityEquipMent);
+export default connect()(CreateSecurityEquipMent)

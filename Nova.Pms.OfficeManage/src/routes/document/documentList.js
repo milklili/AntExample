@@ -346,7 +346,7 @@ function DocumentList ({
     {
       title: '操作',
       fixed: 'right',
-      width: 140,
+      width: 150,
       render: (text, record) => (
         <span>
           <a onClick={editDocument.bind(null, record.id)}>编辑</a>

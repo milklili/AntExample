@@ -85,7 +85,7 @@ export default {
       //   window.location = `${location.origin}/login`
       // }
       const { menu } = menuOA
-      const { list } = yield call(menusService)
+      // const { list } = yield call(menusService)
       const profile = {
         name: 'test',
         id: 1,
@@ -96,7 +96,7 @@ export default {
           menu,
           // tabBar,
           profile,
-          menuWuYe: list,
+          // menuWuYe: list,
         },
       })
     },

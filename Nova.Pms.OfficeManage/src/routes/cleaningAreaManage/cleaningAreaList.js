@@ -1,16 +1,11 @@
-import React from 'react';
-import { connect } from 'dva';
-import { Breadcrumb } from 'antd';
-import { Link } from 'dva/router';
-import styles from './cleaningAreaManage.css';
-import MainLayout from '../../components/MainLayout/MainLayout';
-import CleaningAreaManageComponent from '../../components/CleaningAreaManage/CleaningAreaList';
+import React from 'react'
+import { connect } from 'dva'
+import styles from './cleaningAreaManage.css'
+import CleaningAreaManageComponent
+  from '../../components/CleaningAreaManage/CleaningAreaList'
 
-function CleaningAreaList() {
-   
-    return (
-        <CleaningAreaManageComponent />
-    );
+function CleaningAreaList () {
+  return <CleaningAreaManageComponent />
 }
 
-export default connect()(CleaningAreaList);
+export default connect()(CleaningAreaList)

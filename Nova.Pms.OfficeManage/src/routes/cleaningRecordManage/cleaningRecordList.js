@@ -1,16 +1,11 @@
-import React from 'react';
-import { connect } from 'dva';
-import { Breadcrumb } from 'antd';
-import { Link } from 'dva/router';
-import styles from './cleaningRecordManage.css';
-import MainLayout from '../../components/MainLayout/MainLayout';
-import CleaningRecordManageComponent from '../../components/CleaningRecordManage/CleaningRecordList';
+import React from 'react'
+import { connect } from 'dva'
+import styles from './cleaningRecordManage.css'
+import CleaningRecordManageComponent
+  from '../../components/CleaningRecordManage/CleaningRecordList'
 
-function CleaningRecordList() {
-   
-    return (
-       <CleaningRecordManageComponent />
-    );
+function CleaningRecordList () {
+  return <CleaningRecordManageComponent />
 }
 
-export default connect()(CleaningRecordList);
+export default connect()(CleaningRecordList)

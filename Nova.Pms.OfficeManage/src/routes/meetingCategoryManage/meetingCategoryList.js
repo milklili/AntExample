@@ -33,7 +33,7 @@ function meetingCategoryList ({
       title: '备注',
       dataIndex: 'remark',
       key: 'remark',
-      render: text => //
+      render: text =>
         (
           <Tooltip title={text} placement="topLeft">
             <span className={styles.remark}>{text}</span>
@@ -142,6 +142,7 @@ function meetingCategoryList ({
               bordered
               rowSelection={rowSelection}
               columns={columns}
+              size="small"
               dataSource={dataSource}
               loading={loading}
               rowKey={record => record.id}

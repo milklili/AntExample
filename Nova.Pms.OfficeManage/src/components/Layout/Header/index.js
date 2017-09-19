@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Menu, Icon, Dropdown } from 'antd'
-import { Link } from 'dva/router'
 import { classnames, config } from 'utils'
 import PopMenu from '../PopMenu'
 import PopMenuW from '../PopMenuW'
@@ -10,14 +9,11 @@ import styles from './index.less'
 import NavBar from './NavBar'
 import NoticeBar from './NoticeBar'
 import NavModal from './NavModal'
-// import Logo from '../../../assets/logo.png'
 
 // import PM from './payment-menu'
 // import CM from './customer-menu'
 // import COM from './contract-menu'
-// import menuWuYe from './menu-data'
-
-// const SubMenu = Menu.SubMenu
+import menuWuYe from './menu-data'
 
 let timer, lastSelect, parentNode
 const handlerMouseEnter = (suffix, e) => {
@@ -59,7 +55,7 @@ const Header = ({
   logout,
   handleMenuItemClick,
   menu,
-  menuWuYe,
+  // menuWuYe,
   tabBar,
   navBar,
   editNavBar,

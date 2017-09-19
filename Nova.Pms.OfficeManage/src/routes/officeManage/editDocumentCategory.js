@@ -1,8 +1,10 @@
 ﻿import React from 'react'
 import { connect } from 'dva'
-import { Button, Form, Input, Row, Col, Alert } from 'antd'
+import { Button, Form, Input, Row, Col } from 'antd'
 import { routerRedux } from 'dva/router'
 // import styles from './officeManage.css'
+
+const FormItem = Form.Item
 
 class NormalDocumentCategoryForm extends React.Component {
   state = {
@@ -37,7 +39,7 @@ class NormalDocumentCategoryForm extends React.Component {
   };
 
   render () {
-    const FormItem = Form.Item
+    const { documentCategory } = this.props
     const { getFieldDecorator } = this.props.form
     const formItemLayout = {
       labelCol: {
@@ -69,28 +71,14 @@ class NormalDocumentCategoryForm extends React.Component {
         },
       },
     }
-    const { unfilled } = this.state
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
-          {unfilled > 0 &&
-            <Row gutter={8}>
-              <Col span={20}>
-                <FormItem {...tailFormItemLayout}>
-                  <Alert
-                    message={`有${unfilled}处未填写，请修正后保存`}
-                    type="error"
-                    showIcon
-                    closeText="x"
-                    onClose={this.closeUnfilledInfo}
-                  />
-                </FormItem>
-              </Col>
-            </Row>}
           <Row gutter={8}>
             <Col span={20}>
               <FormItem {...formItemLayout} label="文档类别名称">
                 {getFieldDecorator('name', {
+                  initialValue: documentCategory.name,
                   rules: [
                     {
                       required: true,
@@ -107,6 +95,7 @@ class NormalDocumentCategoryForm extends React.Component {
             <Col span={20}>
               <FormItem {...formItemLayout} label="备注">
                 {getFieldDecorator('remark', {
+                  initialValue: documentCategory.remark,
                   rules: [
                     { type: 'string', max: 300, message: '请输入备注,不超过300个字!' },
                   ],
@@ -129,26 +118,28 @@ class NormalDocumentCategoryForm extends React.Component {
 }
 
 const DocumentCategoryForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.documentCategory).forEach(key => {
-      fields[key] = {
-        value: props.documentCategory[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.documentCategory).forEach(key => {
+  //     fields[key] = {
+  //       value: props.documentCategory[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
-    props.dispatch({
-      type: 'editDocumentCategory/changeField',
-      payload: {
-        key,
-        value: changedFields[key].value,
-      },
-    })
+    if (key) {
+      props.dispatch({
+        type: 'editDocumentCategory/changeField',
+        payload: {
+          key,
+          value: changedFields[key].value,
+        },
+      })
+    }
   },
 })(NormalDocumentCategoryForm)
 
