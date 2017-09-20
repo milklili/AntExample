@@ -1314,43 +1314,45 @@ function PendingApprovalList ({
           title: '操作',
           fixed: 'right',
           width: 160,
-          render: (text, record) => (
-            <span>
-              <EditInitiated
-                regionList={regionList}
-                staffList={staffList}
-                initialRegion={initialRegion}
-                dispatch={dispatch}
-                approval={record}
-              />
-              &nbsp;
-              <CommentApproval
-                dispatch={dispatch}
-                approval={record}
-                operate={'agree'}
-              />
-              &nbsp;
-              <CommentApproval
-                dispatch={dispatch}
-                approval={record}
-                operate={'refuse'}
-              />
-              &nbsp;
+          render: (text, record) => {
+            return total
+              ? <span>
+                <EditInitiated
+                  regionList={regionList}
+                  staffList={staffList}
+                  initialRegion={initialRegion}
+                  dispatch={dispatch}
+                  approval={record}
+                />
+                  &nbsp;
+                <CommentApproval
+                  dispatch={dispatch}
+                  approval={record}
+                  operate={'agree'}
+                />
+                  &nbsp;
+                <CommentApproval
+                  dispatch={dispatch}
+                  approval={record}
+                  operate={'refuse'}
+                />
+                  &nbsp;
 
-              <TransferApproval
-                dispatch={dispatch}
-                approval={record}
-                staffList={staffList}
-              />
-              &nbsp;
-              <CommentApproval
-                dispatch={dispatch}
-                approval={record}
-                operate={'comment'}
-              />
+                <TransferApproval
+                  dispatch={dispatch}
+                  approval={record}
+                  staffList={staffList}
+                />
+                  &nbsp;
+                <CommentApproval
+                  dispatch={dispatch}
+                  approval={record}
+                  operate={'comment'}
+                />
 
-            </span>
-          ),
+              </span>
+              : '操作不可用'
+          },
         },
       ]
 

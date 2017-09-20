@@ -919,16 +919,12 @@ function SecurityEquipMentList ({
           key: 'operation',
           fixed: 'right',
           width: 100,
-          render: (text, record) => // <span className={styles.operation}>
-          //    <a onClick={this.editSecurityEquipMent.bind(null, record.id)}>编辑</a>
-          //    <a onClick={this.watchSecurityEquipMent.bind(null, record.id)}>查看</a>
-          //    <Popconfirm title="确定要删除该安保器材吗?" onConfirm={this.deleteHandler.bind(null, [record.id])}>
-          //        <a >删除</a>
-          //    </Popconfirm>
-
-          // </span>
-            (
-              <span>
+          render: (
+            text,
+            record
+          ) => {
+            return total
+              ? <span>
                 <ShowSecurityEquipMent
                   regionList={regionList}
                   departmentList={departmentList}
@@ -939,7 +935,7 @@ function SecurityEquipMentList ({
                   securityEquipMent={record}
                   id={record.id}
                 />
-              &nbsp;
+                  &nbsp;
                 <EditSecurityEquipMent
                   regionList={regionList}
                   departmentList={departmentList}
@@ -950,15 +946,18 @@ function SecurityEquipMentList ({
                   securityEquipMent={record}
                   id={record.id}
                 />
-              &nbsp;
+                  &nbsp;
                 <Popconfirm
                   title="确定要删除该安保器材吗?"
-                  onConfirm={this.deleteSecurityEquipMent.bind(null, [record.id])}
+                  onConfirm={this.deleteSecurityEquipMent.bind(null, [
+                    record.id,
+                  ])}
                 >
                   <a>删除</a>
                 </Popconfirm>
               </span>
-            ),
+              : '操作不可用'
+          },
         },
       ]
 
@@ -1176,7 +1175,7 @@ function SecurityEquipMentList ({
             current={current}
             pageSize={pageSize}
             onChange={this.pageChangeHandler}
-            showTotal={_total => `总计${_total ? _total :  0}条`}
+            showTotal={_total => `总计${_total || 0}条`}
             onShowSizeChange={this.onShowSizeChange}
             showSizeChanger
             showQuickJumper

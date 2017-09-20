@@ -867,34 +867,38 @@ function CleaningRecordList ({
           title: '操作',
           fixed: 'right',
           width: 110,
-          render: (text, record) => (
-            <span>
-              <ShowCleaningRecord
-                regionList={regionList}
-                staffList={staffList}
-                cleaningAreaList={cleaningAreaList}
-                dispatch={dispatch}
-                cleaningRecord={record}
-                id={record.id}
-              />
-              &nbsp;
-              <EditCleaningRecord
-                regionList={regionList}
-                staffList={staffList}
-                cleaningAreaList={cleaningAreaList}
-                dispatch={dispatch}
-                cleaningRecord={record}
-                id={record.id}
-              />
-              &nbsp;
-              <Popconfirm
-                title="确定要删除该保洁记录吗?"
-                onConfirm={this.deleteCleaningRecord.bind(null, [record.id])}
-              >
-                <a>删除</a>
-              </Popconfirm>
-            </span>
-          ),
+          render: (text, record) => {
+            return total
+              ? <span>
+                <ShowCleaningRecord
+                  regionList={regionList}
+                  staffList={staffList}
+                  cleaningAreaList={cleaningAreaList}
+                  dispatch={dispatch}
+                  cleaningRecord={record}
+                  id={record.id}
+                />
+                  &nbsp;
+                <EditCleaningRecord
+                  regionList={regionList}
+                  staffList={staffList}
+                  cleaningAreaList={cleaningAreaList}
+                  dispatch={dispatch}
+                  cleaningRecord={record}
+                  id={record.id}
+                />
+                  &nbsp;
+                <Popconfirm
+                  title="确定要删除该保洁记录吗?"
+                  onConfirm={this.deleteCleaningRecord.bind(null, [
+                    record.id,
+                  ])}
+                >
+                  <a>删除</a>
+                </Popconfirm>
+              </span>
+              : '操作不可用'
+          },
         },
       ]
 

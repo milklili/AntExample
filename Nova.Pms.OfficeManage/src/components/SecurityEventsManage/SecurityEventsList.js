@@ -605,8 +605,8 @@ function SecurityEventsList ({
           title: '操作',
           fixed: 'right',
           width: 110,
-          render: (text, record) => (
-            <span>
+          render: (text, record) => {
+            return total ? (<span>
               <ShowSecurityEvents
                 regionList={regionList}
                 dispatch={dispatch}
@@ -627,8 +627,9 @@ function SecurityEventsList ({
               >
                 <a>删除</a>
               </Popconfirm>
-            </span>
-          ),
+            </span>)
+              : '操作不可用'
+          },
         },
       ]
 

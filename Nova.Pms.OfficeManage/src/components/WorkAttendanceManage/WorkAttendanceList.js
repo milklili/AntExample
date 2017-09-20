@@ -712,12 +712,12 @@ function WorkAttendanceList ({
       }
 
       const columns = [
-        {
-          title: '工号',
-          dataIndex: '',
-          key: '',
-          width: 80,
-        },
+        // {
+        //   title: '工号',
+        //   dataIndex: '',
+        //   key: '',
+        //   width: 80,
+        // },
         {
           title: '职员姓名',
           dataIndex: 'staffName',
@@ -814,23 +814,29 @@ function WorkAttendanceList ({
           title: '操作',
           fixed: 'right',
           width: 110,
-          render: (text, record) => (
-            <span>
-              <a onClick={this.showWorkAttendance.bind(null, record.staffId)}>
-                查看
-              </a>
-              &nbsp;
-              <a onClick={this.editWorkAttendance.bind(null, record.staffId)}>
-                编辑
-              </a>
-              &nbsp;
-              <AddWorkAttendance
-                workAttendance={[record]}
-                staffList={staffList}
-                dispatch={dispatch}
-              />
-            </span>
-          ),
+          render: (text, record) => {
+            return total
+              ? <span>
+                <a
+                  onClick={this.showWorkAttendance.bind(null, record.staffId)}
+                >
+                    查看
+                </a>
+                  &nbsp;
+                <a
+                  onClick={this.editWorkAttendance.bind(null, record.staffId)}
+                >
+                    编辑
+                </a>
+                  &nbsp;
+                <AddWorkAttendance
+                  workAttendance={[record]}
+                  staffList={staffList}
+                  dispatch={dispatch}
+                />
+              </span>
+              : '操作不可用'
+          },
         },
       ]
 
@@ -967,7 +973,7 @@ function WorkAttendanceList ({
             current={current}
             pageSize={pageSize}
             onChange={this.pageChangeHandler}
-            showTotal={_total => `总计${_total ? _total :  0}条`}
+            showTotal={_total => `总计${_total || 0}条`}
             onShowSizeChange={this.onShowSizeChange}
             showSizeChanger
             showQuickJumper

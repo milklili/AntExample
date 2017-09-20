@@ -746,33 +746,35 @@ function CleaningAreaList ({
         {
           title: '操作',
           fixed: 'right',
-          width: 100,
-          render: (text, record) => (
-            <span>
-              <ShowCleaningArea
-                regionList={regionList}
-                staffList={staffList}
-                dispatch={dispatch}
-                cleaningArea={record}
-                id={record.id}
-              />
-              &nbsp;
-              <EditCleaningArea
-                regionList={regionList}
-                staffList={staffList}
-                dispatch={dispatch}
-                cleaningArea={record}
-                id={record.id}
-              />
-              &nbsp;
-              <Popconfirm
-                title="确定要删除该保洁区域吗?"
-                onConfirm={this.deleteCleaningArea.bind(null, [record.id])}
-              >
-                <a>删除</a>
-              </Popconfirm>
-            </span>
-          ),
+          width: 110,
+          render: (text, record) => {
+            return total
+              ? <span>
+                <ShowCleaningArea
+                  regionList={regionList}
+                  staffList={staffList}
+                  dispatch={dispatch}
+                  cleaningArea={record}
+                  id={record.id}
+                />
+                  &nbsp;
+                <EditCleaningArea
+                  regionList={regionList}
+                  staffList={staffList}
+                  dispatch={dispatch}
+                  cleaningArea={record}
+                  id={record.id}
+                />
+                  &nbsp;
+                <Popconfirm
+                  title="确定要删除该保洁区域吗?"
+                  onConfirm={this.deleteCleaningArea.bind(null, [record.id])}
+                >
+                  <a>删除</a>
+                </Popconfirm>
+              </span>
+              : '操作不可用'
+          },
         },
       ]
 
@@ -939,7 +941,7 @@ function CleaningAreaList ({
             current={current}
             pageSize={pageSize}
             onChange={this.pageChangeHandler}
-            showTotal={_total => `总计${_total ? _total :  0}条`}
+            showTotal={_total => `总计${_total || 0}条`}
             onShowSizeChange={this.onShowSizeChange}
             showSizeChanger
             showQuickJumper

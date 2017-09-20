@@ -244,31 +244,36 @@ function SecurityPositionList ({
         {
           title: '操作',
           fixed: 'right',
-          width: 130,
-          render: (text, record) => (
-            <span>
-              <a onClick={this.showSecurityPosition.bind(null, record.id)}>
-                查看
-              </a>
-              &nbsp;
-              <a
-                onClick={this.editSecurityPosition.bind(
-                  null,
-                  record.id,
-                  record.regionId
-                )}
-              >
-                编辑
-              </a>
-              &nbsp;
-              <Popconfirm
-                title="确定要删除该保安岗记录吗?"
-                onConfirm={this.deleteSecurityPosition.bind(null, record.id)}
-              >
-                <a>删除</a>
-              </Popconfirm>
-            </span>
-          ),
+          width: 110,
+          render: (text, record) => {
+            return total
+              ? <span>
+                <a onClick={this.showSecurityPosition.bind(null, record.id)}>
+                    查看
+                </a>
+                  &nbsp;
+                <a
+                  onClick={this.editSecurityPosition.bind(
+                    null,
+                    record.id,
+                    record.regionId
+                  )}
+                >
+                    编辑
+                </a>
+                  &nbsp;
+                <Popconfirm
+                  title="确定要删除该保安岗记录吗?"
+                  onConfirm={this.deleteSecurityPosition.bind(
+                    null,
+                    record.id
+                  )}
+                >
+                  <a>删除</a>
+                </Popconfirm>
+              </span>
+              : '操作不可用'
+          },
         },
       ]
 
@@ -421,7 +426,7 @@ function SecurityPositionList ({
             current={current}
             pageSize={pageSize}
             onChange={this.pageChangeHandler}
-            showTotal={_total => `总计${_total ? _total :  0}条`}
+            showTotal={_total => `总计${_total || 0}条`}
             onShowSizeChange={this.onShowSizeChange}
             showSizeChanger
             showQuickJumper

@@ -218,21 +218,23 @@ const Meeting = ({
           dataIndex: 'Action',
           key: 'Action',
           fixed: 'right',
-          width: 130,
-          render: (text, record) => (
-            <span>
-              <a onClick={this.editMeeting.bind(this, record.id)}>编辑</a>
-              <span className="ant-divider" />
-              <a onClick={this.viewMeeting.bind(this, record.id)}>查看</a>
-              <span className="ant-divider" />
-              <Popconfirm
-                title="确定要删除该会议记录吗?"
-                onConfirm={this.deleteRow.bind(this, record.id)}
-              >
-                <a>删除</a>
-              </Popconfirm>
-            </span>
-          ),
+          width: 110,
+          render: (text, record) => {
+            return total
+              ? <span>
+                <a onClick={this.editMeeting.bind(this, record.id)}>编辑</a>
+                &nbsp;
+                <a onClick={this.viewMeeting.bind(this, record.id)}>查看</a>
+                &nbsp;
+                <Popconfirm
+                  title="确定要删除该会议记录吗?"
+                  onConfirm={this.deleteRow.bind(this, record.id)}
+                >
+                  <a>删除</a>
+                </Popconfirm>
+              </span>
+              : '操作不可用'
+          },
         },
       ]
 
@@ -468,7 +470,7 @@ const Meeting = ({
             current={current}
             pageSize={pageSize}
             onChange={this.pageChangeHandler}
-            showTotal={_total => `总计${_total ? _total :  0}条`}
+            showTotal={_total => `总计${_total || 0}条`}
             onShowSizeChange={this.onShowSizeChange}
             showSizeChanger
             showQuickJumper

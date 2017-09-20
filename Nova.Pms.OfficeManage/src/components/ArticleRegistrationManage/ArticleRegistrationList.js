@@ -685,35 +685,37 @@ function ArticleRegistrationList ({
         {
           title: '操作',
           fixed: 'right',
-          width: 120,
-          render: (text, record) => (
-            <span>
-              <ShowArticleRegistration
-                userList={userList}
-                regionList={regionList}
-                dispatch={dispatch}
-                articleRegistration={record}
-                id={record.id}
-              />
-              &nbsp;
-              <EditArticleRegistration
-                regionList={regionList}
-                userList={userList}
-                dispatch={dispatch}
-                articleRegistration={record}
-                id={record.id}
-              />
-              &nbsp;
-              <Popconfirm
-                title="确定要删除该物品出入登记吗?"
-                onConfirm={this.deleteArticleRegistration.bind(null, [
-                  record.id,
-                ])}
-              >
-                <a>删除</a>
-              </Popconfirm>
-            </span>
-          ),
+          width: 110,
+          render: (text, record) => {
+            return total
+              ? <span>
+                <ShowArticleRegistration
+                  userList={userList}
+                  regionList={regionList}
+                  dispatch={dispatch}
+                  articleRegistration={record}
+                  id={record.id}
+                />
+                  &nbsp;
+                <EditArticleRegistration
+                  regionList={regionList}
+                  userList={userList}
+                  dispatch={dispatch}
+                  articleRegistration={record}
+                  id={record.id}
+                />
+                  &nbsp;
+                <Popconfirm
+                  title="确定要删除该物品出入登记吗?"
+                  onConfirm={this.deleteArticleRegistration.bind(null, [
+                    record.id,
+                  ])}
+                >
+                  <a>删除</a>
+                </Popconfirm>
+              </span>
+              : '操作不可用'
+          },
         },
       ]
 
@@ -883,7 +885,7 @@ function ArticleRegistrationList ({
             current={current}
             pageSize={pageSize}
             onChange={this.pageChangeHandler}
-            showTotal={_total => `总计${_total ? _total :  0}条`}
+            showTotal={_total => `总计${_total || 0}条`}
             onShowSizeChange={this.onShowSizeChange}
             showSizeChanger
             showQuickJumper

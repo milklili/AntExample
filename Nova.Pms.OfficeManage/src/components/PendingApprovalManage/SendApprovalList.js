@@ -870,20 +870,22 @@ function SendApprovalList ({
           title: '操作',
           fixed: 'right',
           width: 80,
-          render: (text, record) => (
-            <span>
-              <EditInitiated
-                regionList={regionList}
-                staffList={staffList}
-                initialRegion={initialRegion}
-                dispatch={dispatch}
-                approval={record}
-              />
-              &nbsp;
-              <CommentApproval dispatch={dispatch} approval={record} />
+          render: (text, record) => {
+            return total
+              ? <span>
+                <EditInitiated
+                  regionList={regionList}
+                  staffList={staffList}
+                  initialRegion={initialRegion}
+                  dispatch={dispatch}
+                  approval={record}
+                />
+                  &nbsp;
+                <CommentApproval dispatch={dispatch} approval={record} />
 
-            </span>
-          ),
+              </span>
+              : '操作不可用'
+          },
         },
       ]
 

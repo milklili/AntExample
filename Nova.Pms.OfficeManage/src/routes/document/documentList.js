@@ -346,16 +346,18 @@ function DocumentList ({
     {
       title: '操作',
       fixed: 'right',
-      width: 150,
-      render: (text, record) => (
-        <span>
-          <a onClick={editDocument.bind(null, record.id)}>编辑</a>
-          <span className="ant-divider" />
-          <a onClick={showDocument.bind(null, record.id)}>查看</a>
-          <span className="ant-divider" />
-          <MoreOptionsDropdownMenu rowData={record} />
-        </span>
-      ),
+      width: 110,
+      render: (text, record) => {
+        return total
+          ? <span>
+            <a onClick={editDocument.bind(null, record.id)}>编辑</a>
+            &nbsp;
+            <a onClick={showDocument.bind(null, record.id)}>查看</a>
+            &nbsp;
+            <MoreOptionsDropdownMenu rowData={record} />
+          </span>
+          : '操作不可用'
+      },
     },
   ]
   const expandedRowRender = record => {
@@ -634,11 +636,7 @@ function DocumentList ({
               </Form>
             </Card>}
           {selectLength > 0 &&
-            <Alert
-              message={selectInfo}
-              type="info"
-              showIcon
-            />}
+            <Alert message={selectInfo} type="info" showIcon />}
           <Table
             bordered
             columns={columns}
@@ -656,7 +654,7 @@ function DocumentList ({
             current={current}
             pageSize={pageSize}
             onChange={this.pageChangeHandler}
-            showTotal={_total => `总计${_total ? _total :  0}条`}
+            showTotal={_total => `总计${_total || 0}条`}
             onShowSizeChange={this.onShowSizeChange}
             showSizeChanger
             showQuickJumper

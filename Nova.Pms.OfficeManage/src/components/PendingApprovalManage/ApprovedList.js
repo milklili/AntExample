@@ -200,7 +200,7 @@ const EditInitiatedForm = Form.create()(props => {
         <Row gutter={16}>
           <Col span={24}>
             <FormItem {...formItemRow} label="添加图片">
-              <Upload {...uploadPictures} disabled >
+              <Upload {...uploadPictures} disabled>
                 <a>点击添加（最多9张）</a>
               </Upload>
             </FormItem>
@@ -210,7 +210,7 @@ const EditInitiatedForm = Form.create()(props => {
         <Row gutter={16}>
           <Col span={24}>
             <FormItem {...formItemRow} label="添加附件">
-              <Upload {...uploadAttachments} disabled >
+              <Upload {...uploadAttachments} disabled>
                 <a>点击添加 （单个附件应小于2M）</a>
               </Upload>
             </FormItem>
@@ -1003,21 +1003,23 @@ function ApprovedList ({
           title: '操作',
           fixed: 'right',
           width: 80,
-          render: (text, record) => (
-            <span>
-              <EditInitiated
-                regionList={regionList}
-                staffList={staffList}
-                initialRegion={initialRegion}
-                dispatch={dispatch}
-                approval={record}
-              />
-              &nbsp;
-              <CommentApproval dispatch={dispatch} approval={record} />
-              &nbsp;
+          render: (text, record) => {
+            return total
+              ? <span>
+                <EditInitiated
+                  regionList={regionList}
+                  staffList={staffList}
+                  initialRegion={initialRegion}
+                  dispatch={dispatch}
+                  approval={record}
+                />
+                  &nbsp;
+                <CommentApproval dispatch={dispatch} approval={record} />
+                  &nbsp;
 
-            </span>
-          ),
+              </span>
+              : '操作不可用'
+          },
         },
       ]
 

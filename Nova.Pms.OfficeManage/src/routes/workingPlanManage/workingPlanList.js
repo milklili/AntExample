@@ -706,11 +706,13 @@ function WorkingPlanList ({
           title: '操作',
           key: 'operation',
           fixed: 'right',
-          width: 150,
+          width: 110,
           render: (text, record) => {
             return total ? (<span className={styles.operation}>
               <a onClick={this.editWorkingPlan.bind(null, record.id)}>编辑</a>
+              &nbsp;
               <a onClick={this.watchWorkingPlan.bind(null, record.id)}>查看</a>
+              &nbsp;
               {<MoreActions recordId={record.id} record={record} />}
             </span>)
               : '操作不可用'
