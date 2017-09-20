@@ -881,10 +881,25 @@ function CleaningInspectList ({
         <div className={styles.normal}>
           <div className={styles.ListButton}>
             <Row>
-              <Col span={16} style={{ textAlign: 'left' }}>
-                <h1>
-                  保洁工作检查
-                </h1>
+              <Col span={16}>
+                <AddCleaningInspect
+                  regionList={regionList}
+                  staffList={staffList}
+                  initialRegion={initialRegion}
+                  cleaningAreaList={cleaningAreaList}
+                  dispatch={dispatch}
+                  cleaningInspect={cleaningInspect}
+                />
+                <Popconfirm
+                  title="确定要删除该保洁检查吗?"
+                  onConfirm={this.deleteCleaningInspect.bind(
+                    this,
+                    selectedRowKeys
+                  )}
+                >
+                  <Button disabled={!hasSelected}>批量删除</Button>
+                </Popconfirm>
+                <Button disabled>导出列表</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
@@ -966,30 +981,6 @@ function CleaningInspectList ({
           <div className={styles.info}><span>共搜索到{total}条数据</span></div>
 
           <div className={styles.ListButton}>
-            <Row gutter={10}>
-              <Col span={8}>
-
-                <AddCleaningInspect
-                  regionList={regionList}
-                  staffList={staffList}
-                  initialRegion={initialRegion}
-                  cleaningAreaList={cleaningAreaList}
-                  dispatch={dispatch}
-                  cleaningInspect={cleaningInspect}
-                />
-                <Popconfirm
-                  title="确定要删除该保洁检查吗?"
-                  onConfirm={this.deleteCleaningInspect.bind(
-                    this,
-                    selectedRowKeys
-                  )}
-                >
-                  <Button disabled={!hasSelected}>批量删除</Button>
-                </Popconfirm>
-                <Button disabled>导出列表</Button>
-              </Col>
-
-            </Row>
             {hasSelected &&
               <Alert
                 style={{ marginTop: 15 }}

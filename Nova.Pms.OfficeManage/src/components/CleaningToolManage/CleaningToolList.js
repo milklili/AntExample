@@ -828,9 +828,7 @@ function CleaningToolList ({
         (!/^\d+(?=\.{0,1}\d+$|$)/.test(value) ||
           value > this.props.cleaningTool.recipientsCount)
       ) {
-        callback(
-          `请正确输入归还数量,最多${this.props.cleaningTool.recipientsCount}个`
-        )
+        callback(`请正确输入归还数量,最多${this.props.cleaningTool.recipientsCount}个`)
       }
       callback()
     };
@@ -1114,10 +1112,28 @@ function CleaningToolList ({
         <div className={styles.normal}>
           <div className={styles.ListButton}>
             <Row>
-              <Col span={16} style={{ textAlign: 'left' }}>
-                <h1>
-                  保洁工具管理
-                </h1>
+              <Col span={16}>
+                {
+                  <AddCleaningTool
+                    cleaningTool={cleaningTool}
+                    staffList={staffList}
+                    regionList={regionList}
+                    initialRegion={initialRegion}
+                    departmentList={departmentList}
+                    dispatch={dispatch}
+                  />
+                }
+
+                <Popconfirm
+                  title="确定要删除该保洁检查吗?"
+                  onConfirm={this.deleteCleaningTool.bind(
+                    this,
+                    selectedRowKeys
+                  )}
+                >
+                  <Button disabled={!hasSelected}>批量删除</Button>
+                </Popconfirm>
+                <Button disabled>导出</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
@@ -1210,37 +1226,10 @@ function CleaningToolList ({
               </Form>
             </Card>}
           <div className={styles.info}>
-            <span>共搜索到{total}条数据。<a>清除搜索条件</a></span>
+            <span>共搜索到{total}条数据。</span>
           </div>
 
           <div className={styles.ListButton}>
-            <Row gutter={10}>
-              <Col span={8}>
-
-                {
-                  <AddCleaningTool
-                    cleaningTool={cleaningTool}
-                    staffList={staffList}
-                    regionList={regionList}
-                    initialRegion={initialRegion}
-                    departmentList={departmentList}
-                    dispatch={dispatch}
-                  />
-                }
-
-                <Popconfirm
-                  title="确定要删除该保洁检查吗?"
-                  onConfirm={this.deleteCleaningTool.bind(
-                    this,
-                    selectedRowKeys
-                  )}
-                >
-                  <Button disabled={!hasSelected}>批量删除</Button>
-                </Popconfirm>
-                <Button disabled>导出</Button>
-
-              </Col>
-            </Row>
             {hasSelected &&
               <Alert
                 style={{ marginTop: 15 }}
@@ -1265,7 +1254,7 @@ function CleaningToolList ({
             current={current}
             pageSize={pageSize}
             onChange={this.pageChangeHandler}
-            showTotal={_total => `总计${_total ? _total :  0}条`}
+            showTotal={_total => `总计${_total || 0}条`}
             onShowSizeChange={this.onShowSizeChange}
             showSizeChanger
             showQuickJumper

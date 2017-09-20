@@ -453,6 +453,7 @@ const Meeting = ({
               </Row>
             </Form>
           </Card>
+          <div style={{ marginBottom: '16px' }}><span>共搜索到{total}条数据</span></div>
           {hasSelected && <Alert type="info" message={selectedInfo} showIcon />}
           <Table
             bordered

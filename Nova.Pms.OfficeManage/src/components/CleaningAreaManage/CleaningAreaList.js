@@ -802,10 +802,24 @@ function CleaningAreaList ({
         <div className={styles.normal}>
           <div className={styles.ListButton}>
             <Row>
-              <Col span={16} style={{ textAlign: 'left' }}>
-                <h1>
-                  保洁区域
-                </h1>
+              <Col span={16}>
+                <AddCleaningArea
+                  regionList={regionList}
+                  staffList={staffList}
+                  initialRegion={initialRegion}
+                  dispatch={dispatch}
+                  cleaningArea={cleaningArea}
+                />
+                <Popconfirm
+                  title="确定要删除该保洁区域吗?"
+                  onConfirm={this.deleteCleaningArea.bind(
+                    this,
+                    selectedRowKeys
+                  )}
+                >
+                  <Button disabled={!hasSelected}>批量删除</Button>
+                </Popconfirm>
+                <Button disabled>导出</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
@@ -894,29 +908,6 @@ function CleaningAreaList ({
           <div className={styles.info}><span>共搜索到{total}条数据</span></div>
 
           <div className={styles.ListButton}>
-            <Row gutter={10}>
-              <Col span={8}>
-
-                <AddCleaningArea
-                  regionList={regionList}
-                  staffList={staffList}
-                  initialRegion={initialRegion}
-                  dispatch={dispatch}
-                  cleaningArea={cleaningArea}
-                />
-                <Popconfirm
-                  title="确定要删除该保洁区域吗?"
-                  onConfirm={this.deleteCleaningArea.bind(
-                    this,
-                    selectedRowKeys
-                  )}
-                >
-                  <Button disabled={!hasSelected}>批量删除</Button>
-                </Popconfirm>
-                <Button disabled>导出</Button>
-              </Col>
-
-            </Row>
             {hasSelected &&
               <Alert
                 style={{ marginTop: 15 }}

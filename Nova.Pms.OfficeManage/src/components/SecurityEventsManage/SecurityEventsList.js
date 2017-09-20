@@ -606,28 +606,31 @@ function SecurityEventsList ({
           fixed: 'right',
           width: 110,
           render: (text, record) => {
-            return total ? (<span>
-              <ShowSecurityEvents
-                regionList={regionList}
-                dispatch={dispatch}
-                securityEvents={record}
-                id={record.id}
-              />
-              &nbsp;
-              <EditSecurityEvents
-                regionList={regionList}
-                dispatch={dispatch}
-                securityEvents={record}
-                id={record.id}
-              />
-              &nbsp;
-              <Popconfirm
-                title="确定要删除该安防事件记录吗?"
-                onConfirm={this.deleteSecurityEvents.bind(null, [record.id])}
-              >
-                <a>删除</a>
-              </Popconfirm>
-            </span>)
+            return total
+              ? <span>
+                <ShowSecurityEvents
+                  regionList={regionList}
+                  dispatch={dispatch}
+                  securityEvents={record}
+                  id={record.id}
+                />
+                  &nbsp;
+                <EditSecurityEvents
+                  regionList={regionList}
+                  dispatch={dispatch}
+                  securityEvents={record}
+                  id={record.id}
+                />
+                  &nbsp;
+                <Popconfirm
+                  title="确定要删除该安防事件记录吗?"
+                  onConfirm={this.deleteSecurityEvents.bind(null, [
+                    record.id,
+                  ])}
+                >
+                  <a>删除</a>
+                </Popconfirm>
+              </span>
               : '操作不可用'
           },
         },
@@ -657,10 +660,23 @@ function SecurityEventsList ({
         <div className={styles.normal}>
           <div className={styles.ListButton}>
             <Row>
-              <Col span={16} style={{ textAlign: 'left' }}>
-                <h1>
-                  安防事件记录
-                </h1>
+              <Col span={16}>
+
+                <AddSecurityEvents
+                  regionList={regionList}
+                  dispatch={dispatch}
+                  securityEvents={securityEvents}
+                />
+                <Popconfirm
+                  title="确定要删除该安防事件记录吗?"
+                  onConfirm={this.deleteSecurityEvents.bind(
+                    this,
+                    selectedRowKeys
+                  )}
+                >
+                  <Button disabled={!hasSelected}>批量删除</Button>
+                </Popconfirm>
+                <Button disabled>导出</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
@@ -757,27 +773,6 @@ function SecurityEventsList ({
           <div className={styles.info}><span>共搜索到{total}条数据</span></div>
 
           <div className={styles.ListButton}>
-            <Row gutter={10}>
-              <Col span={8}>
-
-                <AddSecurityEvents
-                  regionList={regionList}
-                  dispatch={dispatch}
-                  securityEvents={securityEvents}
-                />
-                <Popconfirm
-                  title="确定要删除该安防事件记录吗?"
-                  onConfirm={this.deleteSecurityEvents.bind(
-                    this,
-                    selectedRowKeys
-                  )}
-                >
-                  <Button disabled={!hasSelected}>批量删除</Button>
-                </Popconfirm>
-                <Button disabled>导出</Button>
-              </Col>
-
-            </Row>
             {hasSelected &&
               <Alert
                 style={{ marginTop: 15 }}
@@ -802,7 +797,7 @@ function SecurityEventsList ({
             current={current}
             pageSize={pageSize}
             onChange={this.pageChangeHandler}
-            showTotal={_total => `总计${_total ? _total :  0}条`}
+            showTotal={_total => `总计${_total || 0}条`}
             onShowSizeChange={this.onShowSizeChange}
             showSizeChanger
             showQuickJumper

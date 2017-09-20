@@ -635,10 +635,14 @@ function SecurityDutyPlanList ({
         <div className={styles.normal}>
           <div className={styles.ListButton}>
             <Row>
-              <Col span={16} style={{ textAlign: 'left' }}>
-                <h1>
-                  值班方案
-                </h1>
+              <Col span={16}>
+                <AddSecurityDutyPlan
+                  regionList={regionList}
+                  dispatch={dispatch}
+                  securityDutyPlan={securityDutyPlan}
+                />
+
+                <Button disabled>导出</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
@@ -727,19 +731,6 @@ function SecurityDutyPlanList ({
           <div className={styles.info}><span>共搜索到{total}条数据</span></div>
 
           <div className={styles.ListButton}>
-            <Row gutter={10}>
-              <Col span={8}>
-
-                <AddSecurityDutyPlan
-                  regionList={regionList}
-                  dispatch={dispatch}
-                  securityDutyPlan={securityDutyPlan}
-                />
-
-                <Button disabled>导出</Button>
-              </Col>
-
-            </Row>
             {hasSelected &&
               <Alert
                 style={{ marginTop: 15 }}

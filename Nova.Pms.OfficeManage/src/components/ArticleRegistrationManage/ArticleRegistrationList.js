@@ -747,10 +747,23 @@ function ArticleRegistrationList ({
         <div className={styles.normal}>
           <div className={styles.ListButton}>
             <Row>
-              <Col span={16} style={{ textAlign: 'left' }}>
-                <h1>
-                  物品出入登记
-                </h1>
+              <Col span={16}>
+                <AddArticleRegistration
+                  regionList={regionList}
+                  userList={userList}
+                  dispatch={dispatch}
+                  articleRegistration={articleRegistration}
+                />
+                <Popconfirm
+                  title="确定要删除该物品出入登记吗?"
+                  onConfirm={this.deleteArticleRegistration.bind(
+                    this,
+                    selectedRowKeys
+                  )}
+                >
+                  <Button disabled={!hasSelected}>批量删除</Button>
+                </Popconfirm>
+                <Button disabled>导出</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
@@ -839,28 +852,6 @@ function ArticleRegistrationList ({
           <div className={styles.info}><span>共搜索到{total}条数据</span></div>
 
           <div className={styles.ListButton}>
-            <Row gutter={10}>
-              <Col span={8}>
-
-                <AddArticleRegistration
-                  regionList={regionList}
-                  userList={userList}
-                  dispatch={dispatch}
-                  articleRegistration={articleRegistration}
-                />
-                <Popconfirm
-                  title="确定要删除该物品出入登记吗?"
-                  onConfirm={this.deleteArticleRegistration.bind(
-                    this,
-                    selectedRowKeys
-                  )}
-                >
-                  <Button disabled={!hasSelected}>批量删除</Button>
-                </Popconfirm>
-                <Button disabled>导出</Button>
-              </Col>
-
-            </Row>
             {hasSelected &&
               <Alert
                 style={{ marginTop: 15 }}

@@ -718,10 +718,22 @@ function VisitorRegistrationList ({
         <div className={styles.normal}>
           <div className={styles.ListButton}>
             <Row>
-              <Col span={16} style={{ textAlign: 'left' }}>
-                <h1>
-                  来人来访
-                </h1>
+              <Col span={16}>
+                <AddVisitorRegistration
+                  regionList={regionList}
+                  dispatch={dispatch}
+                  visitorRegistration={visitorRegistration}
+                />
+                <Popconfirm
+                  title="确定要删除该来人来访登记吗?"
+                  onConfirm={this.deleteVisitorRegistration.bind(
+                    this,
+                    selectedRowKeys
+                  )}
+                >
+                  <Button disabled={!hasSelected}>批量删除</Button>
+                </Popconfirm>
+                <Button disabled>导出</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
@@ -820,27 +832,6 @@ function VisitorRegistrationList ({
           <div className={styles.info}><span>共搜索到{total}条数据</span></div>
 
           <div className={styles.ListButton}>
-            <Row gutter={10}>
-              <Col span={8}>
-
-                <AddVisitorRegistration
-                  regionList={regionList}
-                  dispatch={dispatch}
-                  visitorRegistration={visitorRegistration}
-                />
-                <Popconfirm
-                  title="确定要删除该来人来访登记吗?"
-                  onConfirm={this.deleteVisitorRegistration.bind(
-                    this,
-                    selectedRowKeys
-                  )}
-                >
-                  <Button disabled={!hasSelected}>批量删除</Button>
-                </Popconfirm>
-                <Button disabled>导出</Button>
-              </Col>
-
-            </Row>
             {hasSelected &&
               <Alert
                 style={{ marginTop: 15 }}

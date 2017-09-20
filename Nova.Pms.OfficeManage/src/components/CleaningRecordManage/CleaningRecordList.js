@@ -926,10 +926,26 @@ function CleaningRecordList ({
         <div className={styles.normal}>
           <div className={styles.ListButton}>
             <Row>
-              <Col span={16} style={{ textAlign: 'left' }}>
-                <h1>
-                  保洁记录
-                </h1>
+              <Col span={16}>
+
+                <AddCleaningRecord
+                  regionList={regionList}
+                  staffList={staffList}
+                  initialRegion={initialRegion}
+                  cleaningAreaList={cleaningAreaList}
+                  dispatch={dispatch}
+                  cleaningRecord={cleaningRecord}
+                />
+                <Popconfirm
+                  title="确定要删除该保洁记录吗?"
+                  onConfirm={this.deleteCleaningRecord.bind(
+                    this,
+                    selectedRowKeys
+                  )}
+                >
+                  <Button disabled={!hasSelected}>批量删除</Button>
+                </Popconfirm>
+                <Button disabled>导出</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
@@ -1018,30 +1034,6 @@ function CleaningRecordList ({
           <div className={styles.info}><span>共搜索到{total}条数据</span></div>
 
           <div className={styles.ListButton}>
-            <Row gutter={10}>
-              <Col span={8}>
-
-                <AddCleaningRecord
-                  regionList={regionList}
-                  staffList={staffList}
-                  initialRegion={initialRegion}
-                  cleaningAreaList={cleaningAreaList}
-                  dispatch={dispatch}
-                  cleaningRecord={cleaningRecord}
-                />
-                <Popconfirm
-                  title="确定要删除该保洁记录吗?"
-                  onConfirm={this.deleteCleaningRecord.bind(
-                    this,
-                    selectedRowKeys
-                  )}
-                >
-                  <Button disabled={!hasSelected}>批量删除</Button>
-                </Popconfirm>
-                <Button disabled>导出</Button>
-              </Col>
-
-            </Row>
             {hasSelected &&
               <Alert
                 style={{ marginTop: 15 }}

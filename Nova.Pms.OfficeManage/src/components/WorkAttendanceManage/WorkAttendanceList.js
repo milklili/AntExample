@@ -948,7 +948,7 @@ function WorkAttendanceList ({
               </Form>
             </Card>}
           <div className={styles.info}>
-            <span>共搜索到{total}条数据。<a>清除搜索条件</a></span>
+            <span>共搜索到{total}条数据。</span>
           </div>
           {hasSelected &&
             <Alert

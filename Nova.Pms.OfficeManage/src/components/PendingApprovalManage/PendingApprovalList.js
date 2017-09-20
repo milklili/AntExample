@@ -1380,10 +1380,27 @@ function PendingApprovalList ({
         <div className={styles.normal}>
           <div className={styles.ListButton}>
             <Row>
-              <Col span={16} style={{ textAlign: 'left' }}>
-                <h1>
-                  待我审批的
-                </h1>
+              <Col span={16}>
+
+                <BatchCommentApproval
+                  dispatch={dispatch}
+                  approval={selectedRows}
+                  operate={'agree'}
+                  hasSelected={hasSelected}
+                />
+                <BatchCommentApproval
+                  dispatch={dispatch}
+                  approval={selectedRows}
+                  operate={'refuse'}
+                  hasSelected={hasSelected}
+                />
+                <BatchTransferApproval
+                  dispatch={dispatch}
+                  approval={selectedRowKeys}
+                  staffList={staffList}
+                  hasSelected={hasSelected}
+                />
+                <Button disabled>导出</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
@@ -1465,31 +1482,6 @@ function PendingApprovalList ({
           <div className={styles.info}><span>共搜索到{total}条数据</span></div>
 
           <div className={styles.ListButton}>
-            <Row gutter={10}>
-              <Col span={8}>
-
-                <BatchCommentApproval
-                  dispatch={dispatch}
-                  approval={selectedRows}
-                  operate={'agree'}
-                  hasSelected={hasSelected}
-                />
-                <BatchCommentApproval
-                  dispatch={dispatch}
-                  approval={selectedRows}
-                  operate={'refuse'}
-                  hasSelected={hasSelected}
-                />
-                <BatchTransferApproval
-                  dispatch={dispatch}
-                  approval={selectedRowKeys}
-                  staffList={staffList}
-                  hasSelected={hasSelected}
-                />
-                <Button disabled>导出</Button>
-              </Col>
-
-            </Row>
             {hasSelected &&
               <Alert
                 style={{ marginTop: 15 }}

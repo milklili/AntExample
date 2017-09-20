@@ -119,6 +119,7 @@ const OfficeManageList = ({
                 onSearch={_filterStr => this.searchHandler(_filterStr)}
               />
             </div>
+            <div style={{ marginBottom: '16px' }}><span>共搜索到{total}条数据</span></div>
             {hasSelected && <Alert message={selectInfo} type="info" showIcon />}
             <Table
               bordered

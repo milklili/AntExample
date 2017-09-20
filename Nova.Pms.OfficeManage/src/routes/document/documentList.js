@@ -635,6 +635,7 @@ function DocumentList ({
                 </Row>
               </Form>
             </Card>}
+          <div style={{ marginBottom: '16px' }}><span>共搜索到{total}条数据</span></div>
           {selectLength > 0 &&
             <Alert message={selectInfo} type="info" showIcon />}
           <Table

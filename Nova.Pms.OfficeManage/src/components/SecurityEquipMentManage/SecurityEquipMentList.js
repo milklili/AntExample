@@ -919,10 +919,7 @@ function SecurityEquipMentList ({
           key: 'operation',
           fixed: 'right',
           width: 100,
-          render: (
-            text,
-            record
-          ) => {
+          render: (text, record) => {
             return total
               ? <span>
                 <ShowSecurityEquipMent
@@ -985,10 +982,26 @@ function SecurityEquipMentList ({
         <div className={styles.normal}>
           <div className={styles.ListButton}>
             <Row>
-              <Col span={16} style={{ textAlign: 'left' }}>
-                <h1>
-                  安防区域及器材管理
-                </h1>
+              <Col span={16}>
+                <AddSecurityEquipMent
+                  regionList={regionList}
+                  departmentList={departmentList}
+                  staffList={staffList}
+                  initialRegion={initialRegion}
+                  visible={visible}
+                  dispatch={dispatch}
+                  securityEquipMent={securityEquipMent}
+                />
+                <Popconfirm
+                  title="确定要删除该安保器材吗?"
+                  onConfirm={this.deleteSecurityEquipMent.bind(
+                    this,
+                    selectedRowKeys
+                  )}
+                >
+                  <Button disabled={!hasSelected}>批量删除</Button>
+                </Popconfirm>
+                <Button disabled>导出</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
@@ -1126,31 +1139,6 @@ function SecurityEquipMentList ({
           <div className={styles.info}><span>共搜索到{total}条数据</span></div>
 
           <div className={styles.ListButton}>
-            <Row gutter={10}>
-              <Col span={8}>
-
-                <AddSecurityEquipMent
-                  regionList={regionList}
-                  departmentList={departmentList}
-                  staffList={staffList}
-                  initialRegion={initialRegion}
-                  visible={visible}
-                  dispatch={dispatch}
-                  securityEquipMent={securityEquipMent}
-                />
-                <Popconfirm
-                  title="确定要删除该安保器材吗?"
-                  onConfirm={this.deleteSecurityEquipMent.bind(
-                    this,
-                    selectedRowKeys
-                  )}
-                >
-                  <Button disabled={!hasSelected}>批量删除</Button>
-                </Popconfirm>
-                <Button disabled>导出</Button>
-              </Col>
-
-            </Row>
             {hasSelected &&
               <Alert
                 style={{ marginTop: 15 }}

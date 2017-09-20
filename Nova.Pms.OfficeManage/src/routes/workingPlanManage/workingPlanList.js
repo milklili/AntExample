@@ -902,8 +902,8 @@ function WorkingPlanList ({
                   </div>
                 </div>
               </div>}
+            <div style={{ marginBottom: '16px' }}><span>共搜索到{total}条数据</span></div>
             <div className={styles.workingPlanList}>
-
               {hasSelected &&
                 <Alert
                   type="info"
