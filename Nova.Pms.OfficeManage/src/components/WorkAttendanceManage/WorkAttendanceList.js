@@ -173,7 +173,7 @@ const AddStaffForm = Form.create()(props => {
     <Modal
       visible={visible}
       title="添加职员"
-      width="1000"
+      width="800"
       okText="确定"
       onCancel={onCancel}
       onOk={onCreate}
@@ -303,9 +303,8 @@ const AddStaffForm = Form.create()(props => {
           </Col>
         </Row>
         <Row gutter={8}>
-          <Col span={12}>
-
-            <FormItem {...formItemLayout} label="备注">
+          <Col span={24}>
+            <FormItem {...formItemRow} label="备注">
               {getFieldDecorator('remark', {})(
                 <Input type="textarea" rows={2} />
               )}
@@ -500,7 +499,7 @@ function WorkAttendanceList ({
       return (
         <span>
           <a onClick={this.showModal} disabled={!this.props.hasSelected}>
-            批量 添加 考勤 记录
+            批量添加考勤记录
           </a>
           {
             <AddWorkAttendanceForm
@@ -870,11 +869,15 @@ function WorkAttendanceList ({
       return (
         <div className={styles.normal}>
           <div className={styles.ListButton}>
-            <Row>
-              <Col span={16} style={{ textAlign: 'left' }}>
-                <h1>
-                  考勤管理
-                </h1>
+            <Row gutter={10}>
+              <Col span={16}>
+                <AddStaff />
+                <MoreOptionsDropdownMenu
+                  workAttendance={record}
+                  staffList={staffList}
+                  dispatch={dispatch}
+                  hasSelected={hasSelected}
+                />
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
@@ -889,7 +892,6 @@ function WorkAttendanceList ({
               </Col>
             </Row>
           </div>
-
           {seniorSearch &&
             <Card style={{ marginBottom: 10 }}>
               <Form onSubmit={this.seniorSearchHandler}>
@@ -942,28 +944,13 @@ function WorkAttendanceList ({
           <div className={styles.info}>
             <span>共搜索到{total}条数据。<a>清除搜索条件</a></span>
           </div>
-
-          <div className={styles.ListButton}>
-            <Row gutter={10}>
-              <Col span={8}>
-                <AddStaff />
-                <MoreOptionsDropdownMenu
-                  workAttendance={record}
-                  staffList={staffList}
-                  dispatch={dispatch}
-                  hasSelected={hasSelected}
-                />
-              </Col>
-            </Row>
-            {hasSelected &&
-              <Alert
-                style={{ marginTop: 15 }}
-                closeText="清除所选内容"
-                type="info"
-                message={selectInfo}
-                showIcon
-              />}
-          </div>
+          {hasSelected &&
+            <Alert
+              style={{ marginTop: 15 }}
+              type="info"
+              message={selectInfo}
+              showIcon
+            />}
           <Table
             bordered
             columns={columns}
@@ -980,7 +967,7 @@ function WorkAttendanceList ({
             current={current}
             pageSize={pageSize}
             onChange={this.pageChangeHandler}
-            showTotal={total => `总计${total}条`}
+            showTotal={_total => `总计${_total ? _total :  0}条`}
             onShowSizeChange={this.onShowSizeChange}
             showSizeChanger
             showQuickJumper

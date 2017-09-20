@@ -124,7 +124,7 @@ function ContractList ({
           current={current}
           pageSize={PAGE_SIZE}
           onChange={pageChangeHandler}
-          showTotal={total => `总计${total}条`}
+          showTotal={_total => `总计${_total ? _total :  0}条`}
         />
       </div>
     </div>

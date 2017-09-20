@@ -638,7 +638,6 @@ function DocumentList ({
               message={selectInfo}
               type="info"
               showIcon
-              closeText="清空,删除，添加附件"
             />}
           <Table
             bordered
@@ -657,7 +656,7 @@ function DocumentList ({
             current={current}
             pageSize={pageSize}
             onChange={this.pageChangeHandler}
-            showTotal={total => `总计${total}条`}
+            showTotal={_total => `总计${_total ? _total :  0}条`}
             onShowSizeChange={this.onShowSizeChange}
             showSizeChanger
             showQuickJumper

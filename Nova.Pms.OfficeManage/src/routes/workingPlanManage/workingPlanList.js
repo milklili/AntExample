@@ -424,7 +424,7 @@ function WorkingPlanList ({
       // const { isShowAdvancedSearch } = this.state;
       this.setState({ isShowAdvancedSearch: false })
       var searchInfos = []
-      for (var item in this.form) {
+      for (const item in this.form) {
         searchInfos.push()
       }
 
@@ -516,22 +516,22 @@ function WorkingPlanList ({
       const selectLength = selectedRowKeys.length
       const hasSelected = selectLength > 0
       let review = selectedRows.map(element => {
-        if (element.auditState == true) {
+        if (element.auditState === true) {
           return element
         }
       })
       review = review.filter(n => {
-        return n != undefined
+        return n != null
       })
       const reviewLength = review.length > 0
 
       let cancelReview = selectedRows.map(element => {
-        if (element.auditState == false) {
+        if (element.auditState === false) {
           return element
         }
       })
       cancelReview = cancelReview.filter(n => {
-        return n != undefined
+        return n != null
       })
       const cancelReviewLength = cancelReview.length > 0
       let isReview = true
@@ -707,13 +707,14 @@ function WorkingPlanList ({
           key: 'operation',
           fixed: 'right',
           width: 150,
-          render: (text, record) => (
-            <span className={styles.operation}>
+          render: (text, record) => {
+            return total ? (<span className={styles.operation}>
               <a onClick={this.editWorkingPlan.bind(null, record.id)}>编辑</a>
               <a onClick={this.watchWorkingPlan.bind(null, record.id)}>查看</a>
               {<MoreActions recordId={record.id} record={record} />}
-            </span>
-          ),
+            </span>)
+              : '操作不可用'
+          },
         },
       ]
 
@@ -740,6 +741,7 @@ function WorkingPlanList ({
                     onClick={this.showAdvancedSearch}
                   >
                     高级搜索
+                    <Icon type="down" />
                   </a>
                 </Col>
               </Row>
@@ -902,7 +904,6 @@ function WorkingPlanList ({
 
               {hasSelected &&
                 <Alert
-                  closeText="清除所选内容"
                   type="info"
                   message={selectInfo}
                   showIcon
@@ -925,7 +926,7 @@ function WorkingPlanList ({
                 current={current}
                 pageSize={pageSize}
                 onChange={this.pageChangeHandler}
-                showTotal={total => `总计${total}条`}
+                showTotal={_total => `总计${_total ? _total : 0}条`}
                 onShowSizeChange={this.onShowSizeChange}
                 showSizeChanger
                 showQuickJumper

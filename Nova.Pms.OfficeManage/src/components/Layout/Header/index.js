@@ -13,7 +13,7 @@ import NavModal from './NavModal'
 // import PM from './payment-menu'
 // import CM from './customer-menu'
 // import COM from './contract-menu'
-import menuWuYe from './menu-data'
+// import menuWuYe from './menu-data'
 
 let timer, lastSelect, parentNode
 // const handlerMouseEnter = (suffix, e) => {
@@ -54,12 +54,14 @@ const handlerMouseClick = (suffix, e) => {
   }
 }
 const handlerMouseLeave = () => {
-  const firstChild = lastSelect.previousSibling
-  lastSelect.style.display = 'none'
-  firstChild.removeAttribute('data-active')
-  lastSelect = null
-  // timer && clearTimeout(timer)
-  // timer = null
+  if (lastSelect) {
+    const firstChild = lastSelect.previousSibling
+    lastSelect.style.display = 'none'
+    firstChild.removeAttribute('data-active')
+    lastSelect = null
+    // timer && clearTimeout(timer)
+    // timer = null
+  }
 }
 
 const handlerClick = e => {
@@ -72,7 +74,7 @@ const Header = ({
   logout,
   handleMenuItemClick,
   menu,
-  // menuWuYe,
+  menuWuYe,
   tabBar,
   navBar,
   editNavBar,

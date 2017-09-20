@@ -69,10 +69,10 @@ const EditInitiatedForm = Form.create()(
                 <Form>
                     <Row gutter={8}>
                         <Col span={24}>
-                            <FormItem {...formItemLayout} label="管理区">
+                            <FormItem {...formItemLayout} label="管理�>
                                 {getFieldDecorator('regionId', {
                                     //initialValue: staffName
-                                    rules: [{ required: true, message: "请选择管理区" }]
+                                    rules: [{ required: true, message: "请选择管理� }]
                                 })(
                                     <Select
                                         mode="combox"
@@ -89,7 +89,7 @@ const EditInitiatedForm = Form.create()(
                         <Col span={24}>
                             <FormItem {...formItemLayout} label="审批编号" >
                                 {getFieldDecorator('code', {
-                                    rules: [{ required: true, message: "请输入审批编号" }]
+                                    rules: [{ required: true, message: "请输入审批编� }]
                                 })(<Input disabled />)}
                             </FormItem>
                         </Col>
@@ -109,7 +109,7 @@ const EditInitiatedForm = Form.create()(
                         <Col span={24}>
                             <FormItem {...formItemLayout} label="申请内容" >
                                 {getFieldDecorator('content', {
-                                    rules: [{ type: "string", required: true, max: 30, message: "请正确输入申请内容,最大长度为30" }]
+                                    rules: [{ type: "string", required: true, max: 30, message: "请正确输入申请内�最大长度为30" }]
                                 })(<Input />)}
                             </FormItem>
                         </Col>
@@ -118,7 +118,7 @@ const EditInitiatedForm = Form.create()(
                         <Col span={24}>
                             <FormItem {...formItemLayout} label="审批详情" >
                                 {getFieldDecorator('details', {
-                                    rules: [{ type: "string", required: true, max: 300, message: "请正确输入审批详情,最大长度为300" }]
+                                    rules: [{ type: "string", required: true, max: 300, message: "请正确输入审批详�最大长度为300" }]
                                 })(<Input />)}
                             </FormItem>
 
@@ -126,10 +126,10 @@ const EditInitiatedForm = Form.create()(
                     </Row>
                     <Row gutter={8}>
                         <Col span={24}>
-                            <FormItem {...formItemLayout} label="审批人">
+                            <FormItem {...formItemLayout} label="审批�>
                                 {getFieldDecorator('approvalPersonId', {
                                     //initialValue: staffName
-                                    rules: [{ required: true, message: "请选择审批人" }]
+                                    rules: [{ required: true, message: "请选择审批� }]
                                 })(
                                     <Select
                                         mode="multiple"
@@ -167,7 +167,7 @@ const EditInitiatedForm = Form.create()(
                         <Col span={24}>
                             <FormItem {...formItemLayout} label="添加图片">
                                 <Upload {...uploadPictures} >
-                                    <a>点击添加（最多9张）</a>
+                                    <a>点击添加（最�张）</a>
                                 </Upload>
                             </FormItem>
                         </Col>
@@ -177,7 +177,7 @@ const EditInitiatedForm = Form.create()(
                         <Col span={24}>
                             <FormItem {...formItemLayout} label="添加附件">
                                 <Upload {...uploadAttachments} >
-                                    <a>点击添加 （单个附件应小于2M）</a>
+                                    <a>点击添加 （单个附件应小于2M�/a>
                                 </Upload>
                             </FormItem>
                         </Col>
@@ -239,7 +239,7 @@ const CommentApprovalForm = Form.create()(
                             <FormItem {...formItemLayout} label="评论内容">
                                 {getFieldDecorator('remark', {
                                     //initialValue: staffName
-                                    rules: [{ required: true, message: "请填写评论内容" }]
+                                    rules: [{ required: true, message: "请填写评论内� }]
                                 })(
                                     <Input type= "textarea" rows= {10} />
                                     )}
@@ -566,7 +566,7 @@ function InitiatedList({
             const isMax = pictures.length < 9;
             //var exitPictures = pictures.length;
             if (!isMax) {
-                message.error('图片最多上传9张!');
+                message.error('图片最多上��');
             }
             return isJPG && isMax;
         };
@@ -574,7 +574,7 @@ function InitiatedList({
         beforeAttachmentsOnChange = file => {
             const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isLt2M) {
-                message.error('单个附件应小于2M');
+                message.error('单个附件应小�M');
             }
             return isLt2M;
         };
@@ -951,7 +951,7 @@ function InitiatedList({
                     width: 150
                 },
                 {
-                    title: "管理区",
+                    title: "管理�,
                     dataIndex: "regionName",
                     key: "regionName",
                     width: 120
@@ -975,21 +975,21 @@ function InitiatedList({
                     ),
                 },
                 {
-                    title: "状态",
+                    title: "状�,
                     dataIndex: "statusStr",
                     key: "statusStr",
                     width: 100,
                    
                 },
                 {
-                    title: "申请人",
+                    title: "申请�,
                     dataIndex: "suitorPersonName",
                     key: "suitorPersonName",
                     width: 150,
                 },
                
                 {
-                    title: "审批人",
+                    title: "审批�,
                     dataIndex: "approvalPersonName",
                     key: "approvalPersonName",
                     width: 250
@@ -1015,7 +1015,7 @@ function InitiatedList({
                                 approval={record}
                             />
                              &nbsp;
-                            <Popconfirm title="确定要撤销该审批记录?" onConfirm={this.revokedApproval.bind(null, [record.id])}>
+                            <Popconfirm title="确定要撤销该审批记�" onConfirm={this.revokedApproval.bind(null, [record.id])}>
                                 <a >撤销</a>
                              </Popconfirm>
                              &nbsp;
@@ -1038,7 +1038,7 @@ function InitiatedList({
                 onChange: this.onSelectChange,              
             };
             const selectLength = selectedRowKeys.length;
-            const selectInfo = "已选择" + selectLength + "项数据。";
+            const selectInfo = "已选择" + selectLength + "项数据�;
 
             const isShowAdvancedSearch = this.state.isShowAdvancedSearch;
 
@@ -1086,14 +1086,14 @@ function InitiatedList({
                                     </FormItem>
                                 </Col>
                                     <Col span={8}>
-                                        <FormItem {...formItemLayout} label="申请人">
+                                        <FormItem {...formItemLayout} label="申请�>
                                         {getFieldDecorator("suitorPersonId", {
 
                                         })(<Select ></Select>)}
                                         </FormItem>
                                     </Col>
                                     <Col span={8}>
-                                        <FormItem {...formItemLayout} label="审批人">
+                                        <FormItem {...formItemLayout} label="审批�>
                                         {getFieldDecorator("approvalPersonId", {
 
                                             })(<Select ></Select>)}
@@ -1109,7 +1109,7 @@ function InitiatedList({
                                         </FormItem>
                                     </Col>
                                     <Col span={8}>
-                                        <FormItem {...formItemLayout} label="状态">
+                                        <FormItem {...formItemLayout} label="状�>
                                             {getFieldDecorator("status", {
 
                                             })(<Select ></Select>)}
@@ -1143,7 +1143,7 @@ function InitiatedList({
                                 </Row>
                             </Form>
                         </Card>}
-                    <div className={styles.info}><span >共搜索到{total}条数据</span></div>
+                    <div className={styles.info}><span >共搜索到{total}条数�/span></div>
                     
                     <div className={styles.ListButton}>
                     <Row gutter={10} >
@@ -1152,7 +1152,7 @@ function InitiatedList({
                                 <Popconfirm title="确定要撤销该审批记录吗?" onConfirm={this.revokedApproval.bind(this, selectedRowKeys)}>
                                     <Button disabled={!hasSelected}>批量撤销</Button>
                                 </Popconfirm>
-                                <Popconfirm title="确定要删除该审批记录吗?" onConfirm={this.deleteApproval.bind(this, selectedRowKeys)}>
+                                <Popconfirm title="确定要删除该审批记录�" onConfirm={this.deleteApproval.bind(this, selectedRowKeys)}>
                                     <Button disabled={!hasSelected}>批量删除</Button>
                                 </Popconfirm>
                                 
