@@ -122,7 +122,7 @@ class DocumentEditForm extends React.Component {
 
   uploadFiles = {
     name: 'file',
-    action: 'api/saas/uploadAttachments',
+    action: `${window.location.host}/api/officeManage/uploadAttachments`,
     headers: {
       authorization: 'authorization-text',
     },

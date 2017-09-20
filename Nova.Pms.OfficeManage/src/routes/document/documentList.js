@@ -133,7 +133,7 @@ function DocumentList ({
     render () {
       const uploadFiles = {
         name: 'file',
-        action: 'api/saas/uploadAttachments',
+        action: `${window.location.host}/api/officeManage/uploadAttachments`,
         headers: {
           authorization: 'authorization-text',
         },

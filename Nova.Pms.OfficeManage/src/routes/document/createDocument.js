@@ -47,7 +47,7 @@ class DocumentCreateForm extends React.Component {
 
   uploadFiles = {
     name: 'file',
-    action: 'api/saas/uploadAttachments',
+    action: '/api/officeManage/uploadAttachments',
     headers: {
       authorization: 'authorization-text',
     },
