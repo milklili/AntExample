@@ -245,8 +245,8 @@ function SecurityScheduleList ({
           <div className={styles.ListButton}>
             <Row>
               <Col span={16}>
-                <Button type="primary">导出</Button>
-                <Button type="primary">打印排班表</Button>
+                <Button type="primary" disabled={!total}>导出</Button>
+                <Button type="primary" disabled={!total}>打印排班表</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search

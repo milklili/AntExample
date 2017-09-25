@@ -462,7 +462,7 @@ const Meeting = ({
             rowSelection={rowSelection}
             loading={loading}
             pagination={false}
-            scroll={{ x: '193%' }}
+            scroll={{ x: '180%' }}
             rowKey={record => record.id}
           />
           <Pagination

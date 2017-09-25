@@ -37,7 +37,10 @@ class NormalMeetingCategoryForm extends React.Component {
   };
   render () {
     const FormItem = Form.Item
-    const { getFieldDecorator } = this.props.form
+    const { getFieldDecorator, getFieldsError } = this.props.form
+    const { meetingCategory } = this.props
+    const error = getFieldsError()
+    console.log(error)
     const formItemLayout = {
       labelCol: {
         xs: {

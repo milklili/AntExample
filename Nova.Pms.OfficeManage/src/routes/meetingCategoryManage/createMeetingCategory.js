@@ -69,24 +69,9 @@ class NormalMeetingCategoryForm extends React.Component {
         },
       },
     }
-    const { unfilled } = this.state
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
-          {unfilled > 0 &&
-            <Row gutter={8}>
-              <Col span={20}>
-                <FormItem {...tailFormItemLayout}>
-                  <Alert
-                    message={`有${unfilled}处未填写，请修正后保存`}
-                    type="error"
-                    showIcon
-                    closeText="x"
-                    onClose={this.closeUnfilledInfo}
-                  />
-                </FormItem>
-              </Col>
-            </Row>}
           <Row gutter={8}>
             <Col span={20}>
               <FormItem {...formItemLayout} label="会议类别名称">
@@ -115,10 +100,9 @@ class NormalMeetingCategoryForm extends React.Component {
           <Row gutter={8}>
             <Col span={20}>
               <FormItem {...tailFormItemLayout} label="">
-                <Button type="primary" htmlType="submit">保存</Button>
+                <Button type="primary" htmlType="submit" style={{ marginRight: '20px' }}>保存</Button>
                 <Button type="default" onClick={this.cancle}>取消</Button>
               </FormItem>
-
             </Col>
           </Row>
         </Form>
@@ -128,17 +112,17 @@ class NormalMeetingCategoryForm extends React.Component {
 }
 
 const MeetingCategoryForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.meetingCategory).forEach(key => {
-      fields[key] = {
-        value: props.meetingCategory[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields ({ meetingCategory }) {
+  //   const fields = {}
+  //   Object.keys(meetingCategory).forEach(key => {
+  //     fields[key] = {
+  //       value: meetingCategory[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
     props.dispatch({

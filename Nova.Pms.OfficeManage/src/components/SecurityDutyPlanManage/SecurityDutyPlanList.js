@@ -25,41 +25,71 @@ import {
 } from 'antd'
 import { routerRedux, Link } from 'dva/router'
 import styles from './SecurityDutyPlanManage.css'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
-
-moment.locale('zh-cn')
+import { moment, dateFormat } from 'utils'
 import { PAGE_SIZE } from '../../constants'
 
 const FormItem = Form.Item
 const RangePicker = DatePicker.RangePicker
-const RadioGroup = Radio.Group
 const Option = Select.Option
 
-const AddSecurityDutyPlanForm = Form.create()(props => {
+const DutyPlanForm = Form.create()(props => {
   const {
     visible,
     onCancel,
-    onCreate,
+    onClose,
     form,
-    dispatch,
     regionList,
-    securityDutyPlan,
-    isAddOrEdit,
-    handleDaysValidate,
+    // securityDutyPlan,
+    modalType,
+    // handleDaysValidate,
   } = props
-  const { getFieldDecorator } = form
+  const { getFieldDecorator, getFieldValue, validateFields } = form
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 },
   }
-  const formItemRow = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 21 },
+  // const formItemRow = {
+  //   labelCol: { span: 3 },
+  //   wrapperCol: { span: 21 },
+  // }
+
+  // const assocationValid = assocation => {
+  //   validateFields([assocation], (err, value) => {
+  //     console.log(err, value)
+  //   })
+  // }
+  // 验证这块还有些问题
+  const validator = (rule, value, callback) => {
+    const assocation = ['workingDays', 'restDays'].filter(v => v !== rule.field)
+    const d1 = parseFloat(value)
+    const d2 = parseFloat(getFieldValue(assocation[0]))
+    console.log(d2)
+    if (value != null && value !== '') {
+      !/^[0-9]+.?[0-9]*$/.test(value)
+        ? callback('天数格式错误')
+        : d1 > 31
+          ? callback('天数不能大于31')
+          : d1 < 0 ? callback('天数不能小于0') : undefined
+    }
+    if ((d1 + d2) > 31) {
+      callback('工作天数和休息天数之和不能大于31')
+    }
+    callback()
   }
+  const editAble = modalType !== 2
   const regionOptions = regionList.map(value => (
     <Option key={value.id} value={value.id}>{value.name}</Option>
   ))
+
+  const onOK = () => {
+    form.validateFields((err, values) => {
+      if (err) {
+        return
+      }
+      onClose(values)
+      form.resetFields()
+    })
+  }
 
   return (
     <Modal
@@ -67,7 +97,7 @@ const AddSecurityDutyPlanForm = Form.create()(props => {
       title="值班方案"
       okText="确定"
       onCancel={onCancel}
-      onOk={onCreate}
+      onOk={onOK}
     >
       <Form>
         <Row gutter={8}>
@@ -75,13 +105,13 @@ const AddSecurityDutyPlanForm = Form.create()(props => {
             <FormItem {...formItemLayout} label="管理区">
               {getFieldDecorator('regionId', {
                 // initialValue: staffName
-                rules: [{ required: isAddOrEdit, message: '请选择管理区' }],
+                rules: [{ required: editAble, message: '请选择管理区' }],
               })(
                 <Select
                   mode="combox"
                   placeholder="请选择"
                   style={{ width: '100%' }}
-                  disabled={!isAddOrEdit}
+                  disabled={!editAble}
                 >
                   {regionOptions}
                 </Select>
@@ -96,7 +126,7 @@ const AddSecurityDutyPlanForm = Form.create()(props => {
                 rules: [
                   { type: 'string', max: 16, message: '请正确输入方案编号，最大长度为16' },
                 ],
-              })(<Input disabled={!isAddOrEdit} />)}
+              })(<Input disabled={!editAble} />)}
             </FormItem>
           </Col>
         </Row>
@@ -108,26 +138,28 @@ const AddSecurityDutyPlanForm = Form.create()(props => {
                 rules: [
                   {
                     type: 'string',
-                    required: isAddOrEdit,
+                    required: editAble,
                     max: 30,
                     message: '请正确输入方案名称，最大长度为30',
                   },
                 ],
-              })(<Input disabled={!isAddOrEdit} />)}
+              })(<Input disabled={!editAble} />)}
             </FormItem>
 
           </Col>
         </Row>
         <Row gutter={8}>
           <Col span={24}>
-            <FormItem {...formItemLayout} label="每月工作总天数">
+            <FormItem {...formItemLayout}
+              label="每月工作总天数"
+            >
               {getFieldDecorator('workingDays', {
                 rules: [
                   {
-                    validator: handleDaysValidate,
+                    validator,
                   },
                 ],
-              })(<Input disabled={!isAddOrEdit} />)}
+              })(<Input disabled={!editAble} />)}
             </FormItem>
           </Col>
         </Row>
@@ -137,10 +169,10 @@ const AddSecurityDutyPlanForm = Form.create()(props => {
               {getFieldDecorator('restDays', {
                 rules: [
                   {
-                    validator: handleDaysValidate,
+                    validator,
                   },
                 ],
-              })(<Input disabled={!isAddOrEdit} />)}
+              })(<Input disabled={!editAble} />)}
             </FormItem>
           </Col>
         </Row>
@@ -148,7 +180,7 @@ const AddSecurityDutyPlanForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="值班开始时间">
               {getFieldDecorator('startDate', {
-                rules: [{ required: isAddOrEdit, message: '请选择值班开始时间' }],
+                rules: [{ required: editAble, message: '请选择值班开始时间' }],
                 getValueProps: value => {
                   // if (!(value)) {
                   //    securityDutyPlan.startDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss');
@@ -159,7 +191,7 @@ const AddSecurityDutyPlanForm = Form.create()(props => {
                 <TimePicker
                   style={{ width: '100%' }}
                   format="HH:mm"
-                  disabled={!isAddOrEdit}
+                  disabled={!editAble}
                 />
               )}
             </FormItem>
@@ -169,7 +201,7 @@ const AddSecurityDutyPlanForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="值班结束时间">
               {getFieldDecorator('endDate', {
-                rules: [{ required: isAddOrEdit, message: '请选择值班结束时间' }],
+                rules: [{ required: editAble, message: '请选择值班结束时间' }],
                 getValueProps: value => {
                   return { value: value ? moment(value) : value }
                 },
@@ -178,7 +210,7 @@ const AddSecurityDutyPlanForm = Form.create()(props => {
                   style={{ width: '100%' }}
                   format="HH:mm"
                   // showTime
-                  disabled={!isAddOrEdit}
+                  disabled={!editAble}
                 />
               )}
             </FormItem>
@@ -189,7 +221,7 @@ const AddSecurityDutyPlanForm = Form.create()(props => {
             <FormItem {...formItemLayout} label="备注">
               {getFieldDecorator('remark', {
                 rules: [{ type: 'string', max: 30, message: '已超过30个字' }],
-              })(<Input disabled={!isAddOrEdit} />)}
+              })(<Input disabled={!editAble} />)}
             </FormItem>
           </Col>
         </Row>
@@ -198,7 +230,7 @@ const AddSecurityDutyPlanForm = Form.create()(props => {
   )
 })
 
-const NormalAddSecurityDutyPlanForm = Form.create({
+const DutyPlanModal = Form.create({
   mapPropsToFields (props) {
     const fields = {}
     Object.keys(props.securityDutyPlan).forEach(key => {
@@ -210,7 +242,7 @@ const NormalAddSecurityDutyPlanForm = Form.create({
       ...fields,
     }
   },
-})(AddSecurityDutyPlanForm)
+})(DutyPlanForm)
 
 function SecurityDutyPlanList ({
   dispatch,
@@ -220,215 +252,58 @@ function SecurityDutyPlanList ({
   page: current,
   filterStr,
   pageSize,
-  seniorSearchData,
+  // seniorSearchData,
   seniorSearch,
   regionList,
   securityDutyPlan,
+  modalVisible,
+  modalType,
 }) {
-  class AddSecurityDutyPlan extends React.Component {
-    constructor (props) {
-      super(props)
-      this.state = {
-        visible: false,
-        isAddOrEdit: true,
-      }
-      this.dispatch = props.dispatch
-    }
-    showModal = () => {
-      this.setState({ visible: true })
-    };
-
-    handleCancel = () => {
-      const form = this.form
-
-      form.validateFields((err, values) => {
-        dispatch({
-          type: 'securityDutyPlanList/changeSecurityDutyPlan',
-          payload: { securityDutyPlan: values },
-        })
-        form.resetFields()
-        this.setState({ visible: false })
+  const modalProps = {
+    visible: modalVisible,
+    modalType,
+    regionList,
+    securityDutyPlan,
+    onCancel () {
+      dispatch({
+        type: 'securityDutyPlanList/updateState',
+        payload: { modalVisible: false, modalType: 0, securityDutyPlan: {} },
       })
-      this.setState({ visible: false })
-    };
-    handleCreate = () => {
-      const form = this.form
-
-      form.validateFields((err, values) => {
-        if (err) {
-          return
-        }
-        dispatch({
-          type: 'securityDutyPlanList/addSecurityDutyPlan',
-          payload: { securityDutyPlan: values },
-        })
-        form.resetFields()
-        this.setState({ visible: false })
+    },
+    onClose (values = {}) {
+      dispatch({
+        type: 'securityDutyPlanList/save',
+        payload: { securityDutyPlan: {
+          ...securityDutyPlan,
+          ...values,
+        } },
       })
-    };
-
-    handleDaysValidate = (rule, value, callback) => {
-      if (value != null && value != '' && !/^[0-9]+.?[0-9]*$/.test(value)) {
-        callback('天数格式错误')
-      }
-      callback()
-    };
-
-    saveFormRef = form => {
-      this.form = form
-    };
-    render () {
-      return (
-        <span>
-          <Button type="primary" onClick={this.showModal}>新建</Button>
-          {
-            <NormalAddSecurityDutyPlanForm
-              regionList={this.props.regionList}
-              dispatch={this.props.dispatch}
-              ref={this.saveFormRef}
-              visible={this.state.visible}
-              isAddOrEdit={this.state.isAddOrEdit}
-              onCancel={this.handleCancel}
-              onCreate={this.handleCreate}
-              handlePhoneValidate={this.handlePhoneValidate}
-              handleDaysValidate={this.handleDaysValidate}
-              securityDutyPlan={this.props.securityDutyPlan}
-            />
-          }
-        </span>
-      )
-    }
+      // dispatch({
+      //   type: 'securityDutyPlanList/updateState',
+      //   payload: { modalVisible: false, modalType: 0, securityDutyPlan: values },
+      // })
+    },
+    // handleDaysValidate (value, assocation, callback) {
+      
+    // },
   }
-
-  class EditSecurityDutyPlan extends React.Component {
-    constructor (props) {
-      super(props)
-      this.state = {
-        visible: false,
-        isAddOrEdit: true,
-      }
-      this.dispatch = props.dispatch
-    }
-    showModal = e => {
-      e.preventDefault()
-      this.setState({ visible: true })
-    };
-    handleCancel = () => {
-      this.setState({ visible: false })
-    };
-    handleCreate = () => {
-      const form = this.form
-
-      form.validateFields((err, values) => {
-        if (err) {
-          return
-        }
-
-        values.id = this.props.securityDutyPlan.id
-        dispatch({
-          type: 'securityDutyPlanList/editSecurityDutyPlan',
-          payload: { securityDutyPlan: values },
-        })
-        form.resetFields()
-        this.setState({ visible: false })
-      })
-    };
-
-    handleDaysValidate = (rule, value, callback) => {
-      if (value != null && value != '' && !/^[0-9]+.?[0-9]*$/.test(value)) {
-        callback('天数格式错误')
-      }
-      callback()
-    };
-
-    saveFormRef = form => {
-      this.form = form
-    };
-
-    render () {
-      return (
-        <span>
-          <a onClick={this.showModal}>编辑</a>
-          {
-            <NormalAddSecurityDutyPlanForm
-              regionList={this.props.regionList}
-              dispatch={this.props.dispatch}
-              ref={this.saveFormRef}
-              visible={this.state.visible}
-              isAddOrEdit={this.state.isAddOrEdit}
-              onCancel={this.handleCancel}
-              onCreate={this.handleCreate}
-              handlePhoneValidate={this.handlePhoneValidate}
-              handleDaysValidate={this.handleDaysValidate}
-              securityDutyPlan={this.props.securityDutyPlan}
-            />
-          }
-        </span>
-      )
-    }
-  }
-
-  class ShowSecurityDutyPlan extends React.Component {
-    constructor (props) {
-      super(props)
-      this.state = {
-        visible: false,
-        isAddOrEdit: false,
-      }
-      this.dispatch = props.dispatch
-    }
-    showModal = e => {
-      e.preventDefault()
-      this.setState({ visible: true })
-    };
-    handleCancel = () => {
-      this.setState({ visible: false })
-    };
-    handleCreate = () => {
-      this.setState({ visible: false })
-    };
-    saveFormRef = form => {
-      this.form = form
-    };
-
-    render () {
-      return (
-        <span>
-          <a onClick={this.showModal}>查看</a>
-          {
-            <NormalAddSecurityDutyPlanForm
-              regionList={this.props.regionList}
-              dispatch={this.props.dispatch}
-              ref={this.saveFormRef}
-              visible={this.state.visible}
-              isAddOrEdit={this.state.isAddOrEdit}
-              onCancel={this.handleCancel}
-              onCreate={this.handleCreate}
-              securityDutyPlan={this.props.securityDutyPlan}
-            />
-          }
-        </span>
-      )
-    }
-  }
-
   class SecurityDutyPlan extends React.Component {
     state = {
       selectedRowKeys: [], // Check here to configure the default column
       selectedRows: [],
-    };
+    }
     openSeniorSearch = () => {
       dispatch({
         type: 'securityDutyPlanList/seniorSearchToggle',
         payload: true,
       })
-    };
+    }
     closeSeniorSearch = () => {
       dispatch({
         type: 'securityDutyPlanList/seniorSearchToggle',
         payload: false,
       })
-    };
+    }
     seniorSearchHandler = e => {
       e.preventDefault()
       this.props.form.validateFields((err, values) => {
@@ -439,19 +314,19 @@ function SecurityDutyPlanList ({
           })
         }
       })
-    };
+    }
     resetSeniorSearch = () => {
       dispatch({
         type: 'securityDutyPlanList/resetSeniorSearch',
       })
-    };
+    }
 
     deleteSecurityDutyPlan = ids => {
       dispatch({
         type: 'securityDutyPlanList/remove',
         payload: { ids },
       })
-    };
+    }
     pageChangeHandler = page => {
       dispatch(
         routerRedux.push({
@@ -459,7 +334,7 @@ function SecurityDutyPlanList ({
           query: { page, filterStr, pageSize },
         })
       )
-    };
+    }
     searchHandler = filterStr => {
       dispatch(
         routerRedux.push({
@@ -467,11 +342,11 @@ function SecurityDutyPlanList ({
           query: { page: 1, filterStr, pageSize },
         })
       )
-    };
+    }
     onSelectChange = (selectedRowKeys, selectedRows) => {
       this.setState({ selectedRowKeys })
       this.setState({ selectedRows })
-    };
+    }
     onShowSizeChange = (current, pageSize) => {
       dispatch(
         routerRedux.push({
@@ -479,7 +354,14 @@ function SecurityDutyPlanList ({
           query: { page: current, filterStr, pageSize },
         })
       )
-    };
+    }
+
+    showModal = (type, record = {}) => {
+      dispatch({
+        type: 'securityDutyPlanList/updateState',
+        payload: { modalVisible: true, modalType: type, securityDutyPlan: record },
+      })
+    }
     render () {
       const Search = Input.Search
       const { getFieldDecorator } = this.props.form
@@ -544,9 +426,7 @@ function SecurityDutyPlanList ({
           key: 'startDate',
           width: 120,
           render: (text, record) =>
-            (record.startDate != null
-              ? new Date(record.startDate).toLocaleTimeString()
-              : null),
+            record.startDate && dateFormat(record.startDate, 'HH:mm'),
         },
         {
           title: '值班结束时间',
@@ -554,9 +434,7 @@ function SecurityDutyPlanList ({
           key: 'endDate',
           width: 120,
           render: (text, record) =>
-            (record.endDate != null
-              ? new Date(record.endDate).toLocaleTimeString()
-              : null),
+            record.endDate && dateFormat(record.endDate, 'HH:mm'),
         },
         {
           title: '每月工作总天数',
@@ -583,19 +461,9 @@ function SecurityDutyPlanList ({
           render: (text, record) => {
             return total
               ? <span>
-                <ShowSecurityDutyPlan
-                  regionList={regionList}
-                  dispatch={dispatch}
-                  securityDutyPlan={record}
-                  id={record.id}
-                />
+                <a onClick={this.showModal.bind(this, 2, record)}>查看</a>
                   &nbsp;
-                <EditSecurityDutyPlan
-                  regionList={regionList}
-                  dispatch={dispatch}
-                  securityDutyPlan={record}
-                  id={record.id}
-                />
+                <a onClick={this.showModal.bind(this, 1, record)}>编辑</a>
                   &nbsp;
                 <Popconfirm
                   title="确定要删除该值班方案吗?"
@@ -636,20 +504,15 @@ function SecurityDutyPlanList ({
           <div className={styles.ListButton}>
             <Row>
               <Col span={16}>
-                <AddSecurityDutyPlan
-                  regionList={regionList}
-                  dispatch={dispatch}
-                  securityDutyPlan={securityDutyPlan}
-                />
-
-                <Button disabled>导出</Button>
+                <Button type="primary" onClick={this.showModal.bind(this, 0)}>新建</Button>
+                <Button disabled={!total}>导出</Button>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
                   placeholder="Search"
                   style={{ width: 200 }}
                   size="large"
-                  onSearch={filterStr => this.searchHandler(filterStr)}
+                  onSearch={fStr => this.searchHandler(fStr)}
                 />
                 <a style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
                   高级搜索 <Icon type="down" />
@@ -760,6 +623,7 @@ function SecurityDutyPlanList ({
             showSizeChanger
             showQuickJumper
           />
+          <DutyPlanModal {...modalProps} />
         </div>
       )
     }
@@ -780,6 +644,8 @@ function mapStateToProps (state) {
     securityDutyPlan,
     seniorSearchData,
     seniorSearch,
+    modalVisible,
+    modalType,
   } = state.securityDutyPlanList
   return {
     loading: state.loading.models.securityDutyPlanList,
@@ -792,6 +658,8 @@ function mapStateToProps (state) {
     securityDutyPlan,
     seniorSearchData,
     seniorSearch,
+    modalVisible,
+    modalType,
   }
 }
 

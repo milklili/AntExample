@@ -552,17 +552,17 @@ class Approval extends React.Component {
 }
 
 const NormalApprovalForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.approval).forEach(key => {
-      fields[key] = {
-        value: props.approval[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.approval).forEach(key => {
+  //     fields[key] = {
+  //       value: props.approval[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
 

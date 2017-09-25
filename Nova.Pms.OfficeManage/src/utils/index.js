@@ -1,9 +1,13 @@
 import classnames from 'classnames'
 import lodash from 'lodash'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
 import config from './config'
 import request from './request'
 import axios from './axios'
 import { color } from './theme'
+
+moment.locale('zh-cn')
 
 // 连字符转驼峰
 String.prototype.hyphenToHump = function () {
@@ -15,6 +19,18 @@ String.prototype.hyphenToHump = function () {
 // 驼峰转连字符
 String.prototype.humpToHyphen = function () {
   return this.replace(/([A-Z])/g, '-$1').toLowerCase()
+}
+
+const dateFormat = (date, fmt = 'YYYY-MM-DD') => {
+  // const listTitle = fmt && typeof fmt === 'number'
+  // if (listTitle) {
+  //   if (moment(date).year() === moment().year()) {
+  //     fmt = moment(date).month() === moment().month() ? '本月' : 'M月'
+  //   } else {
+  //     fmt = 'YY年M月'
+  //   }
+  // }
+  return moment(date).format(fmt)
 }
 
 // 日期格式化
@@ -113,4 +129,6 @@ module.exports = {
   queryURL,
   queryArray,
   arrayToTree,
+  moment,
+  dateFormat,
 }

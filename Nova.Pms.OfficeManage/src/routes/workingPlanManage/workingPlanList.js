@@ -683,7 +683,7 @@ function WorkingPlanList ({
           dataIndex: 'auditState',
           key: 'auditState',
           width: 120,
-          render: (text, record) => (record.auditState == true ? '已审核' : '未审核'),
+          render: (text, record) => (record.auditState === true ? '已审核' : '未审核'),
         },
         {
           title: '审核人',
