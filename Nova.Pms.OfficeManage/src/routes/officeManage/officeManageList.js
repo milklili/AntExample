@@ -113,7 +113,7 @@ const OfficeManageList = ({
               </Popconfirm>
               <Search
                 defaultValue={filterStr}
-                placeholder="Search"
+                placeholder="搜索..."
                 style={{ width: 200, float: 'right' }}
                 size="large"
                 onSearch={_filterStr => this.searchHandler(_filterStr)}

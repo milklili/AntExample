@@ -823,7 +823,7 @@ function CleaningAreaList ({
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
                 <Search
-                  placeholder="Search"
+                  placeholder="搜索..."
                   style={{ width: 200 }}
                   size="large"
                   onSearch={filterStr => this.searchHandler(filterStr)}

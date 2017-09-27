@@ -117,7 +117,7 @@ function PlanTypeList ({
               </Popconfirm>
               <Search
                 defaultValue={filterStr}
-                placeholder="Search"
+                placeholder="搜索..."
                 style={{ width: 200, float: 'right' }}
                 size="large"
                 onSearch={filterStr => this.searchHandler(filterStr)}

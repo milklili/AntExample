@@ -264,7 +264,7 @@ const Meeting = ({
               <Col span={20} style={{ textAlign: 'right' }}>
                 <Search
                   defaultValue={filterStr}
-                  placeholder="Search"
+                  placeholder="搜索..."
                   style={{ width: 200 }}
                   size="large"
                   onSearch={filterStr => this.searchHandler(filterStr)}

@@ -103,7 +103,7 @@ function ContractList ({
         <div className={styles.create}>
           <Link to="/createContract"><Button type="primary">新建</Button></Link>
           <Search
-            placeholder="Search"
+            placeholder="搜索..."
             style={{ width: 200, float: 'right' }}
             size="large"
             //   value={filterStr}
