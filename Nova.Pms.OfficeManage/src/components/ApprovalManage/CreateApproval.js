@@ -400,8 +400,8 @@ class Approval extends React.Component {
             </Col>
           </Row>
           <Row gutter={8}>
-            <Col span={12}>
-              <FormItem {...tailFormItemLayout} label="">
+            <Col span={24} offset={2}>
+              <FormItem>
                 <Button type="primary" htmlType="submit">保存</Button>
                 <Button type="default" onClick={this.handleCancel}>取消</Button>
               </FormItem>
