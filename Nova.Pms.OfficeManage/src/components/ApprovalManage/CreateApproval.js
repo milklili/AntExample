@@ -113,25 +113,6 @@ class Approval extends React.Component {
       message.error(`${info.file.name} 文件上传失败.`)
     }
   };
-        uploadAttachmentsOnChange = info => {
-            if (info.file.status === "done") {
-                message.success(`${info.file.name} 文件上传成功`);
-                let file = info.file.response;
-                file[0].uid = info.file.uid;
-                this.props.dispatch({
-                    type: "createApproval/uploadAttachments",
-                    payload: { file: file }
-                });
-            } else if (info.file.status === "removed") {
-                 
-                this.props.dispatch({
-                    type: "createApproval/removeAttachments",
-                    payload: info.file.uid
-                });
-            } else if (info.file.status === "error") {
-                message.error(`${info.file.name} 文件上传失败.`);
-            }
-        }
 
   uploadPicturesOnChange = info => {
     if (info.file.status === 'done') {
@@ -151,26 +132,6 @@ class Approval extends React.Component {
       message.error(`${info.file.name} 文件上传失败.`)
     }
   };
-        uploadPicturesOnChange = info => {
-
-             if (info.file.status === "done") {
-                message.success(`${info.file.name} 文件上传成功`);
-                let file = info.file.response;
-                file[0].uid = info.file.uid;
-                this.props.dispatch({
-                    type: "createApproval/uploadPictures",
-                    payload: { file: file }
-                });
-            } else if (info.file.status === "removed") {
-                 
-                this.props.dispatch({
-                    type: "createApproval/removePictures",
-                    payload: info.file.uid
-                });
-            } else if (info.file.status === "error") {
-                message.error(`${info.file.name} 文件上传失败.`);
-            }
-        }
 
   beforePicturesOnChange = file => {
     let attachmentsAll = this.props.attachments
@@ -207,61 +168,22 @@ class Approval extends React.Component {
     const isMax = pictures.length < 9
     // var exitPictures = pictures.length;
     if (!isMax) {
-      message.error('图片最多上��')
+      message.error('图片最多上传9张!')
     }
     return isJPG && isMax
   };
 
-
-        beforePicturesOnChange = file => {
-             
-            let attachmentsAll = this.props.attachments;
-            let pictures = attachmentsAll.map(attachments => (attachments.fileType == 0));
-           
-            pictures = pictures.filter(function (n) { return n != undefined });
-             
-            const isJPG = ((file.type.toLowerCase() === 'image/jpeg')
-                || (file.type.toLowerCase() === 'image/bmp')
-                || (file.type.toLowerCase() === 'image/png')
-                || (file.type.toLowerCase() === 'image/jpg')
-                || (file.type.toLowerCase() === 'image/tiff')
-                || (file.type.toLowerCase() === 'image/gif')
-                || (file.type.toLowerCase() === 'image/pcx')
-                || (file.type.toLowerCase() === 'image/tga')
-                || (file.type.toLowerCase() === 'image/exif')
-                || (file.type.toLowerCase() === 'image/fpx')
-                || (file.type.toLowerCase() === 'image/svg')
-                || (file.type.toLowerCase() === 'image/psd')
-                || (file.type.toLowerCase() === 'image/cdr')
-                || (file.type.toLowerCase() === 'image/pcd')
-                || (file.type.toLowerCase() === 'image/dxf')
-                || (file.type.toLowerCase() === 'image/ufo')
-                || (file.type.toLowerCase() === 'image/eps')
-                || (file.type.toLowerCase() === 'image/ai')
-                || (file.type.toLowerCase() === 'image/raw')
-                || (file.type.toLowerCase() === 'image/wmf'));
-            if (!isJPG) {
-                message.error('请选择图片上传!');
-            }
-            const isMax = pictures.length < 9;
-            //var exitPictures = pictures.length;
-            if (!isMax) {
-                message.error('图片最多上��');
-            }
-            return isJPG && isMax;
-        };
-
   beforeAttachmentsOnChange = file => {
     const isLt2M = file.size / 1024 / 1024 < 2
     if (!isLt2M) {
-      message.error('单个附件应小�M')
+      message.error('单个附件应小于2M')
     }
     return isLt2M
   };
 
   uploadAttachments = {
     name: 'file',
-            action: `${window.location.host}/api/officeManage/uploadAttachments`,
+    action: `${window.location.host}/api/officeManage/uploadAttachments`,
     headers: {
       authorization: 'authorization-text',
     },
@@ -287,20 +209,13 @@ class Approval extends React.Component {
 
   uploadPictures = {
     name: 'file',
-            action: `${window.location.host}/api/officeManage/uploadAttachments`,
+    action: `${window.location.host}/api/officeManage/uploadAttachments`,
     headers: {
       authorization: 'authorization-text',
     },
     onChange: this.uploadPicturesOnChange,
     beforeUpload: this.beforePicturesOnChange,
   };
-            headers: {
-                authorization: "authorization-text"
-            },
-            onChange: this.uploadPicturesOnChange,
-            beforeUpload: this.beforePicturesOnChange,
-            
-        };
 
   selectRegion = value => {
     this.props.dispatch({
@@ -357,10 +272,10 @@ class Approval extends React.Component {
         <Form onSubmit={this.handleCreate}>
           <Row gutter={8}>
             <Col span={12}>
-              <FormItem {...formItemLayout} label="管理�>
+              <FormItem {...formItemLayout} label="管理区">
                 {getFieldDecorator('regionId', {
                   // initialValue: staffName
-                  rules: [{ required: true, message: '请选择管理� }],
+                  rules: [{ required: true, message: '请选择管理区' }],
                 })(
                   <Select
                     mode="combox"
@@ -381,7 +296,7 @@ class Approval extends React.Component {
                       type: 'string',
                       required: true,
                       max: 30,
-                      message: '请正确输入申请内�最大长度为30',
+                      message: '请正确输入申请内容,最大长度为30',
                     },
                   ],
                 })(<Input />)}
@@ -393,7 +308,7 @@ class Approval extends React.Component {
               <Row gutter={8}>
                 <FormItem {...formItemLayout} label="审批编号">
                   {getFieldDecorator('code', {
-                    rules: [{ required: true, message: '请输入审批编� }],
+                    rules: [{ required: true, message: '请输入审批编号' }],
                   })(<Input disabled />)}
                 </FormItem>
               </Row>
@@ -416,74 +331,20 @@ class Approval extends React.Component {
                       type: 'string',
                       required: true,
                       max: 300,
-                      message: '请正确输入审批详�最大长度为300',
+                      message: '请正确输入审批详情,最大长度为300',
                     },
                   ],
                 })(<Input type="textarea" rows={4} />)}
               </FormItem>
-            return (
-                <div className={styles.normal}>
-                    <Form onSubmit={this.handleCreate}>
-                        <Row gutter={8}>
-                            <Col span={12}>
-                                <FormItem {...formItemLayout} label="管理�>
-                                    {getFieldDecorator('regionId', {
-                                        //initialValue: staffName
-                                        rules: [{ required: true, message: "请选择管理� }]
-                                    })(
-                                        <Select
-                                            mode="combox"
-                                            placeholder="请选择"
-                                            onChange={this.selectRegion}
-                                            style={{ width: '100%' }}
-                                        >{regionOptions}
-                                        </Select>
-                                        )}
-                                </FormItem>
-                            </Col>
-                            <Col span={12}>
-                                <FormItem {...formItemLayout} label="申请内容" >
-                                    {getFieldDecorator('content', {
-                                        rules: [{ type: "string", required: true, max: 30, message: "请正确输入申请内�最大长度为30" }]
-                                    })(<Input />)}
-                                </FormItem>
-                            </Col>
-                        </Row>
-                        <Row gutter={8}>
-                            <Col span={12}>
-                                <Row gutter={8}>
-                                    <FormItem {...formItemLayout} label="审批编号" >
-                                        {getFieldDecorator('code', {
-                                            rules: [{ required: true, message: "请输入审批编� }]
-                                        })(<Input disabled />)}
-                                    </FormItem>
-                                </Row>
-                                <Row gutter={8}>
-                                    <FormItem {...formItemLayout} label="审批类型" >
-                                        {getFieldDecorator('type', {
-
-                                        })(<Select disabled>
-                                            <Option value={0} key={0}>通用审批</Option>
-                                        </Select>)}
-                                    </FormItem>
-                                </Row>
-                                
-                            </Col>
-                            <Col span={12}>
-                                <FormItem {...formItemLayout} label="审批详情" >
-                                    {getFieldDecorator('details', {
-                                        rules: [{ type: "string", required: true, max: 300, message: "请正确输入审批详�最大长度为300" }]
-                                    })(<Input type="textarea" rows={4} />)}
-                                </FormItem>
 
             </Col>
           </Row>
           <Row gutter={8}>
             <Col span={12}>
-              <FormItem {...formItemLayout} label="审批�>
+              <FormItem {...formItemLayout} label="审批人">
                 {getFieldDecorator('approvalId', {
                   // initialValue: staffName
-                  rules: [{ required: true, message: '请选择审批� }],
+                  rules: [{ required: true, message: '请选择审批人' }],
                 })(
                   <Select
                     mode="multiple"
@@ -524,7 +385,7 @@ class Approval extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="添加图片">
                 <Upload {...this.uploadPictures}>
-                  <a>点击添加（最�张）</a>
+                  <a>点击添加（最多9张）</a>
                 </Upload>
               </FormItem>
             </Col>
@@ -533,15 +394,18 @@ class Approval extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="添加附件">
                 <Upload {...this.uploadAttachments}>
-                  <a>点击添加 （单个附件应小于2M�/a>
+                  <a>点击添加 （单个附件应小于2M）</a>
                 </Upload>
               </FormItem>
             </Col>
           </Row>
           <Row gutter={8}>
-            <Col offset={2} span={22}>
-              <Button type="primary" htmlType="submit">保存</Button>
-              <Button type="default" onClick={this.handleCancel}>取消</Button>
+            <Col span={12}>
+              <FormItem {...tailFormItemLayout} label="">
+                <Button type="primary" htmlType="submit">保存</Button>
+                <Button type="default" onClick={this.handleCancel}>取消</Button>
+              </FormItem>
+
             </Col>
           </Row>
 
@@ -552,17 +416,17 @@ class Approval extends React.Component {
 }
 
 const NormalApprovalForm = Form.create({
-  // mapPropsToFields (props) {
-  //   const fields = {}
-  //   Object.keys(props.approval).forEach(key => {
-  //     fields[key] = {
-  //       value: props.approval[key],
-  //     }
-  //   })
-  //   return {
-  //     ...fields,
-  //   }
-  // },
+  mapPropsToFields (props) {
+    const fields = {}
+    Object.keys(props.approval).forEach(key => {
+      fields[key] = {
+        value: props.approval[key],
+      }
+    })
+    return {
+      ...fields,
+    }
+  },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
 
@@ -575,35 +439,6 @@ const NormalApprovalForm = Form.create({
     })
   },
 })(Approval)
-    const NormalApprovalForm = Form.create(
-        {
-            mapPropsToFields(props) {
-                 
-                const fields = {};
-                Object.keys(props.approval).forEach(key => {
-                    fields[key] = {
-                        value: props.approval[key]
-                    };
-                });
-                return {
-                    ...fields
-                };
-            },
-            onFieldsChange(props, changedFields) {
-
-                const key = Object.keys(changedFields)[0];
-                 
-                props.dispatch({
-                    type: "createApproval/changeField",
-                    payload: {
-                        key,
-                        value: changedFields[key].value
-                    }
-                });
-            }
-        },
-    )(Approval);
-
 
 function mapStateToProps (state) {
   const {
@@ -629,7 +464,3 @@ function mapStateToProps (state) {
 }
 
 export default connect(mapStateToProps)(NormalApprovalForm)
-
-
-
-
