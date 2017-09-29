@@ -21,16 +21,13 @@ import {
 
   // RangePicker,
 } from 'antd'
-import { routerRedux, Link } from 'dva/router'
+import { routerRedux } from 'dva/router'
 import styles from './SecurityPositionManage.css'
-import moment from 'moment'
-import { PAGE_SIZE } from '../../constants'
+import { moment, dateFormat } from 'utils'
+// import { PAGE_SIZE } from '../../constants'
 
 const FormItem = Form.Item
 const RangePicker = DatePicker.RangePicker
-const RadioGroup = Radio.Group
-const Option = Select.Option
-
 function SecurityPositionList ({
   dispatch,
   list: dataSource,
@@ -77,8 +74,8 @@ function SecurityPositionList ({
       })
     };
 
-    addSecurityPosition = id => {
-      const action = 'isAdd'
+    addSecurityPosition = () => {
+      const action = 'create'
       dispatch(
         routerRedux.push({
           pathname: '/showOrEditSecurityPosition',
@@ -95,7 +92,7 @@ function SecurityPositionList ({
     };
 
     showSecurityPosition = id => {
-      const action = 'isShow'
+      const action = 'preview'
       dispatch(
         routerRedux.push({
           pathname: '/showOrEditSecurityPosition',
@@ -105,7 +102,7 @@ function SecurityPositionList ({
     };
 
     editSecurityPosition = id => {
-      const action = 'isEdit'
+      const action = 'update'
       dispatch(
         routerRedux.push({
           pathname: '/showOrEditSecurityPosition',
@@ -214,9 +211,7 @@ function SecurityPositionList ({
           key: 'startDate',
           width: 150,
           render: (text, record) =>
-            (record.startDate != null
-              ? new Date(record.startDate).toLocaleString()
-              : null),
+            (record.startDate && dateFormat(record.startDate, 'YYYY-MM-DD HH:mm')),
         },
         {
           title: '岗位人数',
@@ -229,16 +224,16 @@ function SecurityPositionList ({
           dataIndex: 'workingDays',
           key: 'workingDays',
           width: 110,
-          render: (text, record, index) =>
-            (record.workingDays != 0 ? record.workingDays : null),
+          render: (text, record) =>
+            (~~record.workingDays !== 0 ? record.workingDays : ''),
         },
         {
           title: '每月休息天数',
           dataIndex: 'restDays',
           key: 'restDays',
           width: 100,
-          render: (text, record, index) =>
-            (record.restDays != 0 ? record.restDays : null),
+          render: (text, record) =>
+            (~~record.restDays !== 0 ? record.restDays : ''),
         },
 
         {

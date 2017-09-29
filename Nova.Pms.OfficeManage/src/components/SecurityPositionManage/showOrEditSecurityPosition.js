@@ -13,37 +13,59 @@ import {
   Select,
   DatePicker,
 } from 'antd'
-import { routerRedux, Link } from 'dva/router'
-import moment from 'moment'
+import { routerRedux } from 'dva/router'
+import { moment, isNumber, dateFormat } from 'utils'
 import styles from './SecurityPositionManage.css'
 
 const Option = Select.Option
 const FormItem = Form.Item
 const RangePicker = DatePicker.RangePicker
 
-const AddSecurityPositionMembersForm = Form.create()(props => {
+const SecurityPositionMembersModal = Form.create({
+  mapPropsToFields ({ memberData }) {
+    const fields = {}
+    Object.keys(memberData).forEach(key => {
+      fields[key] = {
+        value: memberData[key],
+      }
+    })
+    return {
+      ...fields,
+    }
+  },
+})(props => {
   const {
-    visible,
+    modalVisible,
+    modalType,
     onCancel,
     onCreate,
     form,
-    information,
-    securityPositionMembers,
-    securityPositionInformation,
     staffList,
     securityDutyPlanList,
-    dispatch,
-    isHoursEdit,
-    handleAttendanceTypeChange,
   } = props
-  const { getFieldDecorator } = form
+  const { getFieldDecorator, setFieldsValue, validateFields } = form
   const formItemLayout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 18 },
+    labelCol: { span: 4 },
+    wrapperCol: { span: 20 },
   }
-  const formItemRow = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 21 },
+  let timeRange = []
+  const handleSecurityPlanChange = id => {
+    const plan = securityDutyPlanList.filter(item => item.id === id)[0]
+    const startTime = plan.startDate
+    const endTime = plan.endDate
+    timeRange = [moment(startTime, 'HH:mm'), moment(endTime, 'HH:mm')]
+    setFieldsValue({
+      onDutyDate: timeRange,
+    })
+  }
+
+  const handleOk = e => {
+    e.preventDefault()
+    validateFields((err, values) => {
+      if (!err) {
+        onCreate(values)
+      }
+    })
   }
   const staffOptions = staffList.map(value => (
     <Option key={value.id} value={value.id}>{value.name}</Option>
@@ -51,18 +73,19 @@ const AddSecurityPositionMembersForm = Form.create()(props => {
   const securityDutyPlanOptions = securityDutyPlanList.map(value => (
     <Option key={value.id} value={value.id}>{value.name}</Option>
   ))
-  const securityDutyPlanOndutyDateOptions = securityDutyPlanList.map(value => (
-    <Option key={value.id} value={value.id}>{value.ondutyDate}</Option>
-  ))
+  const titleText = `${modalType === 'creaate' ? '添加' : '编辑'}保安人员`
+  // const securityDutyPlanOndutyDateOptions = securityDutyPlanList.map(value => (
+  //   <Option key={value.id} value={value.id}>{value.ondutyDate}</Option>
+  // ))
 
-  const spInformation = securityPositionInformation
+  // const spInformation = securityPositionInformation
   return (
     <Modal
-      visible={visible}
-      title="添加保安岗的保安人员"
+      visible={modalVisible}
+      title={titleText}
       okText="确定"
       onCancel={onCancel}
-      onOk={onCreate}
+      onOk={handleOk}
     >
       <Form>
         <Row gutter={8}>
@@ -95,7 +118,7 @@ const AddSecurityPositionMembersForm = Form.create()(props => {
                   mode="combobox "
                   placeholder="请选择"
                   style={{ width: '100%' }}
-                  onChange={handleAttendanceTypeChange}
+                  onChange={handleSecurityPlanChange}
                 >
                   {securityDutyPlanOptions}
                 </Select>
@@ -106,16 +129,17 @@ const AddSecurityPositionMembersForm = Form.create()(props => {
         <Row gutter={8}>
           <Col span={24}>
             <FormItem {...formItemLayout} label="值班时间">
-              {getFieldDecorator('onDutyDate', {
-                // initialValue: [moment(securityPositionInformation.startDate), moment(securityPositionInformation.endDate)],
-                // rules: [{ required: true, message: "请选择考勤时间" }],
-                getValueProps: value => {
-                  return {
-                    value: value ? [moment(value[0]), moment(value[1])] : value,
-                  }
-                },
-              })(
-                <RangePicker style={{ width: '100%' }} format="LT" disabled />
+              {getFieldDecorator(
+                'onDutyDate',
+                {
+                  // rules: [{ required: true, message: "请选择考勤时间" }],
+                }
+              )(
+                <RangePicker
+                  style={{ width: '100%' }}
+                  format="HH:mm"
+                  disabled
+                />
               )}
             </FormItem>
           </Col>
@@ -133,300 +157,68 @@ const AddSecurityPositionMembersForm = Form.create()(props => {
     </Modal>
   )
 })
-const NormalAddSecurityPositionMembersForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
 
-    Object.keys(props.securityPositionInformation).forEach(key => {
-      fields[key] = {
-        value: props.securityPositionInformation[key],
-      }
-    })
-    return {
-      ...fields,
-    }
+const Title = ({ text }) => {
+  return (
+    <div className={styles.title}>
+      <h1>{text}</h1>
+      <hr />
+    </div>
+  )
+}
+
+const BaseForm = Form.create({
+  onFieldsChange (props, changedFields) {
+    const key = Object.keys(changedFields)[0]
+    key &&
+      props.dispatch({
+        type: 'showOrEditSecurityPosition/changeField',
+        payload: {
+          key,
+          value: changedFields[key].value,
+        },
+      })
   },
-})(AddSecurityPositionMembersForm)
-
-class NormalAddSecurityPositionMembers extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      visible: false,
-      isHoursEdit: false,
+})(props => {
+  const { form, information, regionList, editAble, selectRegion } = props
+  const handleDaysValidate = (rule, value, callback) => {
+    if (value && !isNumber(value)) {
+      callback('天数必须为数值')
     }
-
-    this.dispatch = props.dispatch
+    parseFloat(value) < 0 && callback('天数不能小于0')
+    parseFloat(value) > 31 && callback('天数不能大于31')
+    callback()
   }
-  showModal = () => {
-    if (this.props.information.regionId == null) {
-      message.warning('请选择管理区')
-    } else {
-      this.setState({ visible: true })
+  const handlePeopleValidate = (rule, value, callback) => {
+    if (value && !isNumber(value, true)) {
+      callback('人数必须为整数')
     }
-  };
-  handleCancel = () => {
-    this.setState({ visible: false })
-  };
-  handleCreate = () => {
-    const form = this.form
-
-    form.validateFields((err, values) => {
-      if (err) {
-        return
-      }
-
-      values.securityPositionId = this.props.information.id
-
-      this.props.dispatch({
-        type: 'showOrEditSecurityPosition/addSecurityPositionMembers',
-        payload: {
-          securityPositionMembers: values,
-          model: this.props.information,
-        },
-      })
-
-      form.resetFields()
-      this.setState({ visible: false })
-    })
-  };
-  saveFormRef = form => {
-    this.form = form
-  };
-  handleAttendanceTypeChange = value => {
-    const form = this.form
-
-    var startDate
-    var endDate
-    var ondutyDate = this.props.securityDutyPlanList.forEach(x => {
-      if (x.id == value) {
-        startDate = x.startDate
-        endDate = x.endDate
-      }
-    })
-    form.setFieldsValue({
-      // 'onDutyDate': [moment(startDate, 'YYYY-MM-DD HH:mm:ss'), moment(endDate, 'YYYY-MM-DD HH:mm:ss')],
-      onDutyDate: [moment(startDate), moment(endDate)],
-    })
-  };
-
-  render () {
-    const staffList = this.props.staffList
-    const staffOptions = this.props.staffList.map(value => (
-      <Option key={value.staffId} value={value.staffId}>
-        {value.staffName}
-      </Option>
-    ))
-    const securityDutyPlanOptions = this.props.securityDutyPlanList.map(
-      value => <Option key={value.id} value={value.id}>{value.name}</Option>
-    )
-    const securityDutyPlanOndutyDateOptions = this.props.securityDutyPlanList.map(
-      value => (
-        <Option key={value.id} value={value.id}>{value.ondutyDate}</Option>
-      )
-    )
-
-    const isAdd = this.props.information == null
-
-    return (
-      <span>
-        <div className={styles.ListButton}>
-          <Button onClick={this.showModal}>添加</Button>
-        </div>
-        {
-          <NormalAddSecurityPositionMembersForm
-            information={this.props.information}
-            securityPositionMembers={this.props.securityPositionMembers}
-            securityDutyPlanList={this.props.securityDutyPlanList}
-            securityPositionInformation={this.props.securityPositionInformation}
-            staffList={this.props.staffList}
-            dispatch={this.props.dispatch}
-            ref={this.saveFormRef}
-            isHoursEdit={this.state.isHoursEdit}
-            visible={this.state.visible}
-            onCancel={this.handleCancel}
-            onCreate={this.handleCreate}
-            handleAttendanceTypeChange={this.handleAttendanceTypeChange}
-          />
-        }
-      </span>
-    )
+    parseFloat(value) < 0 && callback('人数不能小于0')
+    parseFloat(value) > 10000 && callback('人数不能大于10000')
+    callback()
   }
-}
-
-class NormalEditSecurityPositionMembers extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      visible: false,
-      isHoursEdit: false,
-    }
-
-    this.dispatch = props.dispatch
-  }
-  showModal = () => {
-    this.setState({ visible: true })
-    const form = this.form
-
-    if (
-      this.props.information.regionId !=
-      this.props.securityPositionInformation.regionId
-    ) {
-      form.setFieldsValue({
-        staffId: null,
-        securityDutyPlanId: null,
-      })
-    }
-    form.setFieldsValue({
-      onDutyDate: [
-        moment(this.props.securityPositionInformation.startDate),
-        moment(this.props.securityPositionInformation.endDate),
-      ],
-    })
-  };
-  handleCancel = () => {
-    this.setState({ visible: false })
-  };
-  handleCreate = () => {
-    const form = this.form
-
-    form.validateFields((err, values) => {
-      if (err) {
-        return
-      }
-
-      values.securityPositionId = this.props.information.id
-      values.id = this.props.id
-
-      this.props.dispatch({
-        type: 'showOrEditSecurityPosition/editSecurityPositionMembers',
-        payload: {
-          securityPositionMembers: values,
-          model: this.props.information,
-        },
-      })
-      form.resetFields()
-      this.setState({ visible: false })
-    })
-  };
-  saveFormRef = form => {
-    this.form = form
-  };
-  handleAttendanceTypeChange = value => {
-    const form = this.form
-
-    var startDate
-    var endDate
-    var ondutyDate = this.props.securityDutyPlanList.forEach(x => {
-      if (x.id == value) {
-        startDate = x.startDate
-        endDate = x.endDate
-      }
-    })
-
-    form.setFieldsValue({
-      onDutyDate: [moment(startDate), moment(endDate)],
-    })
-  };
-
-  render () {
-    const staffList = this.props.staffList
-    const staffOptions = this.props.staffList.map(value => (
-      <Option key={value.staffId} value={value.staffId}>
-        {value.staffName}
-      </Option>
-    ))
-    const securityDutyPlanOptions = this.props.securityDutyPlanList.map(
-      value => <Option key={value.id} value={value.id}>{value.name}</Option>
-    )
-    const securityDutyPlanOndutyDateOptions = this.props.securityDutyPlanList.map(
-      value => (
-        <Option key={value.id} value={value.id}>{value.ondutyDate}</Option>
-      )
-    )
-    return (
-      <span>
-        <a onClick={this.showModal}>编辑</a>
-
-        {
-          <NormalAddSecurityPositionMembersForm
-            information={this.props.information}
-            securityPositionMembers={this.props.securityPositionMembers}
-            securityDutyPlanList={this.props.securityDutyPlanList}
-            securityPositionInformation={this.props.securityPositionInformation}
-            staffList={this.props.staffList}
-            dispatch={this.props.dispatch}
-            ref={this.saveFormRef}
-            isHoursEdit={this.state.isHoursEdit}
-            visible={this.state.visible}
-            onCancel={this.handleCancel}
-            onCreate={this.handleCreate}
-            handleAttendanceTypeChange={this.handleAttendanceTypeChange}
-          />
-        }
-      </span>
-    )
-  }
-}
-
-const EssentialInformationForm = Form.create()(props => {
-  const {
-    visible,
-    onCancel,
-    onCreate,
-    form,
-    handleDaysValidate,
-    handlePeopleValidate,
-    information,
-    securityPositionMembers,
-    regionList,
-    action,
-    dispatch,
-    selectRegion,
-  } = props
   const { getFieldDecorator } = form
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 },
   }
-  const formItemRow = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 21 },
-  }
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        push: 0,
-      },
-      sm: {
-        span: 22,
-        push: 2,
-      },
-    },
-  }
   const regionOptions = regionList.map(value => (
     <Option key={value.id} value={value.id}>{value.name}</Option>
   ))
 
-  var isShow = false
-  if (Object.keys(action) == 'isShow') {
-    isShow = true
-  }
-
   return (
     <div>
       <Form>
-
         <Row gutter={20}>
           <Col span={12}>
             <FormItem {...formItemLayout} label="管理区">
               {getFieldDecorator('regionId', {
+                initialValue: information.regionId,
                 rules: [{ required: true, message: '请选择管理区' }],
               })(
                 <Select
                   style={{ width: '100%' }}
-                  disabled={isShow}
+                  disabled={!editAble}
                   onChange={selectRegion}
                 >
                   {regionOptions}
@@ -437,13 +229,14 @@ const EssentialInformationForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="岗位人数" hasFeedback>
               {getFieldDecorator('quantity', {
+                initialValue: information.quantity,
                 rules: [
                   { required: true, message: '请输入岗位人数' },
                   {
                     validator: handlePeopleValidate,
                   },
                 ],
-              })(<Input disabled={isShow} />)}
+              })(<Input disabled={!editAble} />)}
             </FormItem>
           </Col>
         </Row>
@@ -451,26 +244,32 @@ const EssentialInformationForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="岗位代码" hasFeedback>
               {getFieldDecorator('positionCode', {
+                initialValue: information.positionCode,
                 rules: [
                   {
                     required: true,
                     type: 'string',
-                    max: 30,
                     message: '请输入岗位代码',
                   },
+                  {
+                    type: 'string',
+                    max: 30,
+                    message: '岗位代码字符不能超过30字',
+                  },
                 ],
-              })(<Input disabled={isShow} />)}
+              })(<Input disabled={!editAble} />)}
             </FormItem>
           </Col>
           <Col span={12}>
             <FormItem {...formItemLayout} label="每月工作总天数">
               {getFieldDecorator('workingDays', {
+                initialValue: information.workingDays,
                 rules: [
                   {
                     validator: handleDaysValidate,
                   },
                 ],
-              })(<Input disabled={isShow} />)}
+              })(<Input disabled={!editAble} />)}
             </FormItem>
           </Col>
         </Row>
@@ -479,26 +278,32 @@ const EssentialInformationForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="岗位名称">
               {getFieldDecorator('positionName', {
+                initialValue: information.positionName,
                 rules: [
                   {
                     required: true,
                     type: 'string',
-                    max: 50,
                     message: '请输入岗位名称',
                   },
+                  {
+                    type: 'string',
+                    max: 30,
+                    message: '岗位名称不能超过30个字符',
+                  },
                 ],
-              })(<Input disabled={isShow} />)}
+              })(<Input disabled={!editAble} />)}
             </FormItem>
           </Col>
           <Col span={12}>
             <FormItem {...formItemLayout} label="每月休息天数">
               {getFieldDecorator('restDays', {
+                initialValue: information.restDays,
                 rules: [
                   {
                     validator: handleDaysValidate,
                   },
                 ],
-              })(<Input disabled={isShow} />)}
+              })(<Input disabled={!editAble} />)}
             </FormItem>
           </Col>
         </Row>
@@ -506,21 +311,27 @@ const EssentialInformationForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="岗位地址">
               {getFieldDecorator('positionPlace', {
+                initialValue: information.positionPlace,
                 rules: [
                   {
                     required: true,
                     type: 'string',
-                    max: 50,
                     message: '请输入岗位地址',
                   },
+                  {
+                    type: 'string',
+                    max: 50,
+                    message: '岗位地址不能超过50个字符',
+                  },
                 ],
-              })(<Input disabled={isShow} />)}
+              })(<Input disabled={!editAble} />)}
             </FormItem>
           </Col>
           <Col span={12}>
             <FormItem {...formItemLayout} label="开始值班时间">
               {getFieldDecorator('startDate', {
-                rules: [{ required: true, message: '请选择开始值班时间' }],
+                initialValue: information.startDate,
+                rules: [{ required: true, message: '请选择开始值班日期' }],
                 getValueProps: value => {
                   return { value: value ? moment(value) : value }
                 },
@@ -528,130 +339,21 @@ const EssentialInformationForm = Form.create()(props => {
                 <DatePicker
                   style={{ width: '100%' }}
                   format="YYYY-MM-DD HH:mm:ss"
-                  disabled={isShow}
+                  disabled={!editAble}
                 />
               )}
             </FormItem>
-
           </Col>
         </Row>
       </Form>
-      <div className={styles.title}>
-        <h1>保安人员</h1>
-        <hr />
-      </div>
-
     </div>
   )
 })
-const NormalEssentialInformationForm = Form.create({
-  constructor (props) {
-    // super(props);
-  },
 
-  mapPropsToFields (props) {
-    const fields = {}
-
-    Object.keys(props.information).forEach(key => {
-      fields[key] = {
-        value: props.information[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
-  onFieldsChange (props, changedFields) {
-    const key = Object.keys(changedFields)[0]
-
-    props.dispatch({
-      type: 'showOrEditSecurityPosition/changeField',
-      payload: {
-        key,
-        value: changedFields[key].value,
-      },
-    })
-  },
-})(EssentialInformationForm)
-
-class NormalEssentialInformation extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      visible: false,
-      isHoursEdit: false,
-    }
-
-    this.dispatch = props.dispatch
+class SecurityPositionPage extends React.Component {
+  baseFormRef = form => {
+    this.baseForm = form
   }
-  validateEssentialForm = () => {
-    const form = this.form
-
-    form.validateFields((err, values) => {
-      if (!err) {
-        this.props.handleValidateEssential()
-      }
-    })
-  };
-
-  handleDaysValidate = (rule, value, callback) => {
-    if (
-      value != null &&
-      value != '' &&
-      (!/^[0-9]+.?[0-9]*$/.test(value) || parseInt(value) > 31)
-    ) {
-      callback('天数格式错误')
-    }
-    callback()
-  };
-  handlePeopleValidate = (rule, value, callback) => {
-    if (value != null && value != '' && !/^[0-9]+.?[0-9]*$/.test(value)) {
-      callback('岗位人数格式错误')
-    }
-    callback()
-  };
-  saveFormRef = form => {
-    this.form = form
-  };
-
-  render () {
-    return (
-      <span>
-
-        {
-          <NormalEssentialInformationForm
-            ref={this.saveFormRef}
-            validateEssentialForm={this.validateEssentialForm}
-            handleValidateEssential={this.props.handleValidateEssential}
-            regionList={this.props.regionList}
-            action={this.props.action}
-            handleDaysValidate={this.handleDaysValidate}
-            handlePeopleValidate={this.handlePeopleValidate}
-            validateEssential={this.props.validateEssential}
-            information={this.props.information}
-            securityPositionMembers={this.props.securityPositionMembers}
-            dispatch={this.props.dispatch}
-            selectRegion={this.props.selectRegion}
-          />
-        }
-      </span>
-    )
-  }
-}
-
-class NormalSecurityPositionForm extends React.Component {
-  state = {
-    validateEssential: false,
-
-    // isHoursEdit: false,
-  };
-  cancle = () => {
-    this.props.dispatch(
-      routerRedux.push({
-        pathname: '/securityPositionList',
-      })
-    )
-  };
 
   pageChangeHandler = page => {
     const id = this.props.information.id
@@ -659,21 +361,32 @@ class NormalSecurityPositionForm extends React.Component {
       type: 'showOrEditSecurityPosition/getSecurityPositionData',
       payload: { page, id },
     })
-  };
+  }
 
-  deleteSecurityPositionMembers = id => {
-    this.props.dispatch({
-      type: 'showOrEditSecurityPosition/removeSecurityPositionMembers',
-      payload: id,
-    })
-  };
-
-  cancle = () => {
-    this.props.dispatch(
-      routerRedux.push({
-        pathname: '/securityPositionList',
+  showModal (type, id) {
+    const { dispatch, information } = this.props
+    if (!information.regionId) {
+      message.warn('请选择管理区！')
+    } else {
+      dispatch({
+        type: 'showOrEditSecurityPosition/showModal',
+        payload: { type, id },
       })
-    )
+    }
+  }
+
+  deleteSecurityPersonnelItem = id => {
+    const { dispatch, securityPersonnel } = this.props
+    const list = securityPersonnel.list.filter(item => item.id !== id)
+    const newsecurityPersonnel = {
+      list,
+      total: list.length,
+      page: securityPersonnel.page,
+    }
+    dispatch({
+      type: 'showOrEditSecurityPosition/updateSecurityPersonnel',
+      payload: newsecurityPersonnel,
+    })
   };
 
   selectRegion = value => {
@@ -682,90 +395,46 @@ class NormalSecurityPositionForm extends React.Component {
       payload: value,
     })
   };
-  handleValidateEssential = event => {
-    const unfilled = 0
-    this.setState({ unfilled })
-
-    var securityPosition = this.props.information
-    securityPosition.securityPositionMembers = this.props.securityPosition.securityPositionData
-
-    if (Object.keys(this.props.action) == 'isAdd') {
-      this.props.dispatch({
-        type: 'showOrEditSecurityPosition/addSecurityPosition',
-        payload: securityPosition,
-      })
-    }
-    if (
-      Object.keys(this.props.action) == 'isEdit' ||
-      Object.keys(this.props.action) == 'isShow'
-    ) {
-      this.props.dispatch({
-        type: 'showOrEditSecurityPosition/editSecurityPosition',
-        payload: securityPosition,
-      })
-    }
-  };
-
   handleSubmit = e => {
     e.preventDefault()
+    const { action } = this.props
+    this.baseForm.validateFields(err => {
+      if (!err) {
+        this.props.dispatch({
+          type: 'showOrEditSecurityPosition/saveData',
+          payload: { action },
+        })
+      }
+    })
+  };
 
-    this.refs.validateEssentialForm.validateEssentialForm()
+  cancle = () => {
+    const { dispatch } = this.props
+    dispatch({
+      type: 'showOrEditSecurityPosition/init',
+    })
+    dispatch(
+      routerRedux.push({
+        pathname: '/securityPositionList',
+      })
+    )
   };
 
   render () {
-    const FormItem = Form.Item
-    const { getFieldDecorator } = this.props.form
-    const formItemLayout = {
-      labelCol: {
-        xs: {
-          span: 24,
-        },
-        sm: {
-          span: 4,
-        },
-      },
-      wrapperCol: {
-        xs: {
-          span: 24,
-        },
-        sm: {
-          span: 20,
-        },
-      },
-    }
-
-    const formLongItemLayout = {
-      labelCol: {
-        xs: {
-          span: 24,
-        },
-        sm: {
-          span: 2,
-        },
-      },
-      wrapperCol: {
-        xs: {
-          span: 24,
-        },
-        sm: {
-          span: 22,
-        },
-      },
-    }
-
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          push: 0,
-        },
-        sm: {
-          span: 22,
-          push: 2,
-        },
-      },
-    }
-
+    const {
+      regionList,
+      information,
+      action,
+      dispatch,
+      modalVisible,
+      modalType,
+      staffList,
+      securityDutyPlanList,
+      loading,
+      securityPersonnel,
+      securityPersonnelSelect,
+    } = this.props
+    const preview = action === 'preview'
     const columns = [
       {
         title: '序号',
@@ -791,9 +460,7 @@ class NormalSecurityPositionForm extends React.Component {
         key: 'startDate',
         width: 80,
         render: (text, record) =>
-          (record.startDate != null
-            ? new Date(record.startDate).toLocaleTimeString()
-            : null),
+          (record.startDate && dateFormat(record.startDate, 'HH:mm')),
       },
       {
         title: '值班结束时间',
@@ -801,9 +468,7 @@ class NormalSecurityPositionForm extends React.Component {
         key: 'endDate',
         width: 80,
         render: (text, record) =>
-          (record.endDate != null
-            ? new Date(record.endDate).toLocaleTimeString()
-            : null),
+          (record.endDate && dateFormat(record.endDate, 'HH:mm')),
       },
       {
         title: '备注',
@@ -817,134 +482,124 @@ class NormalSecurityPositionForm extends React.Component {
         width: 70,
         render: (text, record) => (
           <span>
-            <NormalEditSecurityPositionMembers
-              information={this.props.information}
-              securityPositionMembers={this.props.securityPositionMembers}
-              securityPositionInformation={record}
-              staffList={this.props.staffList}
-              securityDutyPlanList={this.props.securityDutyPlanList}
-              dispatch={this.props.dispatch}
-              selectRegion={this.selectRegion}
-              id={record.id}
-            />
+            <a disabled={preview} onClick={this.showModal.bind(this, 'update', record.id)}>编辑</a>
             &nbsp;
             <Popconfirm
               title="确定要删除该保安人员吗?"
-              onConfirm={this.deleteSecurityPositionMembers.bind(
+              onConfirm={this.deleteSecurityPersonnelItem.bind(
                 null,
                 record.id
               )}
             >
-              <a>删除</a>
+              <a disabled={preview}>删除</a>
             </Popconfirm>
             &nbsp;
           </span>
         ),
       },
     ]
-
-    const data = this.props.securityPosition.securityPositionData
-    var pagination = {
-      total: this.props.securityPosition.total,
-
+    const pagination = {
+      total: securityPersonnel.total,
       showSizeChanger: true,
+    }
+
+    const baseFormProps = {
+      ref: this.baseFormRef,
+      editAble: !preview,
+      regionList,
+      selectRegion: this.selectRegion,
+      dispatch,
+      information,
+    }
+
+    const memberData = securityPersonnel.list.find(item => item.id === securityPersonnelSelect) || {}
+    const timeRange = memberData.onDutyDate
+    timeRange && (memberData.onDutyDate = [moment(timeRange[0]), moment(timeRange[1])])
+    const modalProps = {
+      modalVisible,
+      modalType,
+      staffList,
+      memberData,
+      securityDutyPlanList,
+      onCancel () {
+        dispatch({
+          type: 'showOrEditSecurityPosition/hideModal',
+        })
+      },
+      onCreate (data) {
+        const update = modalType === 'update'
+        dispatch({
+          type: 'showOrEditSecurityPosition/saveSecurityPersonnel',
+          payload: { personnelInfo: data, update },
+        })
+      },
     }
 
     return (
       <div className={styles.ListButton}>
         <Form onSubmit={this.handleSubmit}>
-          <div className={styles.title}>
-            <h1>基本信息</h1>
-            <hr />
+          <Title text="基本信息" />
+          <BaseForm {...baseFormProps} />
+          <Title text="保安人员" />
+          <div style={{ marginBottom: 16, display: preview ? 'none' : 'block' }}>
+            <Button
+              onClick={this.showModal.bind(this, 'create')}
+              type="default"
+              size="large"
+            >
+              添加
+            </Button>
           </div>
-          <div>
-            <NormalEssentialInformation
-              ref="validateEssentialForm"
-              validateEssential={this.state.validateEssential}
-              handleValidateEssential={this.handleValidateEssential}
-              regionList={this.props.regionList}
-              action={this.props.action}
-              information={this.props.information}
-              securityPositionMembers={this.props.securityPositionMembers}
-              dispatch={this.props.dispatch}
-              selectRegion={this.selectRegion}
-            />
-            <NormalAddSecurityPositionMembers
-              information={this.props.information}
-              securityPositionMembers={this.props.securityPositionMembers}
-              securityPositionInformation={[null]}
-              staffList={this.props.staffList}
-              securityDutyPlanList={this.props.securityDutyPlanList}
-              dispatch={this.props.dispatch}
-
-              // id={record.id}
-            />
-            <Table
-              bordered
-              columns={columns}
-              dataSource={this.props.securityPosition.securityPositionData}
-              loading={this.props.loading}
-              // rowSelection={rowSelection}
-              rowKey={record => record.id}
-              // scroll={{ x: "110%" }}
-              pagination={pagination}
-            />
-
-          </div>
-          <div>
-            <FormItem>
-              <Button
-                type="primary"
-                htmlType="submit"
-                style={{ marginTop: 16 }}
-              >
-                保存
-              </Button>
-              <Button type="default" onClick={this.cancle}>取消</Button>
-            </FormItem>
-          </div>
-
+          <Table
+            bordered
+            columns={columns}
+            dataSource={securityPersonnel.list}
+            loading={loading}
+            // rowSelection={rowSelection}
+            rowKey={record => record.id}
+            // scroll={{ x: "110%" }}
+            pagination={pagination}
+          />
+          <FormItem>
+            <Button type="primary" htmlType="submit" style={{ marginTop: 16 }}>
+              {preview ? '返回' : '保存'}
+            </Button>
+            {!preview &&
+              <Button type="default" onClick={this.cancle}>取消</Button>}
+          </FormItem>
         </Form>
+        <SecurityPositionMembersModal {...modalProps} />
       </div>
     )
   }
 }
-const SecurityPositionForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-
-    // Object.keys(props.securityPosition).forEach(key => {
-    //    fields[key] = {
-    //        value: props.securityPosition[key]
-    //    };
-    // });
-    return {
-      ...fields,
-    }
-  },
-})(NormalSecurityPositionForm)
+const SecurityPositionPageWrap = Form.create({})(SecurityPositionPage)
 
 function mapStateToProps (state) {
   const {
-    securityPosition,
+    securityPersonnel,
+    securityPersonnelSelect,
     regionList,
     departmentList,
     information,
-    securityPositionMembers,
     securityDutyPlanList,
     staffList,
     action,
+    modalVisible,
+    modalType,
   } = state.showOrEditSecurityPosition
   return {
-    securityPosition,
+    securityPersonnel,
+    securityPersonnelSelect,
     regionList,
     departmentList,
     information,
-    securityPositionMembers,
     staffList,
     securityDutyPlanList,
     action,
+    modalVisible,
+    modalType,
   }
 }
 
-export default connect(mapStateToProps)(SecurityPositionForm)
+export default connect(mapStateToProps)(SecurityPositionPageWrap)

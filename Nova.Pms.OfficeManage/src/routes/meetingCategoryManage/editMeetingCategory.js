@@ -4,7 +4,7 @@ import { Button, Form, Input, Row, Col, Alert } from 'antd'
 import { routerRedux } from 'dva/router'
 // import styles from './MeetingCategoryList.css'
 
-class NormalMeetingCategoryForm extends React.Component {
+class MeetingCategoryForm extends React.Component {
   state = {
     unfilled: 0,
   };
@@ -37,10 +37,8 @@ class NormalMeetingCategoryForm extends React.Component {
   };
   render () {
     const FormItem = Form.Item
-    const { getFieldDecorator, getFieldsError } = this.props.form
+    const { getFieldDecorator } = this.props.form
     const { meetingCategory } = this.props
-    const error = getFieldsError()
-    console.log(error)
     const formItemLayout = {
       labelCol: {
         xs: {
@@ -93,6 +91,7 @@ class NormalMeetingCategoryForm extends React.Component {
             <Col span={20}>
               <FormItem {...formItemLayout} label="会议类别名称">
                 {getFieldDecorator('name', {
+                  initialValue: meetingCategory.name,
                   rules: [
                     {
                       type: 'string',
@@ -109,6 +108,7 @@ class NormalMeetingCategoryForm extends React.Component {
             <Col span={20}>
               <FormItem {...formItemLayout} label="备注">
                 {getFieldDecorator('remark', {
+                  initialValue: meetingCategory.remark,
                   rules: [{ type: 'string', max: 255, message: '已超过255个字' }],
                 })(<Input type="textarea" placeholder="请输入" />)}
               </FormItem>
@@ -117,7 +117,7 @@ class NormalMeetingCategoryForm extends React.Component {
           <Row gutter={8}>
             <Col span={20}>
               <FormItem {...tailFormItemLayout} label="">
-                <Button type="primary" htmlType="submit">保存</Button>
+                <Button type="primary" htmlType="submit" style={{ marginRight: '15px' }}>保存</Button>
                 <Button type="default" onClick={this.cancle}>取消</Button>
               </FormItem>
             </Col>
@@ -127,20 +127,22 @@ class NormalMeetingCategoryForm extends React.Component {
     )
   }
 }
-const MeetingCategoryForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.meetingCategory).forEach(key => {
-      fields[key] = {
-        value: props.meetingCategory[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+
+const FormWarp = Form.create({
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.meetingCategory).forEach(key => {
+  //     fields[key] = {
+  //       value: props.meetingCategory[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
+    key &&
     props.dispatch({
       type: 'editMeetingCategory/changeField',
       payload: {
@@ -149,7 +151,7 @@ const MeetingCategoryForm = Form.create({
       },
     })
   },
-})(NormalMeetingCategoryForm)
+})(MeetingCategoryForm)
 
 function mapStateToProps (state) {
   const { meetingCategory } = state.editMeetingCategory
@@ -158,4 +160,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps)(MeetingCategoryForm)
+export default connect(mapStateToProps)(FormWarp)

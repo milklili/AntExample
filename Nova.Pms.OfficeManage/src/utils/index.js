@@ -21,6 +21,12 @@ String.prototype.humpToHyphen = function () {
   return this.replace(/([A-Z])/g, '-$1').toLowerCase()
 }
 
+const isNumber = function (value, int = false) {
+  const v = value.toString()
+  const reg = int ? /^(\+|-)?\d+$/ig : /^(\+|-)?\d+(\.\d+)?$/ig
+  return reg.test(v)
+}
+
 const dateFormat = (date, fmt = 'YYYY-MM-DD') => {
   // const listTitle = fmt && typeof fmt === 'number'
   // if (listTitle) {
@@ -131,4 +137,5 @@ module.exports = {
   arrayToTree,
   moment,
   dateFormat,
+  isNumber,
 }
