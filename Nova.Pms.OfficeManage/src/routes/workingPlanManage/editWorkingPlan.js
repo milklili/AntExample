@@ -1,20 +1,11 @@
 ﻿import React from 'react'
 import { connect } from 'dva'
 import {
-  Table,
-  Pagination,
-  Popconfirm,
-  Modal,
   Button,
   Form,
   Input,
-  Menu,
-  Dropdown,
-  Icon,
   DatePicker,
   Alert,
-  Upload,
-  message,
   Row,
   Col,
   Select,
@@ -67,13 +58,14 @@ class WorkingPlanForm extends React.Component {
   };
 
   handleNumberValidate = (rule, value, callback) => {
-    if (value != null && value != '' && !/^[A-Za-z0-9]+$/.test(value)) {
+    if (value != null && value !== '' && !/^[A-Za-z0-9]+$/.test(value)) {
       callback('序号格式错误')
     }
     callback()
   };
   render () {
-    const { getFieldDecorator } = this.props.form
+    const { workingPlan, form } = this.props
+    const { getFieldDecorator } = form
     const formItemLayout = {
       labelCol: {
         xs: {
@@ -105,8 +97,6 @@ class WorkingPlanForm extends React.Component {
         },
       },
     }
-
-    const FormItem = Form.Item
 
     const { unfilled } = this.state
 
@@ -149,6 +139,7 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="管理区">
                 {getFieldDecorator('regionId', {
+                  initialValue: workingPlan.regionId,
                   rules: [{ required: true, message: '请选择管理区' }],
                 })(
                   <Select onChange={this.selectRegion} placeholder="请选择">
@@ -160,6 +151,7 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="开始时间">
                 {getFieldDecorator('startDate', {
+                  initialValue: workingPlan.startDate,
                   rules: [{ required: true, message: '请选择开始时间' }],
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
@@ -171,7 +163,9 @@ class WorkingPlanForm extends React.Component {
           <Row gutter={8}>
             <Col span={12}>
               <FormItem {...formItemLayout} label="部门">
-                {getFieldDecorator('departmentId', {})(
+                {getFieldDecorator('departmentId', {
+                  initialValue: workingPlan.departmentId,
+                })(
                   <Select disabled={!isSelectRegion} placeholder="请选择">
                     {departmentOptions}
                   </Select>
@@ -181,6 +175,7 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="结束时间">
                 {getFieldDecorator('endDate', {
+                  initialValue: workingPlan.endDate,
                   rules: [{ required: true, message: '请选择结束时间' }],
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
@@ -195,6 +190,7 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="序号">
                 {getFieldDecorator('number', {
+                  initialValue: workingPlan.number,
                   rules: [
                     {
                       type: 'string',
@@ -211,7 +207,9 @@ class WorkingPlanForm extends React.Component {
             </Col>
             <Col span={12}>
               <FormItem {...formItemLayout} label="状态">
-                {getFieldDecorator('state', {})(
+                {getFieldDecorator('state', {
+                  initialValue: workingPlan.state,
+                })(
                   <Select
                     mode="combobox "
                     placeholder="请选择"
@@ -231,6 +229,7 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="计划名称">
                 {getFieldDecorator('name', {
+                  initialValue: workingPlan.name,
                   rules: [{ required: true, message: '请输入计划名称!' }],
                 })(<Input placeholder="请输入" />)}
               </FormItem>
@@ -239,6 +238,7 @@ class WorkingPlanForm extends React.Component {
               <FormItem {...formItemLayout} label="实际开始时间">
 
                 {getFieldDecorator('actualStartDate', {
+                  initialValue: workingPlan.actualStartDate,
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
                   },
@@ -249,7 +249,9 @@ class WorkingPlanForm extends React.Component {
           <Row gutter={8}>
             <Col span={12}>
               <FormItem {...formItemLayout} label="计划类别">
-                {getFieldDecorator('officeManagementCategoryId', {})(
+                {getFieldDecorator('officeManagementCategoryId', {
+                  initialValue: workingPlan.officeManagementCategoryId,
+                })(
                   <Select placeholder="请选择">
                     {officeManagementCategoryOptions}
                   </Select>
@@ -259,6 +261,7 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="实际结束时间">
                 {getFieldDecorator('actualEndDate', {
+                  initialValue: workingPlan.actualEndDate,
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
                   },
@@ -271,7 +274,9 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <Row gutter={8}>
                 <FormItem {...formItemLayout} label="召集人">
-                  {getFieldDecorator('headId', {})(
+                  {getFieldDecorator('headId', {
+                    initialValue: workingPlan.headId,
+                  })(
                     <Select disabled={!isSelectRegion} placeholder="请选择">
                       {staffOptions}
                     </Select>
@@ -280,7 +285,9 @@ class WorkingPlanForm extends React.Component {
               </Row>
               <Row gutter={8}>
                 <FormItem {...formItemLayout} label="负责人">
-                  {getFieldDecorator('convenorId', {})(
+                  {getFieldDecorator('convenorId', {
+                    initialValue: workingPlan.convenorId,
+                  })(
                     <Select disabled={!isSelectRegion} placeholder="请选择">
                       {staffOptions}
                     </Select>
@@ -289,7 +296,9 @@ class WorkingPlanForm extends React.Component {
               </Row>
               <Row gutter={8}>
                 <FormItem {...formItemLayout} label="参加人员">
-                  {getFieldDecorator('workingPlanMembers', {})(
+                  {getFieldDecorator('workingPlanMembers', {
+                    initialValue: workingPlan.workingPlanMembers,
+                  })(
                     <Select
                       mode="multiple"
                       disabled={!isSelectRegion}
@@ -302,7 +311,9 @@ class WorkingPlanForm extends React.Component {
               </Row>
               <Row gutter={8}>
                 <FormItem {...formItemLayout} label="地点">
-                  {getFieldDecorator('place', {})(<Input placeholder="请输入" />)}
+                  {getFieldDecorator('place', {
+                    initialValue: workingPlan.place,
+                  })(<Input placeholder="请输入" />)}
                 </FormItem>
               </Row>
 
@@ -310,6 +321,7 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="完成情况">
                 {getFieldDecorator('completion', {
+                  initialValue: workingPlan.completion,
                   rules: [{ type: 'string', max: 300, message: '已超过300个字!' }],
                 })(<Input type="textarea" rows={10} placeholder="请输入" />)}
               </FormItem>
@@ -319,6 +331,7 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="计划内容">
                 {getFieldDecorator('planContent', {
+                  initialValue: workingPlan.planContent,
                   rules: [
                     {
                       type: 'string',
@@ -333,6 +346,7 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="备注">
                 {getFieldDecorator('remark', {
+                  initialValue: workingPlan.remark,
                   rules: [{ type: 'string', max: 300, message: '已超过300个字!' }],
                 })(<Input type="textarea" rows={4} placeholder="请输入" />)}
               </FormItem>
@@ -361,20 +375,20 @@ class WorkingPlanForm extends React.Component {
 }
 
 const WrappedEditWorkingPlan = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.workingPlan).forEach(key => {
-      fields[key] = {
-        value: props.workingPlan[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.workingPlan).forEach(key => {
+  //     fields[key] = {
+  //       value: props.workingPlan[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
-    props.dispatch({
+    key && props.dispatch({
       type: 'editWorkingPlan/changeField',
       payload: {
         key,

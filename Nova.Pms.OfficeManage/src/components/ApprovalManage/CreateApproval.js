@@ -26,15 +26,9 @@ import {
 } from 'antd'
 import { routerRedux, Link } from 'dva/router'
 import styles from './ApprovalManage.css'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
-
-moment.locale('zh-cn')
-import { PAGE_SIZE } from '../../constants'
+import { isImage, moment } from 'utils'
 
 const FormItem = Form.Item
-const RangePicker = DatePicker.RangePicker
-const RadioGroup = Radio.Group
 const Option = Select.Option
 
 class Approval extends React.Component {
@@ -135,33 +129,8 @@ class Approval extends React.Component {
 
   beforePicturesOnChange = file => {
     let attachmentsAll = this.props.attachments
-    let pictures = attachmentsAll.map(attachments => attachments.fileType == 0)
-
-    pictures = pictures.filter(n => {
-      return n != undefined
-    })
-
-    const isJPG =
-      file.type.toLowerCase() === 'image/jpeg' ||
-      file.type.toLowerCase() === 'image/bmp' ||
-      file.type.toLowerCase() === 'image/png' ||
-      file.type.toLowerCase() === 'image/jpg' ||
-      file.type.toLowerCase() === 'image/tiff' ||
-      file.type.toLowerCase() === 'image/gif' ||
-      file.type.toLowerCase() === 'image/pcx' ||
-      file.type.toLowerCase() === 'image/tga' ||
-      file.type.toLowerCase() === 'image/exif' ||
-      file.type.toLowerCase() === 'image/fpx' ||
-      file.type.toLowerCase() === 'image/svg' ||
-      file.type.toLowerCase() === 'image/psd' ||
-      file.type.toLowerCase() === 'image/cdr' ||
-      file.type.toLowerCase() === 'image/pcd' ||
-      file.type.toLowerCase() === 'image/dxf' ||
-      file.type.toLowerCase() === 'image/ufo' ||
-      file.type.toLowerCase() === 'image/eps' ||
-      file.type.toLowerCase() === 'image/ai' ||
-      file.type.toLowerCase() === 'image/raw' ||
-      file.type.toLowerCase() === 'image/wmf'
+    let pictures = attachmentsAll.filter(attachments => attachments.fileType === 0)
+    const isJPG = isImage(file.type)
     if (!isJPG) {
       message.error('请选择图片上传!')
     }
@@ -403,7 +372,7 @@ class Approval extends React.Component {
             <Col span={24} offset={2}>
               <FormItem>
                 <Button type="primary" htmlType="submit">保存</Button>
-                <Button type="default" onClick={this.handleCancel}>取消</Button>
+                <Button type="default" onClick={this.handleCancel}>重置</Button>
               </FormItem>
 
             </Col>

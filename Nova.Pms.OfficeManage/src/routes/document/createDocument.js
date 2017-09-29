@@ -290,7 +290,7 @@ class DocumentCreateForm extends React.Component {
           <Row gutter={8}>
             <Col span={12}>
               <FormItem {...tailFormItemLayout} label="">
-                <Button type="primary" htmlType="submit">保存</Button>
+                <Button type="primary" htmlType="submit" style={{ marginRight: 15 }}>保存</Button>
                 <Button type="default" onClick={this.cancel}>取消</Button>
               </FormItem>
 
@@ -303,21 +303,20 @@ class DocumentCreateForm extends React.Component {
 }
 
 const WrappedDocumentCreateForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.documentData).forEach(key => {
-      fields[key] = {
-        value: props.documentData[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.documentData).forEach(key => {
+  //     fields[key] = {
+  //       value: props.documentData[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
-
-    props.dispatch({
+    key && props.dispatch({
       type: 'createDocument/changeField',
       payload: {
         key,

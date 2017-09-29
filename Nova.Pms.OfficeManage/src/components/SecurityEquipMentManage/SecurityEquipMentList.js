@@ -31,8 +31,6 @@ moment.locale('zh-cn')
 import { PAGE_SIZE } from '../../constants'
 
 const FormItem = Form.Item
-const RangePicker = DatePicker.RangePicker
-const RadioGroup = Radio.Group
 const Option = Select.Option
 
 const AddSecurityEquipMentForm = Form.create()(props => {
@@ -49,8 +47,6 @@ const AddSecurityEquipMentForm = Form.create()(props => {
     staffList,
     securityEquipMent,
     isAddOrEdit,
-    handleIdCardNoValidate,
-    handlePhoneValidate,
   } = props
   const { getFieldDecorator } = form
   const formItemLayout = {
@@ -303,22 +299,22 @@ function SecurityEquipMentList ({
     }
     showModal = () => {
       securityEquipMent.regionId = this.props.initialRegion.id
-      var staffList = this.props.staffList.map(x => {
-        if (x.staffRegionId == securityEquipMent.regionId) {
+      let staffList = this.props.staffList.map(x => {
+        if (x.staffRegionId === securityEquipMent.regionId) {
           return x
         }
       })
       staffList = staffList.filter(n => {
-        return n != undefined
+        return n != null
       })
 
-      var departmentList = this.props.departmentList.map(x => {
-        if (x.regionId == securityEquipMent.regionId) {
+      let departmentList = this.props.departmentList.map(x => {
+        if (x.regionId === securityEquipMent.regionId) {
           return x
         }
       })
       departmentList = departmentList.filter(n => {
-        return n != undefined
+        return n != null
       })
 
       this.setState({
@@ -331,20 +327,11 @@ function SecurityEquipMentList ({
     };
     handleCancel = () => {
       const form = this.form
-
-      form.validateFields((err, values) => {
-        dispatch({
-          type: 'securityEquipMentList/changeSecurityEquipMent',
-          payload: { securityEquipMent: values },
-        })
-        form.resetFields()
-        this.setState({ visible: false })
-      })
+      form.resetFields()
       this.setState({ visible: false })
     };
     handleCreate = () => {
       const form = this.form
-
       form.validateFields((err, values) => {
         if (err) {
           return
@@ -359,29 +346,29 @@ function SecurityEquipMentList ({
     };
 
     handleNumberValidate = (rule, value, callback) => {
-      if (value != null && value != '' && !/^[0-9]*[1-9][0-9]*$/.test(value)) {
+      if (value != null && value !== '' && !/^[0-9]*[1-9][0-9]*$/.test(value)) {
         callback('数量格式错误，请输入数字')
       }
       callback()
     };
 
     selectRegion = value => {
-      var staffList = this.props.staffList.map(x => {
-        if (x.staffRegionId == value) {
+      let staffList = this.props.staffList.map(x => {
+        if (x.staffRegionId === value) {
           return x
         }
       })
       staffList = staffList.filter(n => {
-        return n != undefined
+        return n != null
       })
 
-      var departmentList = this.props.departmentList.map(x => {
-        if (x.regionId == value) {
+      let departmentList = this.props.departmentList.map(x => {
+        if (x.regionId === value) {
           return x
         }
       })
       departmentList = departmentList.filter(n => {
-        return n != undefined
+        return n != null
       })
       // this.props.securityEquipMent.regionName,
 
@@ -414,7 +401,7 @@ function SecurityEquipMentList ({
 
       let data = { [key]: value }
 
-      if (key == 'regionId') {
+      if (key === 'regionId') {
         data = {
           responsibilityPersonId: null,
           departmentId: null,
@@ -422,7 +409,7 @@ function SecurityEquipMentList ({
         }
       }
 
-      var securityEquipMent = { ...this.state.securityEquipMent, ...data }
+      const securityEquipMent = { ...this.state.securityEquipMent, ...data }
       this.setState({
         securityEquipMent: {
           ...this.state.securityEquipMent,
@@ -1008,7 +995,7 @@ function SecurityEquipMentList ({
                   placeholder="搜索..."
                   style={{ width: 200 }}
                   size="large"
-                  onSearch={filterStr => this.searchHandler(filterStr)}
+                  onSearch={v => this.searchHandler(v)}
                 />
                 <a className="hide" style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
                   高级搜索 <Icon type="down" />

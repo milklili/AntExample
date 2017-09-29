@@ -18,7 +18,8 @@ import 'moment/locale/zh-cn'
 
 moment.locale('zh-cn')
 // import styles from "./Document.css";
-
+const FormItem = Form.Item
+const Option = Select.Option
 class DocumentEditForm extends React.Component {
   state = {
     unfilled: 0,
@@ -138,8 +139,8 @@ class DocumentEditForm extends React.Component {
     }),
   };
   render () {
-    const { getFieldDecorator } = this.props.form
-
+    const { documentData, form } = this.props
+    const { getFieldDecorator } = form
     const formItemLayout = {
       labelCol: {
         xs: {
@@ -170,9 +171,6 @@ class DocumentEditForm extends React.Component {
         },
       },
     }
-
-    const FormItem = Form.Item
-
     const { unfilled } = this.state
 
     const regionsOptions = this.props.regions.map(value => (
@@ -204,6 +202,7 @@ class DocumentEditForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="管理区" hasFeedback>
                 {getFieldDecorator('regionId', {
+                  initialValue: documentData.regionId,
                   rules: [{ required: true, message: '请选择管理区' }],
                 })(<Select placeholder="请选择">{regionsOptions}</Select>)}
               </FormItem>
@@ -211,6 +210,7 @@ class DocumentEditForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="归档时间">
                 {getFieldDecorator('fileDate', {
+                  initialValue: documentData.fileDate,
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
                   },
@@ -229,6 +229,7 @@ class DocumentEditForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="文档编号">
                 {getFieldDecorator('number', {
+                  initialValue: documentData.number,
                   rules: [
                     {
                       required: true,
@@ -246,6 +247,7 @@ class DocumentEditForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="起效时间">
                 {getFieldDecorator('startDate', {
+                  initialValue: documentData.startDate,
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
                   },
@@ -259,6 +261,7 @@ class DocumentEditForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="文档名称" hasFeedback>
                 {getFieldDecorator('name', {
+                  initialValue: documentData.name,
                   rules: [
                     {
                       required: true,
@@ -276,6 +279,7 @@ class DocumentEditForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="失效时间">
                 {getFieldDecorator('endDate', {
+                  initialValue: documentData.endDate,
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
                   },
@@ -290,6 +294,7 @@ class DocumentEditForm extends React.Component {
               <Row gutter={8}>
                 <FormItem {...formItemLayout} label="文档类型" hasFeedback>
                   {getFieldDecorator('documentCategoryId', {
+                    initialValue: documentData.documentCategoryId,
                     rules: [{ required: true, message: '请选择文档类型' }],
                   })(
                     <Select placeholder="请选择">{documentCategoryOptions}</Select>
@@ -298,7 +303,9 @@ class DocumentEditForm extends React.Component {
               </Row>
               <Row gutter={8}>
                 <FormItem {...formItemLayout} label="版本">
-                  {getFieldDecorator('version', {})(<Input />)}
+                  {getFieldDecorator('version', {
+                    initialValue: documentData.version,
+                  })(<Input />)}
                 </FormItem>
               </Row>
 
@@ -306,6 +313,7 @@ class DocumentEditForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="备注">
                 {getFieldDecorator('remark', {
+                  initialValue: documentData.remark,
                   rules: [{ type: 'string', max: 100, message: '已超过100个字' }],
                 })(<Input type="textarea" placeholder="请输入" rows={4} />)}
               </FormItem>
@@ -337,20 +345,20 @@ class DocumentEditForm extends React.Component {
 }
 
 const WrappedDocumentEditForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.documentData).forEach(key => {
-      fields[key] = {
-        value: props.documentData[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.documentData).forEach(key => {
+  //     fields[key] = {
+  //       value: props.documentData[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
-    props.dispatch({
+    key && props.dispatch({
       type: 'editDocument/changeField',
       payload: {
         key,

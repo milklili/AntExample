@@ -305,7 +305,9 @@ const AddStaffForm = Form.create()(props => {
         <Row gutter={8}>
           <Col span={24}>
             <FormItem {...formItemRow} label="备注">
-              {getFieldDecorator('remark', {})(
+              {getFieldDecorator('remark', {
+                rules: [{ max: 150, message: '备注不能超过150个字符' }],
+              })(
                 <Input type="textarea" rows={2} />
               )}
             </FormItem>
@@ -328,23 +330,6 @@ function WorkAttendanceList ({
   seniorSearch,
   staffList,
 }) {
-  function editDocument (id) {
-    dispatch(
-      routerRedux.push({
-        pathname: '/editWorkAttendance',
-        query: { id },
-      })
-    )
-  }
-  function showDocument (id) {
-    dispatch(
-      routerRedux.push({
-        pathname: '/showWorkAttendance',
-        query: { id },
-      })
-    )
-  }
-
   class AddWorkAttendance extends React.Component {
     constructor (props) {
       super(props)
@@ -392,7 +377,7 @@ function WorkAttendanceList ({
     };
     handleAttendanceTypeChange = value => {
       const form = this.form
-      if (value == 1 || value == 2) {
+      if (value === 1 || value === 2) {
         // form.getValueProps
         form.setFieldsValue({
           hours: '',
@@ -403,7 +388,7 @@ function WorkAttendanceList ({
       }
     };
     handleHoursValidate = (rule, value, callback) => {
-      if (value != null && value != '' && !/^[0-9]+.?[0-9]*$/.test(value)) {
+      if (value != null && value !== '' && !/^[0-9]+.?[0-9]*$/.test(value)) {
         callback('小时格式错误')
       }
       callback()
@@ -481,14 +466,14 @@ function WorkAttendanceList ({
     };
     handleAttendanceTypeChange = value => {
       const form = this.form
-      if (value == 1 || value == 2) {
+      if (value === 1 || value === 2) {
         this.setState({ isHoursEdit: false })
       } else {
         this.setState({ isHoursEdit: true })
       }
     };
     handleHoursValidate = (rule, value, callback) => {
-      if (value != null && value != '' && !/^[0-9]+.?[0-9]*$/.test(value)) {
+      if (value != null && value !== '' && !/^[0-9]+.?[0-9]*$/.test(value)) {
         callback('小时格式错误')
       }
       callback()
@@ -639,22 +624,14 @@ function WorkAttendanceList ({
       })
     };
 
-    showWorkAttendance = id => {
+    showWorkAttendance = (id, type) => {
       dispatch(
         routerRedux.push({
           pathname: '/showOrEditWorkAttendance',
-          query: { id },
+          query: { id, action: type },
         })
       )
-    };
-    editWorkAttendance = id => {
-      dispatch(
-        routerRedux.push({
-          pathname: '/showOrEditWorkAttendance',
-          query: { id },
-        })
-      )
-    };
+    }
 
     pageChangeHandler = page => {
       dispatch(
@@ -818,13 +795,13 @@ function WorkAttendanceList ({
             return total
               ? <span>
                 <a
-                  onClick={this.showWorkAttendance.bind(null, record.staffId)}
+                  onClick={this.showWorkAttendance.bind(null, record.staffId, 'preview')}
                 >
                     查看
                 </a>
                   &nbsp;
                 <a
-                  onClick={this.editWorkAttendance.bind(null, record.staffId)}
+                  onClick={this.showWorkAttendance.bind(null, record.staffId, 'update')}
                 >
                     编辑
                 </a>

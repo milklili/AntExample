@@ -310,7 +310,7 @@ function SecurityPositionList ({
                   placeholder="搜索..."
                   style={{ width: 200 }}
                   size="large"
-                  onSearch={filterStr => this.searchHandler(filterStr)}
+                  onSearch={v => this.searchHandler(v)}
                 />
                 <a className="hide" style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
                   高级搜索 <Icon type="down" />

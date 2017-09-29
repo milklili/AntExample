@@ -49,6 +49,7 @@ const AddCleaningRecordForm = Form.create()(props => {
     cleaningRecord,
     isAddOrEdit,
   } = props
+  console.log(cleaningAreaList)
   const { getFieldDecorator } = form
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -81,7 +82,9 @@ const AddCleaningRecordForm = Form.create()(props => {
         <Row gutter={16}>
           <Col span={12}>
             <FormItem {...formItemLayout} label="管理区">
-              {getFieldDecorator('regionId', {})(
+              {getFieldDecorator('regionId', {
+                initialValue: cleaningRecord.regionId,
+              })(
                 <Select
                   mode="combox"
                   placeholder="请选择"
@@ -97,6 +100,7 @@ const AddCleaningRecordForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="保洁区域">
               {getFieldDecorator('cleaningAreaId', {
+                initialValue: cleaningRecord.cleaningAreaId,
                 rules: [{ required: isAddOrEdit, message: '请选择保洁区域' }],
               })(
                 <Select
@@ -114,6 +118,7 @@ const AddCleaningRecordForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="项目名称">
               {getFieldDecorator('name', {
+                initialValue: cleaningRecord.name,
                 rules: [
                   {
                     type: 'string',
@@ -128,6 +133,7 @@ const AddCleaningRecordForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="项目类型">
               {getFieldDecorator('type', {
+                initialValue: cleaningRecord.type,
                 rules: [{ required: isAddOrEdit, message: '请选择项目类型' }],
               })(
                 <Select
@@ -209,7 +215,7 @@ const AddCleaningRecordForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="责任人">
               {getFieldDecorator('staffId', {
-                // initialValue: staffName
+                initialValue: cleaningRecord.staffId,
                 rules: [{ required: isAddOrEdit, message: '请选择责任人' }],
               })(
                 <Select
@@ -226,6 +232,7 @@ const AddCleaningRecordForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="具体内容">
               {getFieldDecorator('content', {
+                initialValue: cleaningRecord.content,
                 rules: [
                   {
                     required: isAddOrEdit,
@@ -243,6 +250,7 @@ const AddCleaningRecordForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="状态">
               {getFieldDecorator('state', {
+                initialValue: cleaningRecord.state,
                 rules: [{ required: isAddOrEdit, message: '请选择状态' }],
               })(
                 <Select
@@ -262,6 +270,7 @@ const AddCleaningRecordForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="备注">
               {getFieldDecorator('remark', {
+                initialValue: cleaningRecord.remark,
                 rules: [{ type: 'string', max: 80, message: '请正确输入备注，最大长度为80' }],
               })(<Input disabled={!isAddOrEdit} />)}
 
@@ -274,17 +283,17 @@ const AddCleaningRecordForm = Form.create()(props => {
 })
 
 const NormalAddCleaningRecordForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.cleaningRecord).forEach(key => {
-      fields[key] = {
-        value: props.cleaningRecord[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.cleaningRecord).forEach(key => {
+  //     fields[key] = {
+  //       value: props.cleaningRecord[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
 
   onFieldsChange (props, changedFields) {
     props.onChange(changedFields)
@@ -376,20 +385,11 @@ function CleaningRecordList ({
 
     handleCancel = () => {
       const form = this.form
-
-      form.validateFields((err, values) => {
-        dispatch({
-          type: 'cleaningRecordList/changeCleaningRecord',
-          payload: { cleaningRecord: values },
-        })
-        form.resetFields()
-        this.setState({ visible: false })
-      })
+      form.resetFields()
       this.setState({ visible: false })
     };
     handleCreate = () => {
       const form = this.form
-
       form.validateFields((err, values) => {
         if (err) {
           return
@@ -413,27 +413,28 @@ function CleaningRecordList ({
 
     handleFormChange = changedFields => {
       function findCleaningArea (cleaningArea) {
-        return cleaningArea.id == value
+        return cleaningArea.id === value
       }
       const key = Object.keys(changedFields)[0]
+      if (!key) return
       const value = changedFields[key].value
 
       let data = { [key]: value }
 
-      if (key == 'cleaningAreaId') {
-        var staff = this.props.cleaningAreaList.find(findCleaningArea)
+      if (key === 'cleaningAreaId') {
+        const staff = this.props.cleaningAreaList.find(findCleaningArea)
 
         if (staff != null) {
           data = { staffId: staff.staffId, [key]: value }
         }
       }
-      if (key == 'regionId') {
+      if (key === 'regionId') {
         data = { cleaningAreaId: null, staffId: null, [key]: value }
       }
 
-      var cleaningRecord = { ...this.state.cleaningRecord, ...data }
+      const newCleaningRecord = { ...this.state.cleaningRecord, ...data }
       this.setState({
-        cleaningRecord: { ...this.state.cleaningRecord, ...cleaningRecord },
+        cleaningRecord: { ...this.state.cleaningRecord, ...newCleaningRecord },
       })
     };
     render () {
@@ -952,7 +953,7 @@ function CleaningRecordList ({
                   placeholder="搜索..."
                   style={{ width: 200 }}
                   size="large"
-                  onSearch={filterStr => this.searchHandler(filterStr)}
+                  onSearch={v => this.searchHandler(v)}
                 />
                 <a className="hide" style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
                   高级搜索 <Icon type="down" />

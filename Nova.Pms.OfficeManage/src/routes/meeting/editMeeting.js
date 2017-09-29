@@ -4,19 +4,20 @@ import {
   Button,
   Form,
   Input,
-  message,
   Row,
   Col,
   Alert,
   Select,
   DatePicker,
-  Upload,
 } from 'antd'
 import { routerRedux } from 'dva/router'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 
 moment.locale('zh-cn')
+
+const Option = Select.Option
+const FormItem = Form.Item
 
 class MeetingForm extends React.Component {
   state = {
@@ -58,13 +59,14 @@ class MeetingForm extends React.Component {
     })
   };
   handleNumberValidate = (rule, value, callback) => {
-    if (value != null && value != '' && !/^[A-Za-z0-9]+$/.test(value)) {
+    if (value != null && value !== '' && !/^[A-Za-z0-9]+$/.test(value)) {
       callback('序号格式错误')
     }
     callback()
   };
   render () {
-    const { getFieldDecorator } = this.props.form
+    const { formData, form } = this.props
+    const { getFieldDecorator } = form
     const formItemLayout = {
       labelCol: {
         xs: {
@@ -114,8 +116,6 @@ class MeetingForm extends React.Component {
       },
     }
 
-    const FormItem = Form.Item
-
     const { unfilled } = this.state
 
     const regionOptions = this.props.regions.map(value => (
@@ -155,6 +155,7 @@ class MeetingForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="管理区" hasFeedback>
                 {getFieldDecorator('regionId', {
+                  initailValue: formData.regionId,
                   rules: [{ required: true, message: '请选择管理区' }],
                 })(
                   <Select onChange={this.selectRegion} placeholder="请选择">
@@ -166,6 +167,7 @@ class MeetingForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="开始时间">
                 {getFieldDecorator('startDate', {
+                  initailValue: formData.startDate,
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
                   },
@@ -176,7 +178,9 @@ class MeetingForm extends React.Component {
           <Row gutter={8}>
             <Col span={12}>
               <FormItem {...formItemLayout} label="部门">
-                {getFieldDecorator('departmentId', {})(
+                {getFieldDecorator('departmentId', {
+                  initailValue: formData.departmentId,
+                })(
                   <Select disabled={!isSelectRegion} placeholder="请选择">
                     {departmentOptions}
                   </Select>
@@ -186,6 +190,7 @@ class MeetingForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="结束时间">
                 {getFieldDecorator('endDate', {
+                  initailValue: formData.endDate,
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
                   },
@@ -197,6 +202,7 @@ class MeetingForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="序号">
                 {getFieldDecorator('number', {
+                  initailValue: formData.number,
                   rules: [
                     {
                       type: 'string',
@@ -213,7 +219,9 @@ class MeetingForm extends React.Component {
             </Col>
             <Col span={12}>
               <FormItem {...formItemLayout} label="地点">
-                {getFieldDecorator('place', {})(<Input placeholder="请输入" />)}
+                {getFieldDecorator('place', {
+                  initailValue: formData.place,
+                })(<Input placeholder="请输入" />)}
               </FormItem>
             </Col>
           </Row>
@@ -221,13 +229,16 @@ class MeetingForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="会议名称">
                 {getFieldDecorator('name', {
+                  initailValue: formData.name,
                   rules: [{ required: true, message: '请填写会议名称' }],
                 })(<Input placeholder="请输入" />)}
               </FormItem>
             </Col>
             <Col span={12}>
               <FormItem {...formItemLayout} label="召集人">
-                {getFieldDecorator('convenorId', {})(
+                {getFieldDecorator('convenorId', {
+                  initailValue: formData.convenorId,
+                })(
                   <Select placeholder="请选择" disabled={!isSelectRegion}>
                     {staffOptions}
                   </Select>
@@ -239,13 +250,16 @@ class MeetingForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="会议类别">
                 {getFieldDecorator('officeManagementCategoryId', {
+                  initailValue: formData.officeManagementCategoryId,
                   rules: [{ required: true, message: '请选择会议类别' }],
                 })(<Select placeholder="请选择">{meetingCategoryOptions}</Select>)}
               </FormItem>
             </Col>
             <Col span={12}>
               <FormItem {...formItemLayout} label="主持人">
-                {getFieldDecorator('compereId', {})(
+                {getFieldDecorator('compereId', {
+                  initailValue: formData.compereId,
+                })(
                   <Select placeholder="请选择" disabled={!isSelectRegion}>
                     {staffOptions}
                   </Select>
@@ -256,7 +270,9 @@ class MeetingForm extends React.Component {
           <Row gutter={8}>
             <Col span={24}>
               <FormItem {...formItemRowLayout} label="参加人员">
-                {getFieldDecorator('members', {})(
+                {getFieldDecorator('members', {
+                  initailValue: formData.members,
+                })(
                   <Select
                     placeholder="请选择"
                     mode="multiple"
@@ -272,6 +288,7 @@ class MeetingForm extends React.Component {
             <Col span={24}>
               <FormItem {...formItemRowLayout} label="会议主题">
                 {getFieldDecorator('meetingTheme', {
+                  initailValue: formData.meetingTheme,
                   rules: [{ type: 'string', max: 50, message: '已超过50个字' }],
                 })(<Input placeholder="请输入" />)}
               </FormItem>
@@ -281,6 +298,7 @@ class MeetingForm extends React.Component {
             <Col span={24}>
               <FormItem {...formItemRowLayout} label="会议内容">
                 {getFieldDecorator('meetingContent', {
+                  initailValue: formData.meetingContent,
                   rules: [{ type: 'string', max: 300, message: '已超过300个字' }],
                 })(<Input type="textarea" placeholder="请输入" />)}
               </FormItem>
@@ -289,7 +307,9 @@ class MeetingForm extends React.Component {
           <Row gutter={8}>
             <Col span={24}>
               <FormItem {...formItemRowLayout} label="备注">
-                {getFieldDecorator('remark', {})(
+                {getFieldDecorator('remark', {
+                  initailValue: formData.remark,
+                })(
                   <Input type="textarea" placeholder="请输入" />
                 )}
               </FormItem>
@@ -311,20 +331,20 @@ class MeetingForm extends React.Component {
 }
 
 const WrappedMeetingEditForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.formData).forEach(key => {
-      fields[key] = {
-        value: props.formData[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.formData).forEach(key => {
+  //     fields[key] = {
+  //       value: props.formData[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
-    props.dispatch({
+    key && props.dispatch({
       type: 'editMeeting/changeField',
       payload: {
         key,

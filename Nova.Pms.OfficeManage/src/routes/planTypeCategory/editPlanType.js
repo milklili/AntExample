@@ -3,6 +3,8 @@ import { connect } from 'dva'
 import { Button, Form, Input, Row, Col, Alert } from 'antd'
 import { routerRedux } from 'dva/router'
 
+const FormItem = Form.Item
+
 class NormalPlanTypeCategoryForm extends React.Component {
   state = {
     unfilled: 0,
@@ -35,8 +37,8 @@ class NormalPlanTypeCategoryForm extends React.Component {
     })
   };
   render () {
-    const FormItem = Form.Item
-    const { getFieldDecorator } = this.props.form
+    const { planTypeCategory, form } = this.props
+    const { getFieldDecorator } = form
     const formItemLayout = {
       labelCol: {
         xs: {
@@ -90,6 +92,7 @@ class NormalPlanTypeCategoryForm extends React.Component {
             <Col span={20}>
               <FormItem {...formItemLayout} label="计划类别名称">
                 {getFieldDecorator('name', {
+                  initialValue: planTypeCategory.name,
                   rules: [
                     {
                       required: true,
@@ -106,6 +109,7 @@ class NormalPlanTypeCategoryForm extends React.Component {
             <Col span={20}>
               <FormItem {...formItemLayout} label="备注">
                 {getFieldDecorator('remark', {
+                  initialValue: planTypeCategory.remark,
                   rules: [{ type: 'string', max: 255, message: '已超过255个字' }],
                 })(<Input type="textarea" />)}
               </FormItem>
@@ -127,20 +131,20 @@ class NormalPlanTypeCategoryForm extends React.Component {
 }
 
 const PlanTypeCategoryForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.planTypeCategory).forEach(key => {
-      fields[key] = {
-        value: props.planTypeCategory[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.planTypeCategory).forEach(key => {
+  //     fields[key] = {
+  //       value: props.planTypeCategory[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
-    props.dispatch({
+    key && props.dispatch({
       type: 'editPlanType/changeField',
       payload: {
         key,

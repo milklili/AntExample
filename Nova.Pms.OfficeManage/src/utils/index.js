@@ -27,6 +27,18 @@ const isNumber = function (value, int = false) {
   return reg.test(v)
 }
 
+const isImage = function (type) {
+  const imgTypeArr = ['jpeg', 'bmp', 'png', 'jpg', 'tiff', 'gif',
+    'pcx', 'tga', 'exif', 'fpx', 'svg', 'psd', 'cdr', 'pcd', 'dxf', 'ufo', 'eps', 'ai', 'raw', 'wmf']
+  for (let i = 0; i < imgTypeArr.length; i++) {
+    const reg = new RegExp(`${imgTypeArr[i]}$`, 'ig')
+    if (reg.test(type)) {
+      return true
+    }
+  }
+  return false
+}
+
 const dateFormat = (date, fmt = 'YYYY-MM-DD') => {
   // const listTitle = fmt && typeof fmt === 'number'
   // if (listTitle) {
@@ -138,4 +150,5 @@ module.exports = {
   moment,
   dateFormat,
   isNumber,
+  isImage,
 }

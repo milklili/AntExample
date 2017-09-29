@@ -4,14 +4,16 @@ import { Button, Form, Input, Row, Col, Alert } from 'antd'
 import { routerRedux } from 'dva/router'
 // import styles from './MeetingCategoryList.css'
 
+const FormItem = Form.Item
+
 class MeetingCategoryForm extends React.Component {
   state = {
     unfilled: 0,
-  };
+  }
   closeUnfilledInfo = () => {
     const unfilled = 0
     this.setState({ unfilled })
-  };
+  }
 
   cancle = () => {
     this.props.dispatch(
@@ -19,7 +21,7 @@ class MeetingCategoryForm extends React.Component {
         pathname: '/meetingCategoryList',
       })
     )
-  };
+  }
   handleSubmit = e => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
@@ -34,11 +36,23 @@ class MeetingCategoryForm extends React.Component {
         this.setState({ unfilled })
       }
     })
-  };
+  }
+  // 和mapPropsToFields方法一样，会影响表单验证
+  // componentWillReceiveProps ({ meetingCategory }) {
+  //   const old = this.props.meetingCategory
+  //   const form = this.props.form
+  //   if (JSON.stringify(old) !== JSON.stringify(meetingCategory)) {
+  //     console.log(false)
+  //     const { setFieldsValue } = form
+  //     setFieldsValue(meetingCategory)
+  //   }
+  //   console.log('new', JSON.stringify(meetingCategory))
+  //   console.log('old', JSON.stringify(old))
+  // }
+
   render () {
-    const FormItem = Form.Item
-    const { getFieldDecorator } = this.props.form
-    const { meetingCategory } = this.props
+    const { meetingCategory, form } = this.props
+    const { getFieldDecorator } = form
     const formItemLayout = {
       labelCol: {
         xs: {
@@ -117,7 +131,13 @@ class MeetingCategoryForm extends React.Component {
           <Row gutter={8}>
             <Col span={20}>
               <FormItem {...tailFormItemLayout} label="">
-                <Button type="primary" htmlType="submit" style={{ marginRight: '15px' }}>保存</Button>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  style={{ marginRight: '15px' }}
+                >
+                  保存
+                </Button>
                 <Button type="default" onClick={this.cancle}>取消</Button>
               </FormItem>
             </Col>
@@ -129,11 +149,12 @@ class MeetingCategoryForm extends React.Component {
 }
 
 const FormWarp = Form.create({
-  // mapPropsToFields (props) {
+  // mapPropsToFields ({ meetingCategory }) {
+  //   console.log('mapto', meetingCategory)
   //   const fields = {}
-  //   Object.keys(props.meetingCategory).forEach(key => {
+  //   Object.keys(meetingCategory).forEach(key => {
   //     fields[key] = {
-  //       value: props.meetingCategory[key],
+  //       value: meetingCategory[key],
   //     }
   //   })
   //   return {
@@ -143,13 +164,13 @@ const FormWarp = Form.create({
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
     key &&
-    props.dispatch({
-      type: 'editMeetingCategory/changeField',
-      payload: {
-        key,
-        value: changedFields[key].value,
-      },
-    })
+      props.dispatch({
+        type: 'editMeetingCategory/changeField',
+        payload: {
+          key,
+          value: changedFields[key].value,
+        },
+      })
   },
 })(MeetingCategoryForm)
 

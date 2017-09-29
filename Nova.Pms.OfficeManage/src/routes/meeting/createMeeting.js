@@ -4,19 +4,20 @@ import {
   Button,
   Form,
   Input,
-  message,
   Row,
   Col,
   Alert,
   Select,
   DatePicker,
-  Upload,
 } from 'antd'
 import { routerRedux } from 'dva/router'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 
 moment.locale('zh-cn')
+
+const Option = Select.Option
+const FormItem = Form.Item
 
 class MeetingForm extends React.Component {
   state = {
@@ -59,7 +60,7 @@ class MeetingForm extends React.Component {
   };
 
   handleNumberValidate = (rule, value, callback) => {
-    if (value != null && value != '' && !/^[A-Za-z0-9]+$/.test(value)) {
+    if (value != null && value !== '' && !/^[A-Za-z0-9]+$/.test(value)) {
       callback('序号格式错误')
     }
     callback()
@@ -115,8 +116,6 @@ class MeetingForm extends React.Component {
         },
       },
     }
-
-    const FormItem = Form.Item
 
     const { unfilled } = this.state
 
@@ -313,20 +312,20 @@ class MeetingForm extends React.Component {
 }
 
 const WrappedMeetingCreateForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.formData).forEach(key => {
-      fields[key] = {
-        value: props.formData[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.formData).forEach(key => {
+  //     fields[key] = {
+  //       value: props.formData[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
-    props.dispatch({
+    key && props.dispatch({
       type: 'createMeeting/changeField',
       payload: {
         key,

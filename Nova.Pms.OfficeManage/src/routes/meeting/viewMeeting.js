@@ -211,7 +211,7 @@ class MeetingForm extends React.Component {
           <Row gutter={8}>
             <Col span={12}>
               <FormItem {...tailFormItemLayout} label="">
-                <Button type="default" onClick={this.cancel}>取消</Button>
+                <Button type="default" onClick={this.cancel}>返回</Button>
               </FormItem>
             </Col>
           </Row>

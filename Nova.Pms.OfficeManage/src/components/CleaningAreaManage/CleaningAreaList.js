@@ -22,17 +22,11 @@ import {
 
   // RangePicker,
 } from 'antd'
-import { routerRedux, Link } from 'dva/router'
+import { routerRedux } from 'dva/router'
 import styles from './CleaningAreaManage.css'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
-
-moment.locale('zh-cn')
-import { PAGE_SIZE } from '../../constants'
+import { moment } from 'utils'
 
 const FormItem = Form.Item
-const RangePicker = DatePicker.RangePicker
-const RadioGroup = Radio.Group
 const Option = Select.Option
 
 const AddCleaningAreaForm = Form.create()(props => {
@@ -828,7 +822,11 @@ function CleaningAreaList ({
                   size="large"
                   onSearch={filterStr => this.searchHandler(filterStr)}
                 />
-                <a className="hide" style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
+                <a
+                  className="hide"
+                  style={{ marginLeft: 8 }}
+                  onClick={this.openSeniorSearch}
+                >
                   高级搜索 <Icon type="down" />
                 </a>
               </Col>

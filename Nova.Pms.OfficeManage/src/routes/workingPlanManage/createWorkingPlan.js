@@ -368,20 +368,20 @@ class WorkingPlanForm extends React.Component {
 }
 
 const WrappedCreateWorkingPlan = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.workingPlan).forEach(key => {
-      fields[key] = {
-        value: props.workingPlan[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.workingPlan).forEach(key => {
+  //     fields[key] = {
+  //       value: props.workingPlan[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
-    props.dispatch({
+    key && props.dispatch({
       type: 'createWorkingPlan/changeField',
       payload: {
         key,

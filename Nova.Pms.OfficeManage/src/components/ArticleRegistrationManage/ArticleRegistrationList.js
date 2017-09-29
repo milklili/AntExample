@@ -63,7 +63,7 @@ const ArticleRegistrationForm = Form.create()(props => {
     <Option key={value.id} value={value.id}>{value.name}</Option>
   ))
   const userOptions = userList.map(value => (
-    <Option key={value.id} value={value.id}>{value.name}</Option>
+    <Option key={value.staffId} value={value.staffId}>{value.staffName}</Option>
   ))
 
   return (
@@ -275,20 +275,11 @@ function ArticleRegistrationList ({
     };
     handleCancel = () => {
       const form = this.form
-
-      form.validateFields((err, values) => {
-        dispatch({
-          type: 'articleRegistrationList/changeArticleRegistration',
-          payload: { articleRegistration: values },
-        })
-        form.resetFields()
-        this.setState({ visible: false })
-      })
+      form.resetFields()
       this.setState({ visible: false })
     };
     handleCreate = () => {
       const form = this.form
-
       form.validateFields((err, values) => {
         if (err) {
           return
@@ -770,7 +761,7 @@ function ArticleRegistrationList ({
                   placeholder="搜索..."
                   style={{ width: 200 }}
                   size="large"
-                  onSearch={filterStr => this.searchHandler(filterStr)}
+                  onSearch={v => this.searchHandler(v)}
                 />
                 <a className="hide" style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
                   高级搜索 <Icon type="down" />
