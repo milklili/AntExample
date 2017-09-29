@@ -513,7 +513,7 @@ function SecurityDutyPlanList ({
                   size="large"
                   onSearch={fStr => this.searchHandler(fStr)}
                 />
-                <a style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
+                <a className="hide" style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
                   高级搜索 <Icon type="down" />
                 </a>
               </Col>

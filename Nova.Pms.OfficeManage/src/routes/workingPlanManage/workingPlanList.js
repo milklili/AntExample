@@ -739,6 +739,7 @@ function WorkingPlanList ({
                     onSearch={filterStr => this.searchHandler(filterStr)}
                   />
                   <a
+                    className="hide"
                     style={{ marginLeft: 8, fontSize: 12 }}
                     onClick={this.showAdvancedSearch}
                   >

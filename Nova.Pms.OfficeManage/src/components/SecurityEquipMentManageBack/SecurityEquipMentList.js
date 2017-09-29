@@ -354,7 +354,7 @@ function SecurityEquipMentList({
                                         size='large'
                                         onSearch={filterStr => this.searchHandler(filterStr)}
                                     />
-                                    <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.showAdvancedSearch} >
+                                    <a className="hide" style={{ marginLeft: 8, fontSize: 12 }} onClick={this.showAdvancedSearch} >
                                         高级搜索
                                     </a>
                                 </Col>

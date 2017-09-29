@@ -269,7 +269,7 @@ const Meeting = ({
                   size="large"
                   onSearch={filterStr => this.searchHandler(filterStr)}
                 />
-                <a style={{ marginLeft: 8 }} onClick={this.toggle}>
+                <a className="hide" style={{ marginLeft: 8 }} onClick={this.toggle}>
                   高级搜索 <Icon type="down" />
                 </a>
               </Col>
