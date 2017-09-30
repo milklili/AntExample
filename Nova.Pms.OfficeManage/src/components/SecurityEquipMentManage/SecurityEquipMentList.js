@@ -82,7 +82,7 @@ const AddSecurityEquipMentForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="管理区">
               {getFieldDecorator('regionId', {
-                // initialValue: staffName
+                initialValue: securityEquipMent.regionId,
                 rules: [{ required: isAddOrEdit, message: '请选择管理区' }],
               })(
                 <Select
@@ -100,6 +100,7 @@ const AddSecurityEquipMentForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="名称" placeholder="请输入">
               {getFieldDecorator('name', {
+                initialValue: securityEquipMent.name,
                 rules: [
                   {
                     required: true,
@@ -121,6 +122,7 @@ const AddSecurityEquipMentForm = Form.create()(props => {
               // hasFeedback
             >
               {getFieldDecorator('type', {
+                initialValue: securityEquipMent.type,
                 rules: [{ required: true, message: '请选择类型!' }],
               })(
                 <Select
@@ -140,7 +142,7 @@ const AddSecurityEquipMentForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="地点/区域">
               {getFieldDecorator('place', {
-                // initialValue: securityEquipMent.name,
+                initialValue: securityEquipMent.place,
                 rules: [
                   {
                     required: true,
@@ -157,7 +159,7 @@ const AddSecurityEquipMentForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="规格型号">
               {getFieldDecorator('specificationModel', {
-                // initialValue: securityEquipMent.name,
+                initialValue: securityEquipMent.specificationModel,
                 rules: [
                   {
                     required: true,
@@ -172,7 +174,7 @@ const AddSecurityEquipMentForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="数量">
               {getFieldDecorator('quantity', {
-                // initialValue: securityEquipMent.name,
+                initialValue: securityEquipMent.quantity,
                 rules: [
                   { required: true, message: '请输入数量!' },
                   {
@@ -192,6 +194,7 @@ const AddSecurityEquipMentForm = Form.create()(props => {
               // hasFeedback
             >
               {getFieldDecorator('responsibilityPersonId', {
+                initialValue: securityEquipMent.responsibilityPersonId,
                 rules: [{ required: true, message: '请选择责任人!' }],
               })(
                 <Select
@@ -199,7 +202,6 @@ const AddSecurityEquipMentForm = Form.create()(props => {
                   placeholder="请选择"
                   // onChange={handleChange}
                   style={{ width: '100%' }}
-                  disabled={!isSelectRegion}
                   disabled={!isAddOrEdit}
                 >
                   {responsibilityPersonOptions}
@@ -214,7 +216,9 @@ const AddSecurityEquipMentForm = Form.create()(props => {
 
               // hasFeedback
             >
-              {getFieldDecorator('departmentId', {})(
+              {getFieldDecorator('departmentId', {
+                initialValue: securityEquipMent.departmentId,
+              })(
                 <Select
                   mode="combox"
                   placeholder="请选择"
@@ -232,6 +236,7 @@ const AddSecurityEquipMentForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemRow} label="备注">
               {getFieldDecorator('remark', {
+                initialValue: securityEquipMent.remark,
                 rules: [
                   {
                     required: false,
@@ -250,17 +255,17 @@ const AddSecurityEquipMentForm = Form.create()(props => {
 })
 
 const NormalAddSecurityEquipMentForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.securityEquipMent).forEach(key => {
-      fields[key] = {
-        value: props.securityEquipMent[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.securityEquipMent).forEach(key => {
+  //     fields[key] = {
+  //       value: props.securityEquipMent[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
 
   onFieldsChange (props, changedFields) {
     props.onChange(changedFields)
@@ -397,25 +402,24 @@ function SecurityEquipMentList ({
     };
     handleFormChange = changedFields => {
       const key = Object.keys(changedFields)[0]
-      const value = changedFields[key].value
-
-      let data = { [key]: value }
-
-      if (key === 'regionId') {
-        data = {
-          responsibilityPersonId: null,
-          departmentId: null,
-          [key]: value,
+      if (key) {
+        const value = changedFields[key].value
+        let data = { [key]: value }
+        if (key === 'regionId') {
+          data = {
+            responsibilityPersonId: null,
+            departmentId: null,
+            [key]: value,
+          }
         }
+        const snewScurityEquipMent = { ...this.state.securityEquipMent, ...data }
+        this.setState({
+          securityEquipMent: {
+            ...this.state.securityEquipMent,
+            ...snewScurityEquipMent,
+          },
+        })
       }
-
-      const securityEquipMent = { ...this.state.securityEquipMent, ...data }
-      this.setState({
-        securityEquipMent: {
-          ...this.state.securityEquipMent,
-          ...securityEquipMent,
-        },
-      })
     };
 
     render () {
@@ -576,25 +580,24 @@ function SecurityEquipMentList ({
     };
     handleFormChange = changedFields => {
       const key = Object.keys(changedFields)[0]
-      const value = changedFields[key].value
-
-      let data = { [key]: value }
-
-      if (key == 'regionId') {
-        data = {
-          responsibilityPersonId: null,
-          departmentId: null,
-          [key]: value,
+      if (key) {
+        const value = changedFields[key].value
+        let data = { [key]: value }
+        if (key === 'regionId') {
+          data = {
+            responsibilityPersonId: null,
+            departmentId: null,
+            [key]: value,
+          }
         }
+        const snewScurityEquipMent = { ...this.state.securityEquipMent, ...data }
+        this.setState({
+          securityEquipMent: {
+            ...this.state.securityEquipMent,
+            ...snewScurityEquipMent,
+          },
+        })
       }
-
-      var securityEquipMent = { ...this.state.securityEquipMent, ...data }
-      this.setState({
-        securityEquipMent: {
-          ...this.state.securityEquipMent,
-          ...securityEquipMent,
-        },
-      })
     };
     render () {
       return (

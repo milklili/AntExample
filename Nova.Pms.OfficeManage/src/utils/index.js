@@ -27,16 +27,33 @@ const isNumber = function (value, int = false) {
   return reg.test(v)
 }
 
-const isImage = function (type) {
+const checkFileType = function (type) {
   const imgTypeArr = ['jpeg', 'bmp', 'png', 'jpg', 'tiff', 'gif',
     'pcx', 'tga', 'exif', 'fpx', 'svg', 'psd', 'cdr', 'pcd', 'dxf', 'ufo', 'eps', 'ai', 'raw', 'wmf']
-  for (let i = 0; i < imgTypeArr.length; i++) {
-    const reg = new RegExp(`${imgTypeArr[i]}$`, 'ig')
-    if (reg.test(type)) {
-      return true
+  let typeArr = []
+  if (Array.isArray(type)) {
+    typeArr = [...type]
+  } else if (typeof type === 'string') {
+    switch (type) {
+      case 'image':
+        typeArr = [...imgTypeArr]
+        break
+      default:
+        break
     }
   }
-  return false
+  if (!typeArr.length) {
+    throw new Error('检测的文件类型不支持，请传入文件类型的数组！')
+  }
+  return function (fileName) {
+    for (let i = 0; i < typeArr.length; i++) {
+      const reg = new RegExp(`${typeArr[i]}$`, 'ig')
+      if (reg.test(fileName)) {
+        return true
+      }
+    }
+    return false
+  }
 }
 
 const dateFormat = (date, fmt = 'YYYY-MM-DD') => {
@@ -150,5 +167,5 @@ module.exports = {
   moment,
   dateFormat,
   isNumber,
-  isImage,
+  checkFileType,
 }

@@ -151,7 +151,6 @@ class NormalDocumentCategoryForm extends React.Component {
               <Row gutter={8}>
                 <FormItem {...formItemLayout} label="文档类型">
                   {getFieldDecorator('documentCategoryId', {
-                    rules: [{ required: true, message: '请选择文档类型' }],
                   })(
                     <Select placeholder="请选择" disabled>
                       {documentCategoryOptions}

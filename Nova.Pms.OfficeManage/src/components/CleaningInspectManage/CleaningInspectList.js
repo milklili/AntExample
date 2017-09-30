@@ -24,11 +24,7 @@ import {
 } from 'antd'
 import { routerRedux, Link } from 'dva/router'
 import styles from './CleaningInspectManage.css'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
-
-moment.locale('zh-cn')
-import { PAGE_SIZE } from '../../constants'
+import { moment } from 'utils'
 
 const FormItem = Form.Item
 const RangePicker = DatePicker.RangePicker
@@ -42,8 +38,6 @@ const AddCleaningInspectForm = Form.create()(props => {
     onCreate,
     form,
     selectRegion,
-    setState,
-    dispatch,
     regionList,
     staffList,
     cleaningAreaList,
@@ -55,10 +49,6 @@ const AddCleaningInspectForm = Form.create()(props => {
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 },
-  }
-  const formItemRow = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 21 },
   }
   const regionOptions = regionList.map(value => (
     <Option key={value.id} value={value.id}>{value.name}</Option>
@@ -82,7 +72,10 @@ const AddCleaningInspectForm = Form.create()(props => {
         <Row gutter={8}>
           <Col span={24}>
             <FormItem {...formItemLayout} label="管理区">
-              {getFieldDecorator('regionId', {})(
+              {getFieldDecorator('regionId', {
+                initialValue: cleaningInspect.regionId,
+                rules: [{ required: isAddOrEdit, message: '请选择管理区' }],
+              })(
                 <Select
                   mode="combox"
                   placeholder="请选择"
@@ -100,6 +93,7 @@ const AddCleaningInspectForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="保洁区域">
               {getFieldDecorator('cleaningAreaId', {
+                initialValue: cleaningInspect.cleaningAreaId,
                 rules: [{ required: isAddOrEdit, message: '请选择保洁区域' }],
               })(
                 <Select
@@ -117,7 +111,7 @@ const AddCleaningInspectForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="负责人">
               {getFieldDecorator('leadId', {
-                // initialValue: staffName
+                initialValue: cleaningInspect.leadId,
                 rules: [{ required: isAddOrEdit, message: '请选择负责人' }],
               })(
                 <Select
@@ -136,7 +130,7 @@ const AddCleaningInspectForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="检查人">
               {getFieldDecorator('rummagerId', {
-                // initialValue: staffName
+                initialValue: cleaningInspect.rummagerId,
                 rules: [{ required: isAddOrEdit, message: '请选择检查人' }],
               })(
                 <Select
@@ -155,21 +149,8 @@ const AddCleaningInspectForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="检查时间">
               {getFieldDecorator('inspectDate', {
-                // initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+                initialValue: cleaningInspect.inspectDate ? moment(cleaningInspect.inspectDate, 'YYYY-MM-DD') : '',
                 rules: [{ required: isAddOrEdit, message: '请选择' }],
-                getValueProps: value => {
-                  if (!value) {
-                    cleaningInspect.inspectDate = moment(
-                      new Date(),
-                      'YYYY-MM-DD'
-                    )
-                  }
-                  return {
-                    value: value
-                      ? moment(value)
-                      : moment(new Date(), 'YYYY-MM-DD'),
-                  }
-                },
               })(
                 <DatePicker
                   style={{ width: '100%' }}
@@ -188,6 +169,7 @@ const AddCleaningInspectForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="检查情况">
               {getFieldDecorator('content', {
+                initialValue: cleaningInspect.content,
                 rules: [
                   {
                     type: 'string',
@@ -212,6 +194,7 @@ const AddCleaningInspectForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="检查结果">
               {getFieldDecorator('result', {
+                initialValue: cleaningInspect.result,
                 rules: [{ required: isAddOrEdit, message: '请选择检查结果' }],
               })(
                 <Select
@@ -231,6 +214,7 @@ const AddCleaningInspectForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="备注">
               {getFieldDecorator('remark', {
+                initialValue: cleaningInspect.remark,
                 rules: [{ type: 'string', max: 80, message: '请正确输入备注，最大长度为80' }],
               })(<Input disabled={!isAddOrEdit} />)}
 
@@ -243,17 +227,17 @@ const AddCleaningInspectForm = Form.create()(props => {
 })
 
 const NormalAddCleaningInspectForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.cleaningInspect).forEach(key => {
-      fields[key] = {
-        value: props.cleaningInspect[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.cleaningInspect).forEach(key => {
+  //     fields[key] = {
+  //       value: props.cleaningInspect[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
 
   onFieldsChange (props, changedFields) {
     props.onChange(changedFields)
@@ -359,15 +343,7 @@ function CleaningInspectList ({
 
     handleCancel = () => {
       const form = this.form
-
-      form.validateFields((err, values) => {
-        dispatch({
-          type: 'cleaningInspectList/changeCleaningInspect',
-          payload: { cleaningInspect: values },
-        })
-        form.resetFields()
-        this.setState({ visible: false })
-      })
+      form.resetFields()
       this.setState({ visible: false })
     };
     handleCreate = () => {
@@ -395,21 +371,22 @@ function CleaningInspectList ({
     };
     handleFormChange = changedFields => {
       function findCleaningArea (cleaningArea) {
-        return cleaningArea.id == value
+        return cleaningArea.id === value
       }
       const key = Object.keys(changedFields)[0]
+      if (!key) return
       const value = changedFields[key].value
 
       let data = { [key]: value }
 
-      if (key == 'cleaningAreaId') {
-        var lead = this.props.cleaningAreaList.find(findCleaningArea)
+      if (key === 'cleaningAreaId') {
+        let lead = this.props.cleaningAreaList.find(findCleaningArea)
 
         if (lead != null) {
           data = { leadId: lead.staffId, [key]: value }
         }
       }
-      if (key == 'regionId') {
+      if (key === 'regionId') {
         data = {
           cleaningAreaId: null,
           leadId: null,
@@ -418,9 +395,9 @@ function CleaningInspectList ({
         }
       }
 
-      var cleaningInspect = { ...this.state.cleaningInspect, ...data }
+      const newCleaningInspect = { ...this.state.cleaningInspect, ...data }
       this.setState({
-        cleaningInspect: { ...this.state.cleaningInspect, ...cleaningInspect },
+        cleaningInspect: { ...this.state.cleaningInspect, ...newCleaningInspect },
       })
     };
 
@@ -540,21 +517,22 @@ function CleaningInspectList ({
 
     handleFormChange = changedFields => {
       function findCleaningArea (cleaningArea) {
-        return cleaningArea.id == value
+        return cleaningArea.id === value
       }
       const key = Object.keys(changedFields)[0]
+      if (!key) return
       const value = changedFields[key].value
 
       let data = { [key]: value }
 
-      if (key == 'cleaningAreaId') {
-        var lead = this.props.cleaningAreaList.find(findCleaningArea)
+      if (key === 'cleaningAreaId') {
+        let lead = this.props.cleaningAreaList.find(findCleaningArea)
 
         if (lead != null) {
           data = { leadId: lead.staffId, [key]: value }
         }
       }
-      if (key == 'regionId') {
+      if (key === 'regionId') {
         data = {
           cleaningAreaId: null,
           leadId: null,
@@ -563,9 +541,9 @@ function CleaningInspectList ({
         }
       }
 
-      var cleaningInspect = { ...this.state.cleaningInspect, ...data }
+      const newCleaningInspect = { ...this.state.cleaningInspect, ...data }
       this.setState({
-        cleaningInspect: { ...this.state.cleaningInspect, ...cleaningInspect },
+        cleaningInspect: { ...this.state.cleaningInspect, ...newCleaningInspect },
       })
     };
     render () {
@@ -906,7 +884,7 @@ function CleaningInspectList ({
                   placeholder="搜索..."
                   style={{ width: 200 }}
                   size="large"
-                  onSearch={filterStr => this.searchHandler(filterStr)}
+                  onSearch={v => this.searchHandler(v)}
                 />
                 <a className="hide" style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
                   高级搜索 <Icon type="down" />

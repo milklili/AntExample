@@ -20,6 +20,7 @@ function checkStatus (response) {
  */
 export default async function request (url, options) {
   const _options = Object.assign({
+    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -31,6 +32,7 @@ export default async function request (url, options) {
       cookie: 'nova_pms_auth_Default=CfDJ8NC6t2Qg0VhBvXUTPaU3N-oz6Bhjkkqr0eXSK-PNLhHIMmAjfhiMqIK3lQVrUKHzKP-ZQDHNdiNCf6mVn7Xn0UtRvRAC5WUEeaXT5eAPKTaCOqdIFAvK6ixsspDgzK51Ki1HQAp2CHmB7yQVboaM6PXy2VvwcRqD86cWdXTtDUkiovhFv7HlywOGlJWg7ikMHGTFe_YLp_rs8pGYsOVyiLB6uOxGe5jfWwRwL1bz-P16AoZGBLVVfO59W34kMU_6Lmx31BvlV3kIr5CBDAYrPB3YPVmKBoqw_etFyrgueJw3QdVk531lr-gkDpIa9Qzf_eiXd9SbHZ9tO73PTtOWbmgU0P-UDGmsMqZ1fypQMbR8bTv1d37Lgjh-VjMzverCJEiWD8IH-RqsDQ2zXvs82rolYtlyJdgsZk_QmbARhUT2SADzrABCW9YI6856QK98kgred996cbq9WzTuv_KCOc2SIvnKYPAW6FrA93eqHMweKZB5051U0wx5ezr1LTVXGiZploJY1jo6kbdzXctLjCtVUFMwR0QF-pX635Q02CXRsLh-yf04MmJjyzLj9kN6Xw9vwX_9L__AD61QGjYqXM8',
     }
   }
+  // console.log(_options)
   const response = await fetch(url, {
     ..._options,
   })

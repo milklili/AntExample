@@ -24,13 +24,9 @@ import {
 
   // RangePicker,
 } from 'antd'
-import { routerRedux, Link } from 'dva/router'
+import { routerRedux } from 'dva/router'
 import styles from './ApprovalManage.css'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
-
-moment.locale('zh-cn')
-import { PAGE_SIZE } from '../../constants'
+import { moment, checkFileType } from 'utils'
 
 const FormItem = Form.Item
 const RangePicker = DatePicker.RangePicker
@@ -64,10 +60,6 @@ const EditInitiatedForm = Form.create()(props => {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 },
   }
-  const formItemRow = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 21 },
-  }
 
   const regionOptions = regionList.map(value => (
     <Option key={value.id} value={value.id}>{value.name}</Option>
@@ -89,7 +81,7 @@ const EditInitiatedForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="管理区">
               {getFieldDecorator('regionId', {
-                // initialValue: staffName
+                initialValue: approval.regionId,
                 rules: [{ required: true, message: '请选择管理区' }],
               })(
                 <Select
@@ -108,6 +100,7 @@ const EditInitiatedForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="审批编号">
               {getFieldDecorator('code', {
+                initialValue: approval.code,
                 rules: [{ required: true, message: '请输入审批编号' }],
               })(<Input disabled />)}
             </FormItem>
@@ -116,7 +109,9 @@ const EditInitiatedForm = Form.create()(props => {
         <Row gutter={8}>
           <Col span={24}>
             <FormItem {...formItemLayout} label="审批类型">
-              {getFieldDecorator('type', {})(
+              {getFieldDecorator('type', {
+                initialValue: approval.type,
+              })(
                 <Select disabled>
                   <Option value={0}>通用审批</Option>
                 </Select>
@@ -128,6 +123,7 @@ const EditInitiatedForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="申请内容">
               {getFieldDecorator('content', {
+                initialValue: approval.content,
                 rules: [
                   {
                     type: 'string',
@@ -144,6 +140,7 @@ const EditInitiatedForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="审批详情">
               {getFieldDecorator('details', {
+                initialValue: approval.details,
                 rules: [
                   {
                     type: 'string',
@@ -161,7 +158,7 @@ const EditInitiatedForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="审批人">
               {getFieldDecorator('approvalPersonId', {
-                // initialValue: staffName
+                initialValue: approval.approvalPersonId,
                 rules: [{ required: true, message: '请选择审批人' }],
               })(
                 <Select
@@ -183,6 +180,7 @@ const EditInitiatedForm = Form.create()(props => {
               {getFieldDecorator(
                 'sendPersonId',
                 {
+                  initialValue: approval.sendPersonId,
                   // initialValue: staffName
                   // rules: [{ required: true, message: "请选择抄送人" }]
                 }
@@ -226,17 +224,17 @@ const EditInitiatedForm = Form.create()(props => {
 })
 
 const NormalEditInitiatedForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.approval).forEach(key => {
-      fields[key] = {
-        value: props.approval[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.approval).forEach(key => {
+  //     fields[key] = {
+  //       value: props.approval[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
 
   onFieldsChange (props, changedFields) {
     props.onChange(changedFields)
@@ -594,28 +592,7 @@ function InitiatedList ({
     beforePicturesOnChange = file => {
       let { pictures } = this.state
       let fileList = file.fileList
-
-      const isJPG =
-        file.type.toLowerCase() === 'image/jpeg' ||
-        file.type.toLowerCase() === 'image/bmp' ||
-        file.type.toLowerCase() === 'image/png' ||
-        file.type.toLowerCase() === 'image/jpg' ||
-        file.type.toLowerCase() === 'image/tiff' ||
-        file.type.toLowerCase() === 'image/gif' ||
-        file.type.toLowerCase() === 'image/pcx' ||
-        file.type.toLowerCase() === 'image/tga' ||
-        file.type.toLowerCase() === 'image/exif' ||
-        file.type.toLowerCase() === 'image/fpx' ||
-        file.type.toLowerCase() === 'image/svg' ||
-        file.type.toLowerCase() === 'image/psd' ||
-        file.type.toLowerCase() === 'image/cdr' ||
-        file.type.toLowerCase() === 'image/pcd' ||
-        file.type.toLowerCase() === 'image/dxf' ||
-        file.type.toLowerCase() === 'image/ufo' ||
-        file.type.toLowerCase() === 'image/eps' ||
-        file.type.toLowerCase() === 'image/ai' ||
-        file.type.toLowerCase() === 'image/raw' ||
-        file.type.toLowerCase() === 'image/wmf'
+      const isJPG = checkFileType('image')(file.type)
       if (!isJPG) {
         message.error('请选择图片上传!')
       }
@@ -637,7 +614,7 @@ function InitiatedList ({
 
     uploadAttachments = {
       name: 'file',
-      action: `${window.location.host}/api/officeManage/uploadAttachments`,
+      action: '/api/officeManage/uploadAttachments',
       headers: {
         authorization: 'authorization-text',
       },
@@ -665,7 +642,7 @@ function InitiatedList ({
 
     uploadPictures = {
       name: 'file',
-      action: `${window.location.host}/api/officeManage/uploadAttachments`,
+      action: '/api/officeManage/uploadAttachments',
       headers: {
         authorization: 'authorization-text',
       },
@@ -736,17 +713,18 @@ function InitiatedList ({
 
     handleFormChange = changedFields => {
       const key = Object.keys(changedFields)[0]
+      if (!key) return
       const value = changedFields[key].value
 
       let data = { [key]: value }
 
-      if (key == 'regionId') {
+      if (key === 'regionId') {
         data = { approvalPersonId: [], sendPersonId: [], [key]: value }
       }
 
-      var approval = { ...this.state.approval, ...data }
+      const newApproval = { ...this.state.approval, ...data }
       this.setState({
-        approval: { ...this.state.approval, ...approval },
+        approval: { ...this.state.approval, ...newApproval },
       })
     };
     render () {

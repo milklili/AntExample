@@ -1,32 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import {
-  Dropdown,
-  Menu,
-  Table,
-  Pagination,
-  Popconfirm,
   Button,
   Input,
-  Alert,
   Form,
-  Card,
   Row,
   Col,
   Select,
-  DatePicker,
-  Icon,
-  Modal,
   message,
-  Radio,
-  Validation,
   Upload,
 
   // RangePicker,
 } from 'antd'
-import { routerRedux, Link } from 'dva/router'
 import styles from './ApprovalManage.css'
-import { isImage, moment } from 'utils'
+import { checkFileType, moment } from 'utils'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -130,7 +117,7 @@ class Approval extends React.Component {
   beforePicturesOnChange = file => {
     let attachmentsAll = this.props.attachments
     let pictures = attachmentsAll.filter(attachments => attachments.fileType === 0)
-    const isJPG = isImage(file.type)
+    const isJPG = checkFileType('image')(file.type)
     if (!isJPG) {
       message.error('请选择图片上传!')
     }
@@ -152,7 +139,7 @@ class Approval extends React.Component {
 
   uploadAttachments = {
     name: 'file',
-    action: `${window.location.host}/api/officeManage/uploadAttachments`,
+    action: '/api/officeManage/uploadAttachments',
     headers: {
       authorization: 'authorization-text',
     },
@@ -178,7 +165,7 @@ class Approval extends React.Component {
 
   uploadPictures = {
     name: 'file',
-    action: `${window.location.host}/api/officeManage/uploadAttachments`,
+    action: '/api/officeManage/uploadAttachments',
     headers: {
       authorization: 'authorization-text',
     },
@@ -194,7 +181,8 @@ class Approval extends React.Component {
   };
 
   render () {
-    const { getFieldDecorator } = this.props.form
+    const { form, approval } = this.props
+    const { getFieldDecorator } = form
     const formItemLayout = {
       labelCol: {
         xs: {
@@ -210,18 +198,6 @@ class Approval extends React.Component {
         },
         sm: {
           span: 20,
-        },
-      },
-    }
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          push: 0,
-        },
-        sm: {
-          span: 20,
-          push: 24,
         },
       },
     }
@@ -243,7 +219,6 @@ class Approval extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="管理区">
                 {getFieldDecorator('regionId', {
-                  // initialValue: staffName
                   rules: [{ required: true, message: '请选择管理区' }],
                 })(
                   <Select
@@ -277,13 +252,16 @@ class Approval extends React.Component {
               <Row gutter={8}>
                 <FormItem {...formItemLayout} label="审批编号">
                   {getFieldDecorator('code', {
+                    initialValue: approval.code,
                     rules: [{ required: true, message: '请输入审批编号' }],
                   })(<Input disabled />)}
                 </FormItem>
               </Row>
               <Row gutter={8}>
                 <FormItem {...formItemLayout} label="审批类型">
-                  {getFieldDecorator('type', {})(
+                  {getFieldDecorator('type', {
+                    initialValue: approval.type,
+                  })(
                     <Select disabled>
                       <Option value={0} key={0}>通用审批</Option>
                     </Select>
@@ -385,21 +363,21 @@ class Approval extends React.Component {
 }
 
 const NormalApprovalForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.approval).forEach(key => {
-      fields[key] = {
-        value: props.approval[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.approval).forEach(key => {
+  //     fields[key] = {
+  //       value: props.approval[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
   onFieldsChange (props, changedFields) {
     const key = Object.keys(changedFields)[0]
 
-    props.dispatch({
+    key && props.dispatch({
       type: 'createApproval/changeField',
       payload: {
         key,

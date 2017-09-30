@@ -790,7 +790,7 @@ function WorkAttendanceList ({
         {
           title: '操作',
           fixed: 'right',
-          width: 110,
+          width: 70,
           render: (text, record) => {
             return total
               ? <span>
@@ -800,12 +800,12 @@ function WorkAttendanceList ({
                     查看
                 </a>
                   &nbsp;
-                <a
+                {/* <a
                   onClick={this.showWorkAttendance.bind(null, record.staffId, 'update')}
                 >
                     编辑
                 </a>
-                  &nbsp;
+                  &nbsp; */}
                 <AddWorkAttendance
                   workAttendance={[record]}
                   staffList={staffList}

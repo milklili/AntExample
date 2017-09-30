@@ -21,10 +21,9 @@ import {
 
   // RangePicker,
 } from 'antd'
-import { routerRedux, Link } from 'dva/router'
+import { routerRedux } from 'dva/router'
 import styles from './CleaningToolManage.css'
-import moment from 'moment'
-import { PAGE_SIZE } from '../../constants'
+import { moment } from 'utils'
 
 const FormItem = Form.Item
 const RangePicker = DatePicker.RangePicker
@@ -37,14 +36,11 @@ const AddCleaningToolForm = Form.create()(props => {
     onCancel,
     onCreate,
     countValidate,
-    handleHoursValidate,
     form,
     selectRegion,
-    staffList,
     cleaningTool,
     regionList,
     departmentList,
-    dispatch,
   } = props
 
   const { getFieldDecorator } = form
@@ -52,11 +48,6 @@ const AddCleaningToolForm = Form.create()(props => {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 },
   }
-  const formItemRow = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 21 },
-  }
-
   const regionOptions = regionList.map(value => (
     <Option key={value.id} value={value.id}>{value.name}</Option>
   ))
@@ -78,6 +69,7 @@ const AddCleaningToolForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="管理区">
               {getFieldDecorator('regionId', {
+                initialValue: cleaningTool.regionId,
                 rules: [{ required: true, message: '请选择管理区' }],
               })(
                 <Select
@@ -98,7 +90,7 @@ const AddCleaningToolForm = Form.create()(props => {
               {getFieldDecorator(
                 'departmentId',
                 {
-                  // initialValue: staffName
+                  initialValue: cleaningTool.departmentId,
                 }
               )(
                 <Select
@@ -116,6 +108,7 @@ const AddCleaningToolForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="工具名称">
               {getFieldDecorator('name', {
+                initialValue: cleaningTool.name,
                 rules: [{ required: true, message: '请输入工具名称' }],
               })(<Input />)}
             </FormItem>
@@ -127,6 +120,7 @@ const AddCleaningToolForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="工具类型">
               {getFieldDecorator('type', {
+                initialValue: cleaningTool.type,
                 rules: [{ required: true, message: '请选择工具类型' }],
               })(
                 <Select
@@ -146,20 +140,7 @@ const AddCleaningToolForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="入库日期">
               {getFieldDecorator('registerDate', {
-                // initialValue: [moment(new Date(), 'YYYY-MM-DD HH:mm:ss'), moment(new Date(), 'YYYY-MM-DD HH:mm:ss')],
-                getValueProps: value => {
-                  if (!value) {
-                    cleaningTool.registerDate = moment(
-                      new Date(),
-                      'YYYY-MM-DD'
-                    )
-                  }
-                  return {
-                    value: value
-                      ? moment(value)
-                      : moment(new Date(), 'YYYY-MM-DD'),
-                  }
-                },
+                initialValue: cleaningTool.registerDate ? moment(cleaningTool.registerDate, 'YYYY-MM-DD HH:mm:ss') : '',
                 rules: [{ required: true, message: '请选择入库日期' }],
               })(<DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" />)}
             </FormItem>
@@ -169,6 +150,7 @@ const AddCleaningToolForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="工具说明">
               {getFieldDecorator('remark', {
+                initialValue: cleaningTool.remark,
                 rules: [{ type: 'string', max: 50, message: '不超过50个字' }],
               })(<Input />)}
             </FormItem>
@@ -179,6 +161,7 @@ const AddCleaningToolForm = Form.create()(props => {
           <Col span={24}>
             <FormItem {...formItemLayout} label="总数量">
               {getFieldDecorator('count', {
+                initialValue: cleaningTool.count,
                 rules: [
                   { required: true, message: '请输入总数量' },
                   {
@@ -194,17 +177,17 @@ const AddCleaningToolForm = Form.create()(props => {
   )
 })
 const NormalAddCleaningToolForm = Form.create({
-  mapPropsToFields (props) {
-    const fields = {}
-    Object.keys(props.cleaningTool).forEach(key => {
-      fields[key] = {
-        value: props.cleaningTool[key],
-      }
-    })
-    return {
-      ...fields,
-    }
-  },
+  // mapPropsToFields (props) {
+  //   const fields = {}
+  //   Object.keys(props.cleaningTool).forEach(key => {
+  //     fields[key] = {
+  //       value: props.cleaningTool[key],
+  //     }
+  //   })
+  //   return {
+  //     ...fields,
+  //   }
+  // },
 
   onFieldsChange (props, changedFields) {
     props.onChange(changedFields)
@@ -567,7 +550,7 @@ function CleaningToolList ({
 
     countValidate = (rule, value, callback) => {
       if (
-        value != null && value != '' && !/^\d+(?=\.{0,1}\d+$|$)/.test(value)
+        value != null && value !== '' && !/^\d+(?=\.{0,1}\d+$|$)/.test(value)
       ) {
         callback('请正确输入总数量')
       }
@@ -575,17 +558,18 @@ function CleaningToolList ({
     };
     handleFormChange = changedFields => {
       const key = Object.keys(changedFields)[0]
+      if (!key) return
       const value = changedFields[key].value
 
       let data = { [key]: value }
 
-      if (key == 'regionId') {
+      if (key === 'regionId') {
         data = { departmentId: null, [key]: value }
       }
 
-      var cleaningTool = { ...this.state.cleaningTool, ...data }
+      const newCleaningTool = { ...this.state.cleaningTool, ...data }
       this.setState({
-        cleaningTool: { ...this.state.cleaningTool, ...cleaningTool },
+        cleaningTool: { ...this.state.cleaningTool, ...newCleaningTool },
       })
     };
 
@@ -1140,7 +1124,7 @@ function CleaningToolList ({
                   placeholder="搜索..."
                   style={{ width: 200 }}
                   size="large"
-                  onSearch={filterStr => this.searchHandler(filterStr)}
+                  onSearch={v => this.searchHandler(v)}
                 />
                 <a className="hide" style={{ marginLeft: 8 }} onClick={this.openSeniorSearch}>
                   高级搜索 <Icon type="down" />

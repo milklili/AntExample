@@ -24,12 +24,7 @@ import {
 } from 'antd'
 import { routerRedux, Link } from 'dva/router'
 import styles from './CleaningRecordManage.css'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
-
-moment.locale('zh-cn')
-import { PAGE_SIZE } from '../../constants'
-
+import { moment } from 'utils'
 const FormItem = Form.Item
 const RangePicker = DatePicker.RangePicker
 const RadioGroup = Radio.Group
@@ -49,15 +44,10 @@ const AddCleaningRecordForm = Form.create()(props => {
     cleaningRecord,
     isAddOrEdit,
   } = props
-  console.log(cleaningAreaList)
   const { getFieldDecorator } = form
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 },
-  }
-  const formItemRow = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 21 },
   }
   const regionOptions = regionList.map(value => (
     <Option key={value.id} value={value.id}>{value.name}</Option>
@@ -153,21 +143,8 @@ const AddCleaningRecordForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="计划完成时间">
               {getFieldDecorator('completeDate', {
-                // initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+                initialValue: cleaningRecord.completeDate ? moment(cleaningRecord.completeDate, 'YYYY-MM-DD') : '',
                 rules: [{ required: isAddOrEdit, message: '请选择' }],
-                getValueProps: value => {
-                  if (!value) {
-                    cleaningRecord.completeDate = moment(
-                      new Date(),
-                      'YYYY-MM-DD'
-                    )
-                  }
-                  return {
-                    value: value
-                      ? moment(value)
-                      : moment(new Date(), 'YYYY-MM-DD'),
-                  }
-                },
               })(
                 <DatePicker
                   style={{ width: '100%' }}
@@ -183,21 +160,8 @@ const AddCleaningRecordForm = Form.create()(props => {
           <Col span={12}>
             <FormItem {...formItemLayout} label="实际完成时间">
               {getFieldDecorator('actualCompleteDate', {
-                // initialValue: moment(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+                initialValue: cleaningRecord.actualCompleteDate ? moment(cleaningRecord.actualCompleteDate, 'YYYY-MM-DD') : '',
                 rules: [{ required: isAddOrEdit, message: '请选择' }],
-                getValueProps: value => {
-                  if (!value) {
-                    cleaningRecord.actualCompleteDate = moment(
-                      new Date(),
-                      'YYYY-MM-DD'
-                    )
-                  }
-                  return {
-                    value: value
-                      ? moment(value)
-                      : moment(new Date(), 'YYYY-MM-DD'),
-                  }
-                },
               })(
                 <DatePicker
                   style={{ width: '100%' }}
