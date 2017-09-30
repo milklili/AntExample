@@ -1,26 +1,17 @@
 ﻿import React from 'react'
 import { connect } from 'dva'
 import {
-  Table,
-  Pagination,
-  Popconfirm,
   Alert,
-  Modal,
   Button,
   Form,
   Input,
-  Menu,
-  Dropdown,
-  Icon,
   DatePicker,
-  Upload,
-  message,
   Row,
   Col,
   Select,
 } from 'antd'
 import { routerRedux } from 'dva/router'
-import moment from 'moment'
+import { moment } from 'utils'
 import styles from './workingPlanManage.css'
 
 const Option = Select.Option
@@ -65,8 +56,24 @@ class WorkingPlanForm extends React.Component {
     })
   };
   handleNumberValidate = (rule, value, callback) => {
-    if (value != null && value != '' && !/^[A-Za-z0-9]+$/.test(value)) {
+    if (value != null && value !== '' && !/^[A-Za-z0-9]+$/.test(value)) {
       callback('序号格式错误')
+    }
+    callback()
+  };
+  startDateValidator = (filed, rule, value, callback) => {
+    const { getFieldValue } = this.props.form
+    const association = getFieldValue(filed)
+    if (value && association) {
+      !value.isBefore(association) && callback('开始时间不能晚于结束时间')
+    }
+    callback()
+  };
+  endDateValidator = (filed, rule, value, callback) => {
+    const { getFieldValue } = this.props.form
+    const association = getFieldValue(filed)
+    if (value && association) {
+      !association.isBefore(value) && callback('结束时间不能早于开始时间')
     }
     callback()
   };
@@ -103,8 +110,6 @@ class WorkingPlanForm extends React.Component {
         },
       },
     }
-
-    const FormItem = Form.Item
 
     const { unfilled } = this.state
 
@@ -158,7 +163,10 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="开始时间">
                 {getFieldDecorator('startDate', {
-                  rules: [{ required: true, message: '请选择开始时间' }],
+                  rules: [
+                    { required: true, message: '请选择开始时间' },
+                    { validator: this.startDateValidator.bind(this, 'endDate') },
+                  ],
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
                   },
@@ -179,11 +187,14 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="结束时间">
                 {getFieldDecorator('endDate', {
-                  rules: [{ required: true, message: '请选择结束时间' }],
+                  rules: [
+                    { required: true, message: '请选择结束时间' },
+                    { validator: this.endDateValidator.bind(this, 'startDate') },
+                  ],
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
                   },
-                })(<DatePicker style={{ width: '100%' }} placeholder="请输入" />)}
+                })(<DatePicker onChange={this.endDateChange} style={{ width: '100%' }} placeholder="请输入" />)}
               </FormItem>
             </Col>
           </Row>
@@ -213,7 +224,6 @@ class WorkingPlanForm extends React.Component {
                     mode="combobox "
                     placeholder="请选择"
                     style={{ width: '100%' }}
-                    placeholder="请选择"
                   >
                     <Option value={0}>未开始</Option>
                     <Option value={1}>进行中</Option>
@@ -244,6 +254,9 @@ class WorkingPlanForm extends React.Component {
               <FormItem {...formItemLayout} label="实际开始时间">
 
                 {getFieldDecorator('actualStartDate', {
+                  rules: [
+                    { validator: this.startDateValidator.bind(this, 'actualEndDate') },
+                  ],
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
                   },
@@ -266,6 +279,9 @@ class WorkingPlanForm extends React.Component {
             <Col span={12}>
               <FormItem {...formItemLayout} label="实际结束时间">
                 {getFieldDecorator('actualEndDate', {
+                  rules: [
+                    { validator: this.endDateValidator.bind(this, 'actualStartDate') },
+                  ],
                   getValueProps: value => {
                     return { value: value ? moment(value) : value }
                   },
